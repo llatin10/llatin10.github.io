@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Deep links</title>
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --card: #fff;
+      --text: #18181b;
+      --muted: #71717a;
+      --accent: #0d9488;
+      --border: #e4e4e7;
+      --link-bg: #ecfdf5;
+      --danger: #b91c1c;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #09090b;
+        --card: #18181b;
+        --text: #fafafa;
+        --muted: #a1a1aa;
+        --accent: #2dd4bf;
+        --border: #27272a;
+        --link-bg: #134e4a;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      padding: max(12px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 {
+      font-size: 1.35rem;
+      margin: 0 0 8px;
+      font-weight: 700;
+    }
+    .lead {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 0 0 16px;
+    }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+    .panel label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      font-size: 1rem;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+    }
+    .row { margin-bottom: 12px; }
+    .row:last-child { margin-bottom: 0; }
+    h2 {
+      font-size: 1.05rem;
+      margin: 28px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--accent);
+      color: var(--accent);
+    }
+    h2:first-of-type { margin-top: 8px; }
+    .link-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      background: var(--link-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      min-height: 48px;
+    }
+    .link-btn:active { opacity: 0.85; transform: scale(0.99); }
+    .link-btn small {
+      display: block;
+      font-weight: 400;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 6px;
+      word-break: break-all;
+    }
+    .warn {
+      font-size: 0.85rem;
+      color: var(--danger);
+      margin-top: 8px;
+    }
+    .note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    @media print {
+      :root {
+        --bg: #fff;
+        --card: #fff;
+        --text: #18181b;
+        --muted: #52525b;
+        --accent: #0d9488;
+        --border: #d4d4d8;
+        --link-bg: #f0fdfa;
+      }
+      body {
+        max-width: 100%;
+        padding: 12px;
+      }
+      h2 {
+        break-after: avoid;
+        page-break-after: avoid;
+      }
+      .link-btn {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Deep links</h1>
+  <p class="lead">Tap a row to open the URL. Works in Safari (iOS) and Chrome (Android) if universal / app links are configured. Use HTTPS on a real device (hosted page, not file://) for the most reliable handoff to the app.</p>
+
+  <div class="panel">
+    <div class="row">
+      <label for="env">Environment (base URL)</label>
+      <select id="env" aria-label="Environment">
+        <option value="https://app.stgfdb.net" selected>UAT — app.stgfdb.net</option>
+        <option value="https://app.devfdb.net">SIT — app.devfdb.net</option>
+        <option value="https://app.tfd-bank.com">PROD — app.tfd-bank.com</option>
+      </select>
+    </div>
+    <div class="row">
+      <label for="pid">Portfolio ID (for paths with &#123;portfolioId&#125;)</label>
+      <input type="text" id="pid" value="PORTFOLIO_ID" inputmode="numeric" autocomplete="off" />
+    </div>
+    <div class="row">
+      <label for="token">Token (for &#123;token&#125;)</label>
+      <input type="text" id="token" value="TOKEN" autocomplete="off" />
+    </div>
+    <div class="row">
+      <label for="instrument">Instrument ID (for &#123;instrumentId&#125;)</label>
+      <input type="text" id="instrument" value="INSTRUMENT_ID" autocomplete="off" />
+    </div>
+    <div class="row">
+      <label for="conv">Conversation ID (for &#123;conversationId&#125;)</label>
+      <input type="text" id="conv" value="CONVERSATION_ID" autocomplete="off" />
+    </div>
+    <p class="warn" id="fileWarn" hidden>If you opened this file from <strong>Files</strong>, iOS may open links in Safari first — that is normal; the app should still open if links are verified.</p>
+  </div>
+
+  <div id="sections"></div>
+
+  <p class="note"><strong>HTML vs PDF:</strong> Use this HTML for tapping links and switching environment. PDF is better for printing or formal handoff. Regenerate with <code>python3 render_deep_links_testing.py</code> after editing <code>deeplinks-data.json</code>.</p>
+
+  <script>
+    (function () {
+      if (location.protocol === "file:") {
+        document.getElementById("fileWarn").hidden = false;
+      }
+    })();
+
+    const CFG = JSON.parse("{\"title\": \"Deep links\", \"lead\": \"Tap a row to open the URL. Works in Safari (iOS) and Chrome (Android) if universal / app links are configured. Use HTTPS on a real device (hosted page, not file://) for the most reliable handoff to the app.\", \"sections\": [{\"title\": \"Settings\", \"items\": [{\"label\": \"Add partner\", \"path\": \"/portfolio/settings/add-partner\"}, {\"label\": \"Proxy identifier\", \"path\": \"/portfolio/settings/proxyidentifier\"}, {\"label\": \"Settings lobby \u2014 active\", \"path\": \"/portfolio/settings\"}, {\"label\": \"Settings \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/settings\"}, {\"label\": \"Inbox \u2014 active\", \"path\": \"/portfolio/settings/inbox\"}, {\"label\": \"Inbox \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/settings/inbox\"}, {\"label\": \"Change password\", \"path\": \"/portfolio/settings/password\"}, {\"label\": \"Documents \u2014 Account Statement (half year)\", \"path\": \"/portfolio/settings/reports/transactions\"}, {\"label\": \"Documents \u2014 Account Ownership\", \"path\": \"/portfolio/settings/reports/ownership\"}, {\"label\": \"Documents \u2014 Account summary\", \"path\": \"/portfolio/settings/reports/accountSummary\"}, {\"label\": \"Notifications\", \"path\": \"/portfolio/settings/notifications\"}, {\"label\": \"Notifications \u2014 Push tab (channel=PUSH)\", \"path\": \"/portfolio/settings/notifications?channel=PUSH\"}, {\"label\": \"Notifications \u2014 email/SMS (channel=OTHER)\", \"path\": \"/portfolio/settings/notifications?channel=OTHER\"}, {\"label\": \"OD Limits \u2014 active\", \"path\": \"/portfolio/settings/od-limits\"}, {\"label\": \"OD Limits \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/settings/od-limits\"}, {\"label\": \"Open Banking Finanda (settings)\", \"path\": \"/portfolio/settings/obi-as-tpp\"}, {\"label\": \"Open Banking Finanda \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/settings/obi-as-tpp\"}, {\"label\": \"Select Plan (subscription)\", \"path\": \"/portfolio/settings/selectPlan\"}, {\"label\": \"Activation \u2014 Fill Profile\", \"path\": \"/portfolio/settings/activation-main\"}, {\"label\": \"Activation \u2014 Transfer Funds\", \"path\": \"/portfolio/settings/activation/transfer\"}]}, {\"title\": \"Loans, Savings, Current account, Cards, Cheques, FCY, Pension\", \"items\": [{\"label\": \"Loans lobby\", \"path\": \"/portfolio/loans\"}, {\"label\": \"Savings lobby \u2014 active\", \"path\": \"/portfolio/ils/deposits\"}, {\"label\": \"Savings \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/ils/deposits\"}, {\"label\": \"Current account (Movements)\", \"path\": \"/portfolio\"}, {\"label\": \"Cards lobby\", \"path\": \"/portfolio/cards\"}, {\"label\": \"Cheques lobby\", \"path\": \"/portfolio/cheques\"}, {\"label\": \"FCY lobby\", \"path\": \"/portfolio/fcy\"}, {\"label\": \"FCY \u2014 Convert\", \"path\": \"/portfolio/fcy/convert\"}, {\"label\": \"Pension\", \"path\": \"/portfolio/pension\"}]}, {\"title\": \"Payments & Mandates\", \"items\": [{\"label\": \"Payments lobby \u2014 active\", \"path\": \"/portfolio/payments\"}, {\"label\": \"Payments \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/payments\"}, {\"label\": \"Transfer \u2014 active\", \"path\": \"/portfolio/payments/transfer\"}, {\"label\": \"Transfer \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/payments/transfer\"}, {\"label\": \"Mandates (direct debit)\", \"path\": \"/portfolio/direct-debit\"}]}, {\"title\": \"Open Banking\", \"items\": [{\"label\": \"My accounts\", \"path\": \"/openbanking/accounts\"}, {\"label\": \"My assets\", \"path\": \"/openbanking/assets\"}, {\"label\": \"Create new consent\", \"path\": \"/openbanking/create\"}, {\"label\": \"Consent management\", \"path\": \"/openbanking/consent-management\"}, {\"label\": \"Open Banking Out \u2014 account selection (sample sessionDataKey)\", \"path\": \"/openbanking/accountSelection?sessionDataKey=12fe5ac9-c2fe-42d5-bc29-f3ed0ec043f7\"}]}, {\"title\": \"Securities\", \"items\": [{\"label\": \"Securities lobby\", \"path\": \"/portfolio/securities\"}, {\"label\": \"Order Book\", \"path\": \"/portfolio/securities/order-book\"}, {\"label\": \"Store\", \"path\": \"/portfolio/securities/store\"}, {\"label\": \"Sectors (example: TECHNOLOGY)\", \"path\": \"/portfolio/securities/sectors?sectorName=TECHNOLOGY\"}, {\"label\": \"Asset page \u2014 instrumentId\", \"path\": \"/portfolio/securities/assetPage?instrumentId={instrumentId}\"}, {\"label\": \"Asset page \u2014 QQQ / US_EXCHANGES\", \"path\": \"/portfolio/securities/assetPage?symbol=QQQ&exchangeGroup=US_EXCHANGES\"}, {\"label\": \"Recurring orders\", \"path\": \"/portfolio/securities/recurringOrders\"}, {\"label\": \"Popular recurring orders\", \"path\": \"/portfolio/securities/popularRecurringOrders\"}, {\"label\": \"ETF\", \"path\": \"/portfolio/securities/etf\"}, {\"label\": \"Mutual funds\", \"path\": \"/portfolio/securities/mutualFunds\"}, {\"label\": \"TLV125\", \"path\": \"/portfolio/securities/tlv125\"}]}, {\"title\": \"Mobility, Notifications, Communications\", \"items\": [{\"label\": \"Mobility \u2014 statuses\", \"path\": \"/portfolio/mobility/statuses\"}, {\"label\": \"Notification center\", \"path\": \"/notificationCenter\"}, {\"label\": \"Twilio \u2014 video (uses Token field)\", \"path\": \"/communications/video?token={token}\"}, {\"label\": \"Chat (old) \u2014 active\", \"path\": \"/communications/chat?someParam=someValue\"}, {\"label\": \"Chat (old) \u2014 specific portfolio\", \"path\": \"/communications/chat/{portfolioId}?someParam=someValue\"}, {\"label\": \"Chat (new) \u2014 main / trigger insight\", \"path\": \"/communications/conversations/main/trigger-insight/\"}, {\"label\": \"Chat (new) \u2014 conversation\", \"path\": \"/communications/conversations/{conversationId}\"}, {\"label\": \"Ella intro\", \"path\": \"/communications/conversations/main/intro\"}, {\"label\": \"Attach Agent (banker)\", \"path\": \"/actions/attach_agent\"}]}]}");
+
+    function qs() {
+      return {
+        pid: document.getElementById("pid").value.trim() || "PORTFOLIO_ID",
+        token: document.getElementById("token").value.trim() || "TOKEN",
+        instrument: document.getElementById("instrument").value.trim() || "INSTRUMENT_ID",
+        conv: document.getElementById("conv").value.trim() || "CONVERSATION_ID",
+      };
+    }
+
+    function base() {
+      return document.getElementById("env").value.replace(/\/$/, "");
+    }
+
+    function expandPath(template, q) {
+      return template
+        .replace(/{portfolioId}/g, encodeURIComponent(q.pid))
+        .replace(/{token}/g, encodeURIComponent(q.token))
+        .replace(/{instrumentId}/g, encodeURIComponent(q.instrument))
+        .replace(/{conversationId}/g, encodeURIComponent(q.conv));
+    }
+
+    function itemHref(b, q, pathTemplate) {
+      const path = expandPath(pathTemplate, q);
+      return b + (path.startsWith("/") ? path : "/" + path);
+    }
+
+    function render() {
+      const b = base();
+      const q = qs();
+      const root = document.getElementById("sections");
+      root.innerHTML = "";
+      const sections = CFG.sections || [];
+      for (const block of sections) {
+        const h2 = document.createElement("h2");
+        h2.textContent = block.title || "";
+        root.appendChild(h2);
+        for (const item of block.items || []) {
+          const url = itemHref(b, q, item.path || "");
+          const a = document.createElement("a");
+          a.className = "link-btn";
+          a.href = url;
+          a.rel = "noopener noreferrer";
+          a.innerHTML = (item.label || "") + "<small>" + url + "</small>";
+          root.appendChild(a);
+        }
+      }
+    }
+
+    document.getElementById("env").addEventListener("change", render);
+    document.getElementById("pid").addEventListener("input", render);
+    document.getElementById("token").addEventListener("input", render);
+    document.getElementById("instrument").addEventListener("input", render);
+    document.getElementById("conv").addEventListener("input", render);
+    render();
+  </script>
+</body>
+</html>
