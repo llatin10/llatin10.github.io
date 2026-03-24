@@ -6,9 +6,11 @@ import html
 import re
 import sys
 from pathlib import Path
+from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parent
 SKIP = {"index.html"}
+SITE_BASE = "https://llatin10.github.io"
 
 
 def extract_title(path: Path) -> str:
@@ -83,6 +85,12 @@ def main() -> int:
     index_path = ROOT / "index.html"
     index_path.write_text(out, encoding="utf-8")
     print(f"Wrote {index_path} ({len(pages)} page(s))")
+    print()
+    print("Home:", SITE_BASE + "/")
+    print("Pages (copy for chat):")
+    for title, filename in pages:
+        url = f"{SITE_BASE}/{quote(filename, safe='/')}"
+        print(f"  - {title} — {url}")
     return 0
 
 
