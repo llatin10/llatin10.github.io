@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Compose Test ID Fix Guide</title>
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: #faf9f7;
+            padding: 24px;
+            line-height: 1.65;
+            color: #44403c;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 28px 32px 36px;
+            box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+        }
+        h1 {
+            color: #1c1917;
+            border-bottom: 2px solid #e7e5e0;
+            font-weight: 600;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #0d9488;
+            border-bottom: 1px solid #e7e5e0;
+            margin-top: 36px;
+            font-weight: 600;
+            padding-bottom: 10px;
+        }
+        h3 { color: #0f766e; font-weight: 600; margin-top: 20px; }
+        .section-block {
+            background: #fafaf9;
+            border: 1px solid #e7e5e0;
+            border-left: 4px solid #14b8a6;
+            padding: 22px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .intro-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border: 1px solid #99f6e4;
+            border-left: 4px solid #14b8a6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .simple-explanation {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-left: 4px solid #d97706;
+            padding: 15px;
+            border-radius: 8px;
+            color: #44403c;
+            margin: 16px 0;
+        }
+        pre {
+            background: #f5f5f4;
+            color: #1c1917;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: ui-monospace, monospace;
+            border: 1px solid #e7e5e0;
+            line-height: 1.45;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        code {
+            background: #ecfdf5;
+            color: #0f766e;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.85em;
+            border: 1px solid #99f6e4;
+        }
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .highlight-card {
+            background: #fff;
+            border: 1px solid #e7e5e0;
+            border-radius: 8px;
+            padding: 18px;
+            border-left: 3px solid #14b8a6;
+        }
+        .badge-new { background: #ecfdf5; color: #047857; border: 1px solid #14b8a6;
+            padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .badge-fix { background: #fef2f2; color: #b91c1c; border: 1px solid #f87171;
+            padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .badge-improved { background: #e0f2fe; color: #0369a1; border: 1px solid #38bdf8;
+            padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .next-steps {
+            background: linear-gradient(135deg, #0d9488 0%, #0ea5e9 100%);
+            color: #fff;
+            padding: 24px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .next-steps h2 { color: #fff; border: none; margin-top: 0; }
+        
+        @media print {
+            body {
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .container {
+                box-shadow: none !important;
+                padding: 40px;
+                margin: 0 auto;
+                max-width: 100%;
+                width: 100%;
+                border-radius: 0;
+                box-sizing: border-box;
+            }
+            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
+            .section-block, .intro-block, .highlight-card, pre,
+            .simple-explanation, .next-steps { page-break-inside: avoid; break-inside: avoid; }
+            pre { white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden; }
+            @page { size: 210mm 1800mm; margin: 0; }
+        }
+
+    </style>
+</head>
+<body class="doc-theme-warm">
+    <div class="container">
+        <h1>Savings Compose Test ID Fix Guide</h1>
+        
+        <div class="intro-block">
+            <p>The Android savings screens have been migrated from XML layouts to Jetpack Compose. This broke Appium automation tests because the element IDs changed. XML layouts use android:id (e.g. button_continue), while Compose screens use testTag via the automation system (automationButton, automationText, AutomationContext), which generates different IDs (e.g. savings_set_amount_continue_oz_button_main_button). This guide maps every test element ID to its new Compose equivalent and provides exact code fixes.</p>
+        </div>
+
+        <h2>✨ Key Highlights</h2>
+        <div class="highlight-grid">
+
+            <div class="highlight-card">
+                <span class="badge-mismatch">MISMATCH</span> <p>4 MISMATCHED IDs found — tests use old XML IDs that don&#x27;t match the new Compose testTags. These cause immediate test failures.</p>
+            </div>
+
+            <div class="highlight-card">
+                <span class="badge-match">MATCH</span> <p>18+ MATCHING IDs confirmed — many elements already work correctly because Compose automation IDs were set to match, or screens are still XML-based.</p>
+            </div>
+
+            <div class="highlight-card">
+                <span class="badge-verify">VERIFY</span> <p>6 IDs need VERIFICATION — elements that may or may not exist in Compose screens depending on screen state or dynamic content.</p>
+            </div>
+
+            <div class="highlight-card">
+                <span class="badge-fix">FIX</span> <p>Fix strategy: Update @AndroidFindBy annotations in mobile-tests page objects to match the new Compose testTag IDs. No Android app changes needed for confirmed mismatches.</p>
+            </div>
+
+        </div>
+
+        <div class="section-block">
+            <h2>1. How the Compose Automation ID System Works</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> Understanding the ID generation is critical before making fixes. The Android project uses a custom automation system built on Compose testTag. The automationId() function in ModifierExtensions.kt combines: (1) AutomationContext — a scoping prefix, (2) prefix — an element-specific name, and (3) type — the element type (button, text, text_field, toggle, etc.). The final testTag format is: packageName:id/{context}_{prefix}_{type}. Appium matches on the part after packageName:id/.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>Example: A button inside an AutomationContext produces this chain:</p>
+
+            <pre><code>// In Android Compose code:
+AutomationContext(&quot;savings_set_amount_continue&quot;) {
+    OZButtonMainComponent(...)  // internally calls automationButton(&quot;oz_button_main&quot;)
+}
+
+// This produces testTag:
+// &quot;il.co.firstdigitalbank:id/savings_set_amount_continue_oz_button_main_button&quot;
+
+// Appium matches with:
+// @AndroidFindBy(id = &quot;savings_set_amount_continue_oz_button_main_button&quot;)
+
+// Key files in android-banking:
+// - libraries/common-compose-ui/.../automation/ModifierExtensions.kt
+// - libraries/common-compose-ui/.../automation/AutomationContext.kt
+// - libraries/common-compose-ui/.../buttons/main/OZButtonMainComponent.kt</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>2. Screen 1: Savings Lobby — SavingsLobbyPage.kt (ALL MATCH)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> The Savings Lobby Compose screen (SavingsLobbyScreen.kt) has automation IDs that match what the tests expect. No changes needed for the main elements used in the daily savings creation flow.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>ID mapping — all confirmed matches:</p>
+
+            <pre><code>Test ID                                    | Compose ID                                | Status
+--------------------------------------------|-------------------------------------------|-------
+menu_open_saving_oz_button_main_button      | menu_open_saving_oz_button_main_button     | MATCH
+empty_layout_oz_button_main_button          | empty_layout_oz_button_main_button         | MATCH
+total_amount_text                           | total_amount_text                          | MATCH
+empty_layout_title_text                     | empty_layout_title_text                    | MATCH
+empty_layout_subtitle_text                  | empty_layout_subtitle_text                 | MATCH
+buttonApproval                              | buttonApproval (XML)                       | MATCH
+buttonCancel                                | buttonCancel (XML)                         | MATCH
+
+Files:
+  Test:    mobile-tests/src/main/kotlin/.../pages/currentAccount/savings/SavingsLobbyPage.kt
+  Android: android-banking/features/savings/savings-impl/.../ui/lobby/SavingsLobbyScreen.kt</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>3. Screen 2: Plans Catalog — SavingsPlanCatalogPage.kt (ALL MATCH)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> The Plans Catalog screen is still XML-based (PlansCatalogFragment.kt with RecyclerView). All XML IDs remain intact. No changes needed.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>ID mapping — all confirmed matches:</p>
+
+            <pre><code>Test ID       | XML ID        | Status
+--------------|---------------|-------
+plan_title    | plan_title    | MATCH
+
+Files:
+  Test:    mobile-tests/src/main/kotlin/.../pages/currentAccount/savings/create/SavingsPlanCatalogPage.kt
+  Android: android-banking/features/savings/savings-impl/.../ui/plans_catalog/PlansCatalogFragment.kt</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>4. Screen 3: Set Amount — SavingsAmountPage.kt (1 MISMATCH)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> The Set Amount screen is hybrid (XML + Compose). The currency input field matches, but the continue button ID has changed from the old XML ID to a new Compose testTag with AutomationContext prefix.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>FIX REQUIRED — Update @AndroidFindBy for the submit button:</p>
+
+            <pre><code>ID mapping:
+Test ID (current)                              | Compose ID (actual)                                    | Status
+-----------------------------------------------|--------------------------------------------------------|----------
+savings_set_amount_currency_amount_text_field   | savings_set_amount_currency_amount_text_field           | MATCH
+button_continue                                | savings_set_amount_continue_oz_button_main_button       | MISMATCH
+
+--- FIX in mobile-tests ---
+File: src/main/kotlin/.../pages/currentAccount/savings/create/SavingsAmountPage.kt
+
+BEFORE:
+  @AndroidFindBy(id = &quot;button_continue&quot;)
+  private lateinit var _submitButton: WebElement
+
+AFTER:
+  @AndroidFindBy(id = &quot;savings_set_amount_continue_oz_button_main_button&quot;)
+  private lateinit var _submitButton: WebElement
+
+WHY: The Compose screen wraps the button in:
+  AutomationContext(&quot;savings_set_amount_continue&quot;) { OZButtonMainComponent(...) }
+  which produces testTag: packageName:id/savings_set_amount_continue_oz_button_main_button</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>5. Screen 4: Automatic Savings Rules — AutomaticSavingsRulesPage.kt (2 MISMATCHES)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> The Saving Rules screen is hybrid (XML + Compose). The header title and toggle IDs match, but the submit button and subtitle element IDs have changed in the Compose migration.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>FIXES REQUIRED — Update submit button and subtitle IDs:</p>
+
+            <pre><code>ID mapping:
+Test ID (current)                  | Compose ID (actual)                     | Status
+-----------------------------------|------------------------------------------|----------
+saving_rules_header_title_text     | saving_rules_header_title_text           | MATCH
+saving_rules_row_{idx}_toggle      | saving_rules_row_{idx}_toggle            | MATCH
+button                             | saving_rules_button                      | MISMATCH
+oz_two_lines_subtitle              | saving_rules_row_{idx}_subtitle_text     | MISMATCH
+
+--- FIX 1: Submit button ---
+File: src/main/kotlin/.../pages/currentAccount/savings/create/AutomaticSavingsRulesPage.kt
+
+BEFORE:
+  @AndroidFindBy(id = &quot;button&quot;)
+  private lateinit var _submitButton: WebElement
+
+AFTER:
+  @AndroidFindBy(id = &quot;saving_rules_button&quot;)
+  private lateinit var _submitButton: WebElement
+
+WHY: OZButtonComponent inside AutomationContext(&quot;saving_rules&quot;) produces saving_rules_button
+
+--- FIX 2: Subtitle text (dynamic locator) ---
+File: src/main/kotlin/.../pages/currentAccount/savings/create/AutomaticSavingsRulesPage.kt
+  (in the getSubtitleAndroid function or Android subclass)
+
+BEFORE:
+  driver.findElements(By.id(&quot;oz_two_lines_subtitle&quot;))
+
+AFTER:
+  driver.findElements(By.id(&quot;saving_rules_row_{idx}_subtitle_text&quot;))
+  NOTE: This is now per-row. You may need to construct the ID dynamically
+  using the row index, e.g.: By.id(&quot;saving_rules_row_${index}_subtitle_text&quot;)</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>6. Screen 5: Savings Reason — SavingsReasonPage.kt (ALL MATCH)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> The Savings Reason/Purpose screen is still XML-based (SavingPurposeFragment extends AbstractPurposeSelectionFragment with RecyclerView). All XML IDs remain intact.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>ID mapping — all confirmed matches:</p>
+
+            <pre><code>Test ID         | XML ID          | Status
+----------------|-----------------|-------
+recycler_view   | recycler_view   | MATCH
+label           | label           | MATCH
+
+Files:
+  Test:    mobile-tests/src/main/kotlin/.../pages/currentAccount/savings/create/SavingsReasonPage.kt
+  Android: android-banking/features/savings/savings-impl/.../ui/saving_purpose/SavingPurposeFragment.kt</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>7. Screen 6: Edit Saving Name — EditSavingNamePage.kt (ALL MATCH)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> The Edit Saving Name screen is hybrid (XML + Compose). Both the text field and submit button IDs match between the tests and the Android app.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>ID mapping — all confirmed matches:</p>
+
+            <pre><code>Test ID               | Compose/XML ID        | Status
+----------------------|-----------------------|-------
+saving_name_text_field | saving_name_text_field | MATCH
+button                | button                 | MATCH
+
+Files:
+  Test:    mobile-tests/src/main/kotlin/.../pages/currentAccount/savings/create/EditSavingNamePage.kt
+  Android: android-banking/features/savings/savings-impl/.../ui/saving_name/SavingNameFragment.kt</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>8. Screen 7: Saving Summary — SavingSummaryPage.kt (1 MISMATCH)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> The Saving Summary screen is hybrid (XML + Compose). The checkbox, description, and list elements match, but the continue/submit button ID has changed to a Compose testTag with AutomationContext prefix.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>FIX REQUIRED — Update @AndroidFindBy for the submit button:</p>
+
+            <pre><code>ID mapping:
+Test ID (current)    | Compose/XML ID (actual)                                  | Status
+---------------------|----------------------------------------------------------|----------
+button_continue      | savings_deposit_summary_continue_oz_button_main_button   | MISMATCH
+checkbox             | checkbox                                                 | MATCH
+description_text     | description_text                                         | MATCH
+list_content         | list_content (XML)                                       | MATCH
+
+--- FIX in mobile-tests ---
+File: src/main/kotlin/.../pages/currentAccount/savings/create/SavingSummaryPage.kt
+
+BEFORE:
+  @AndroidFindBy(id = &quot;button_continue&quot;)
+  private lateinit var _submitButton: WebElement
+
+AFTER:
+  @AndroidFindBy(id = &quot;savings_deposit_summary_continue_oz_button_main_button&quot;)
+  private lateinit var _submitButton: WebElement
+
+WHY: The Compose screen wraps the button in:
+  AutomationContext(&quot;savings_deposit_summary_continue&quot;) { OZButtonMainComponent(...) }
+  which produces testTag: packageName:id/savings_deposit_summary_continue_oz_button_main_button</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>9. Screen 8: Success Bottom Sheet — SavingsSummarySuccessBottomSheetPage.kt (ALL MATCH)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> The Success Bottom Sheet is fully XML-based (DigiBankSuccessBottomSheet.kt with digibank_success_bottomsheet.xml layout). All XML IDs remain intact. No changes needed.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>ID mapping — all confirmed matches:</p>
+
+            <pre><code>Test ID       | XML ID        | Status
+--------------|---------------|-------
+title         | title         | MATCH
+description   | description   | MATCH
+firstButton   | firstButton   | MATCH
+
+Files:
+  Test:    mobile-tests/src/main/kotlin/.../pages/currentAccount/savings/SavingsSummarySuccessBottomSheetPage.kt
+  Android: android-banking/core/src/main/java/.../core/widgets/DigiBankSuccessBottomSheet.kt</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>10. Screen 9: Terms and Conditions — SavingsTermAndConditionsBottomSheetPage.kt (ALL MATCH)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> The Terms and Conditions bottom sheet uses XML layout (bottomsheet_savings_approval.xml) with a Compose button. The XML IDs for title, subtitle, and cancel button remain intact. The approval button is in a ComposeView but the XML ViewId buttonApproval is what Appium finds first.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>ID mapping — all confirmed matches:</p>
+
+            <pre><code>Test ID          | XML ID           | Status
+-----------------|------------------|-------
+title            | title            | MATCH
+subtitle         | subtitle         | MATCH
+buttonApproval   | buttonApproval   | MATCH
+buttonCancel     | buttonCancel     | MATCH
+
+Files:
+  Test:    mobile-tests/src/main/kotlin/.../pages/currentAccount/savings/SavingsChaptersTermsAndConditionsBottomSheetPage.kt
+  Android: android-banking/features/savings/savings-impl/.../ui/depositApprovalBottomSheet/SavingsApprovalBottomSheet.kt</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>11. Complete Fix Checklist — All Changes in One Place</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> Below is every code change needed in mobile-tests to fix the daily savings creation test. All fixes are in @AndroidFindBy annotations or dynamic By.id() calls. No changes needed in the Android project — all Compose screens already have the correct automation testTags.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>All 4 fixes in order of the test flow:</p>
+
+            <pre><code>=== FIX 1 of 4 ===
+File: src/main/kotlin/.../create/SavingsAmountPage.kt
+Element: _submitButton
+  OLD: @AndroidFindBy(id = &quot;button_continue&quot;)
+  NEW: @AndroidFindBy(id = &quot;savings_set_amount_continue_oz_button_main_button&quot;)
+
+=== FIX 2 of 4 ===
+File: src/main/kotlin/.../create/AutomaticSavingsRulesPage.kt
+Element: _submitButton
+  OLD: @AndroidFindBy(id = &quot;button&quot;)
+  NEW: @AndroidFindBy(id = &quot;saving_rules_button&quot;)
+
+=== FIX 3 of 4 ===
+File: src/main/kotlin/.../create/AutomaticSavingsRulesPage.kt
+Element: subtitle (dynamic)
+  OLD: driver.findElements(By.id(&quot;oz_two_lines_subtitle&quot;))
+  NEW: driver.findElements(By.id(&quot;saving_rules_row_${index}_subtitle_text&quot;))
+  NOTE: Now per-row — may need dynamic ID construction with the row index.
+
+=== FIX 4 of 4 ===
+File: src/main/kotlin/.../create/SavingSummaryPage.kt
+Element: _submitButton
+  OLD: @AndroidFindBy(id = &quot;button_continue&quot;)
+  NEW: @AndroidFindBy(id = &quot;savings_deposit_summary_continue_oz_button_main_button&quot;)
+
+--- IMPORTANT ---
+These IDs may also be used by other savings tests (withdrawal, monthly, yearly).
+Search for every usage of the old IDs across the test project before changing them.
+The @iOSXCUITFindBy annotations should NOT be modified — iOS IDs are unaffected.</code></pre>
+
+        </div>
+
+        <div class="next-steps">
+            <h2>Next Steps</h2>
+            <p>1. Apply the 4 fixes listed above in the mobile-tests page objects.  2. Run the DailySavingsCreateNewDailySavingWithAll2RulesTurnedOn test on Android to verify all elements are found.  3. If any element still fails, use Appium Inspector or &#x27;adb shell dumpsys activity top&#x27; to inspect the current screen&#x27;s view hierarchy and find the correct testTag.  4. Search mobile-tests for other tests using the same page objects (SavingsAmountPage, AutomaticSavingsRulesPage, SavingSummaryPage) and verify they also pass.  5. For IDs marked VERIFY in this guide (button_add_saving, start_title_text, etc.), these may affect lobby validation steps — test those flows separately and inspect the actual Compose IDs if failures occur.</p>
+        </div>
+
+    </div>
+</body>
+</html>
