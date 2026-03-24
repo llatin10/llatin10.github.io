@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Features Workflow — Prompt, Scripts & Result</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface2: #334155;
+      --accent: #0ea5e9;
+      --accent2: #06b6d4;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --pre-bg: #0c1222;
+      --border: #475569;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .page-header {
+      background: linear-gradient(135deg, #0c4a6e 0%, #0e7490 50%, #155e75 100%);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-bottom: 3px solid var(--accent);
+    }
+    .page-header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+    .page-header p {
+      color: rgba(255,255,255,0.9);
+      font-size: 1rem;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    section {
+      margin-bottom: 2.5rem;
+    }
+    section h2 {
+      font-size: 1.35rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    section p {
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    .prompt-block {
+      background: var(--pre-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: auto;
+      max-height: 420px;
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+    .prompt-block pre {
+      padding: 1.25rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #b8d4e3;
+    }
+    .scripts-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+    .script-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .script-card h3 {
+      background: var(--surface2);
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      color: var(--accent2);
+    }
+    .script-card .path {
+      font-family: ui-monospace, monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .script-card .purpose {
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .script-card .snippet {
+      background: var(--pre-bg);
+      padding: 0.75rem 1rem;
+      font-family: ui-monospace, monospace;
+      font-size: 0.75rem;
+      color: #7dd3fc;
+      border-top: 1px solid var(--border);
+    }
+    .result-label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    /* Preview of the actual QA summary output */
+    .result-preview {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 100%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    .result-preview .preview-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .result-preview .preview-header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      margin-bottom: 6px;
+    }
+    .result-preview .preview-header h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .result-preview .preview-body {
+      background: #fff;
+      color: #333;
+      padding: 1rem;
+    }
+    .result-preview .feature-card {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      margin-bottom: 0.75rem;
+    }
+    .result-preview .feature-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .result-preview .feature-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .result-preview .feature-title { font-size: 0.95rem; font-weight: 600; }
+    .result-preview .badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+    .result-preview .badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .result-preview .badge-platform { background: #4CAF50; color: white; }
+    .result-preview .badge-type { background: #E91E63; color: white; }
+    .result-preview .feature-body { padding: 10px 12px; }
+    .result-preview .feature-desc {
+      font-size: 0.8rem;
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+    .result-preview .screenshot-box {
+      background: #f1f5f9;
+      border-radius: 6px;
+      padding: 12px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #64748b;
+      border: 1px dashed #cbd5e1;
+    }
+    .foot-note {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    /* How it works + chat mockup */
+    .how-it-works {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .how-it-works h2 {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+      border: none;
+      padding: 0;
+    }
+    .how-it-works p {
+      margin-bottom: 0.75rem;
+    }
+    .how-it-works p:last-child {
+      margin-bottom: 0;
+    }
+    .chat-mockup {
+      margin-top: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--pre-bg);
+    }
+    .chat-mockup .chat-row {
+      display: flex;
+      gap: 10px;
+      padding: 0.6rem 1rem;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+    }
+    .chat-mockup .chat-row:last-child {
+      border-bottom: none;
+    }
+    .chat-mockup .chat-row.user {
+      background: rgba(14, 165, 233, 0.08);
+    }
+    .chat-mockup .chat-row .who {
+      flex-shrink: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      min-width: 2.5rem;
+    }
+    .chat-mockup .chat-row.user .who { color: #38bdf8; }
+    .chat-mockup .chat-row.ai .who { color: #a78bfa; }
+    .chat-mockup .chat-row .msg {
+      font-size: 0.8rem;
+      line-height: 1.4;
+      color: var(--text);
+    }
+    .chat-mockup .chat-row .msg code {
+      background: var(--surface2);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 0.85em;
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <h1>HTML Features Workflow</h1>
+    <p>Prompt · Scripts · Final result — for /html features</p>
+  </header>
+
+  <div class="container">
+    <section class="how-it-works">
+      <h2>How it works</h2>
+      <p>When you type <code>/html features</code> in the <strong>Cursor chat</strong>, you’re not running a terminal script or filling a form. You start a <strong>conversation</strong> with the AI.</p>
+      <p>The AI <strong>replies in the chat</strong> and asks you one question at a time: version number, how many features, then for each feature — name, links (Figma, Jira), and screenshot paths. You answer in the same chat. The AI can open links you paste, pull out details (platform, type, description), and show you a summary to confirm. Only after you’ve provided everything does it run the Python scripts and create the HTML and PDF files.</p>
+      <p class="result-label">Example of how the conversation goes:</p>
+      <div class="chat-mockup">
+        <div class="chat-row user">
+          <span class="who">You</span>
+          <span class="msg"><code>/html features</code></span>
+        </div>
+        <div class="chat-row ai">
+          <span class="who">AI</span>
+          <span class="msg">Let's create a QA features summary! What version number are you documenting? (e.g., 3.13, 4.0, 2.5.1)</span>
+        </div>
+        <div class="chat-row user">
+          <span class="who">You</span>
+          <span class="msg">3.13</span>
+        </div>
+        <div class="chat-row ai">
+          <span class="who">AI</span>
+          <span class="msg">How many features would you like to document?</span>
+        </div>
+        <div class="chat-row user">
+          <span class="who">You</span>
+          <span class="msg">2</span>
+        </div>
+        <div class="chat-row ai">
+          <span class="who">AI</span>
+          <span class="msg">Feature 1: What is the feature name?</span>
+        </div>
+        <div class="chat-row user">
+          <span class="who">You</span>
+          <span class="msg">Savings Lobby Migration</span>
+        </div>
+        <div class="chat-row ai">
+          <span class="who">AI</span>
+          <span class="msg">Great! To help me extract the details, please provide any relevant links (Figma, Jira, or other docs), or press Enter to skip…</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>1. The prompt</h2>
+      <p>When you run <code>/html features</code> in Cursor, the AI follows these instructions to guide you interactively and produce the QA summary.</p>
+      <div class="prompt-block">
+<pre>---
+name: html features
+description: Create an HTML QA features summary document with embedded screenshots (Global Command)
+mode: write
+---
+
+When the user runs `/html features`, you must interactively guide them through creating a QA features summary document by asking questions in the chat conversation.
+
+## Interactive Workflow
+
+1. **Start by greeting and asking for version number**:
+   - "Let's create a QA features summary! What version number are you documenting? (e.g., 3.13, 4.0, 2.5.1)"
+   - Validate the format (X.Y or X.Y.Z)
+
+2. **Ask for number of features**:
+   - "How many features would you like to document?"
+
+3. **For each feature, follow this workflow**:
+   - **Step 3a: Get feature name**: "Feature [N]: What is the feature name?"
+   - **Step 3b: Request data sources**: Ask for Figma link(s), Jira link(s), or other docs. User can skip.
+   - **Step 3c: Extract information**: Use web_search/codebase_search to get platform, type, description.
+   - **Step 3d: Present extracted data for confirmation**: Show summary, ask "Does this look correct? (yes/no/edit)".
+   - **Step 3e: Screenshots**: Ask for screenshot file path(s), validate they exist, optional title per screenshot.
+
+4. **After collecting all information**:
+   - Create folder: ~/.cursor/version-prep/[VERSION]/
+   - Copy screenshots there, build features_data.json (version, features[], generate_pdf).
+   - Run: python3 ~/.cursor/version-prep/scripts/generate_html.py features .../features_data.json .../QA_Features_Summary_[VERSION].html
+   - Show file path and ask if they want to review.
+
+5. **PDF Generation (optional)**:
+   - After review: "Would you like me to generate a PDF version?"
+   - If yes: python3 ~/.cursor/version-prep/scripts/generate_pdf.py [html] [pdf]
+
+## Important Rules
+- Ask ONE question at a time; wait for answer before next.
+- Proactively extract from Figma/Jira; present clearly and confirm.
+- Validate inputs; be conversational and friendly.
+- All files under ~/.cursor/version-prep/[VERSION]/; git-ignored.</pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. The scripts</h2>
+      <p>Three Python scripts under <code>~/.cursor/version-prep/scripts/</code> do the file and document generation.</p>
+      <div class="scripts-grid">
+        <div class="script-card">
+          <h3>generate_html.py</h3>
+          <div class="path">~/.cursor/version-prep/scripts/generate_html.py</div>
+          <div class="purpose">Reads <code>features_data.json</code> and renders the QA Features Summary HTML. Handles template type "features", styling (gradient header, feature cards, badges, screenshot containers), and optional Figma links.</div>
+          <div class="snippet">python3 .../generate_html.py features .../features_data.json .../QA_Features_Summary_[VERSION].html</div>
+        </div>
+        <div class="script-card">
+          <h3>generate_pdf.py</h3>
+          <div class="path">~/.cursor/version-prep/scripts/generate_pdf.py</div>
+          <div class="purpose">Converts the generated HTML into a single long scrollable PDF. Tries WeasyPrint, then Playwright, then pdfkit. Uses custom CSS for A4 and compact layout.</div>
+          <div class="snippet">python3 .../generate_pdf.py [input.html] [output.pdf]</div>
+        </div>
+        <div class="script-card">
+          <h3>create_qa_features.py</h3>
+          <div class="path">~/.cursor/version-prep/scripts/create_qa_features.py</div>
+          <div class="purpose">Standalone interactive CLI: prompts for version, feature count, then per feature (name, platform, type, description, Figma URL, screenshots). Builds JSON, copies files, and can call the HTML (and PDF) scripts. Use when not using the Cursor command.</div>
+          <div class="snippet">python3 ~/.cursor/version-prep/scripts/create_qa_features.py</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Final result</h2>
+      <p class="result-label">The HTML (and PDF) produced looks like this — one card per feature with badges, description, and embedded screenshots.</p>
+      <div class="result-preview">
+        <div class="preview-header">
+          <span class="badge">QA Features Summary</span>
+          <h3>Version 3.13.0</h3>
+        </div>
+        <div class="preview-body">
+          <div class="feature-card">
+            <div class="feature-header">
+              <span class="feature-num">1</span>
+              <div>
+                <div class="feature-title">Savings Lobby Migration</div>
+                <div class="badges">
+                  <span class="badge badge-platform">Both</span>
+                  <span class="badge badge-type">Migration</span>
+                </div>
+              </div>
+            </div>
+            <div class="feature-body">
+              <div class="feature-desc">Migrated savings lobby to Compose. New UI with updated navigation and accessibility improvements.</div>
+              <div class="screenshot-box">📷 Screenshot (embedded in real output)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="foot-note">All assets live under <code>~/.cursor/version-prep/</code>. Example output: <code>~/.cursor/version-prep/3.13.0/qa-features-summary-3.13.0.html</code></p>
+  </div>
+</body>
+</html>
