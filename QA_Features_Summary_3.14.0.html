@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Features Summary - Version 3.14.0</title>
+    <style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #faf9f7;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Georgia', serif;
+            padding: 32px 18px;
+            min-height: 100vh;
+            color: #3d3d3a;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(45, 42, 38, 0.08), 0 1px 3px rgba(45, 42, 38, 0.06);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #0d9488 0%, #0ea5e9 55%, #0284c7 100%);
+            color: #fff;
+            padding: 32px 28px;
+            text-align: center;
+        }
+        .header-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.22);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            backdrop-filter: blur(4px);
+        }
+        .header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-top: 4px;
+            letter-spacing: -0.02em;
+        }
+        .header p { margin-top: 10px; font-size: 14px; opacity: 0.92; }
+        .content { padding: 28px 28px 36px; background: #faf9f7; }
+        .feature-card {
+            background: #fff;
+            border-radius: 14px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 12px rgba(45, 42, 38, 0.06);
+            overflow: hidden;
+            page-break-inside: avoid;
+            border: 1px solid #ebe8e4;
+        }
+        .feature-header {
+            background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 50%, #e0f2fe 100%);
+            color: #134e4a;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e7e5e0;
+        }
+        .feature-number {
+            background: linear-gradient(135deg, #14b8a6 0%, #0ea5e9 100%);
+            color: #fff;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(14, 165, 233, 0.25);
+        }
+        .feature-title {
+            flex: 1;
+            font-size: 19px;
+            font-weight: 700;
+            color: #1c1917;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .feature-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+        .badge {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .badge-platform-android { background: #d1fae5; color: #047857; }
+        .badge-platform-ios { background: #dbeafe; color: #1d4ed8; }
+        .badge-platform-both {
+            background: linear-gradient(135deg, #d1fae5 0%, #dbeafe 100%);
+            color: #0f766e;
+        }
+        .badge-type-migration { background: #fef3c7; color: #b45309; }
+        .badge-type-feature { background: #fce7f3; color: #be185d; }
+        .badge-type-bugfix { background: #fee2e2; color: #b91c1c; }
+        .badge-type-remoteconfig { background: #ede9fe; color: #6d28d9; }
+        .feature-body { padding: 22px 24px 26px; background: #fff; }
+        .feature-description {
+            font-size: 16px;
+            line-height: 1.65;
+            color: #57534e;
+            margin-bottom: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .feature-description p { margin: 10px 0; }
+        .feature-description ul { margin: 8px 0; padding-left: 22px; }
+        .feature-description li { margin: 6px 0; }
+        .feature-description code {
+            background: #f5f5f4;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: ui-monospace, monospace;
+            font-size: 13px;
+            color: #0d9488;
+            border: 1px solid #e7e5e0;
+        }
+        .feature-description strong { color: #0f766e; font-weight: 600; }
+        .feature-snippet-caption { font-size: 13px; font-weight: 600; margin: 14px 0 8px; color: #0f766e; }
+        .feature-description pre {
+            margin: 0 0 12px;
+            padding: 14px 16px;
+            background: #f5f5f4;
+            border: 1px solid #e7e5e0;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .feature-description pre code {
+            background: transparent;
+            border: none;
+            padding: 0;
+            color: #44403c;
+            font-size: 12px;
+            display: block;
+            white-space: pre;
+        }
+        .screenshot-container {
+            margin: 18px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 14px rgba(45, 42, 38, 0.08);
+            border: 1px solid #ebe8e4;
+            max-width: 100%;
+        }
+        .screenshot-header {
+            background: #44403c;
+            color: #fafaf9;
+            padding: 11px 16px;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .screenshot-header::before {
+            content: '';
+            width: 9px;
+            height: 9px;
+            background: #34d399;
+            border-radius: 50%;
+        }
+        .screenshot-img {
+            max-width: 100%;
+            max-height: 400px;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            background: #fafaf9;
+        }
+        .figma-link-container {
+            background: #fafaf9;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid #ebe8e4;
+        }
+        .figma-icon {
+            width: 28px;
+            height: 28px;
+            background: #F24E1E;
+            color: #fff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        .figma-link { color: #0d9488; text-decoration: none; font-weight: 600; font-size: 14px; }
+        .figma-link:hover { text-decoration: underline; color: #0f766e; }
+        .info-table {
+            width: 100%;
+            margin-top: 18px;
+            border-collapse: collapse;
+            font-size: 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #ebe8e4;
+        }
+        .info-table tr:nth-child(odd) { background: #fafaf9; }
+        .info-table tr:nth-child(even) { background: #fff; }
+        .info-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f5f5f4;
+            color: #44403c;
+        }
+        .info-table tr:last-child td { border-bottom: none; }
+        .info-table td:first-child {
+            font-weight: 600;
+            color: #0d9488;
+            width: 30%;
+        }
+        .status-section {
+            background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+            color: #fff;
+            padding: 24px 26px;
+            border-radius: 14px;
+            margin-top: 8px;
+            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.25);
+        }
+        .status-section h2 { font-size: 22px; margin-bottom: 10px; font-weight: 700; }
+        .footer {
+            background: #fff;
+            padding: 18px 28px;
+            text-align: center;
+            color: #78716c;
+            border-top: 1px solid #ebe8e4;
+            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        @media print {
+            body { background: #fff; }
+            .container { box-shadow: none; }
+            .screenshot-img { max-height: 300px !important; }
+            .screenshot-container { page-break-inside: avoid; }
+        }
+
+    </style>
+</head>
+<body class="features-theme-warm">
+    <div class="container">
+        <div class="header">
+            <span class="header-badge">Version 3.14.0</span>
+            <h1>QA Features Summary</h1>
+        </div>
+        
+        <div class="content">
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-number">1</div>
+                    <div class="feature-title">Dynamic tabs</div>
+                    <div class="feature-badges">
+                        <span class="badge badge-platform-android">ANDROID</span>
+                        <span class="badge badge-type-remoteconfig">REMOTECONFIG</span>
+                    </div>
+                </div>
+                <div class="feature-body">
+                    <div class="feature-description">
+                        <p>Main lobbies navigation is driven by Firebase Remote Config — one JSON payload defines the bottom bar and each lobby’s inner tabs. This release is a navigation + stability focus: order, deep links, state, and safe handling when tabs move or disappear.</p>
+                        <ul>
+                            <li>🔑 Remote Config parameter: app_tabs_configuration (structure of main tabs + innerTabItems).</li>
+                            <li>🧭 QA focus: tab order vs JSON, lazy load, inner chips ↔ pager, scroll/state when switching main tabs, return-from-flow refresh, headers (chat / settings / badge), Android back, and deep links that follow the current hierarchy.</li>
+                            <li>🛡️ Unknown tab types are skipped — the app should stay stable (no crash) when JSON changes.</li>
+                            <li>📎 References: OZ-97135 (tech QA), OZ-99278 (test plan). Firebase console: bssbfirst → Remote Config → app_tabs_configuration.</li>
+                            <li>📦 Packaged defaults can differ by flavor (e.g. remote_config_defaults_dev.xml vs prod) — always confirm the active value in Firebase or the build you’re testing.</li>
+                        </ul>
+                        <p class="feature-snippet-caption">📄 Example JSON — app_tabs_configuration (baseline shape; match your environment)</p>
+                        <pre><code>{
+  &quot;tabBarItems&quot;: [
+    { &quot;type&quot;: &quot;dashboard&quot; },
+    {
+      &quot;type&quot;: &quot;myAccount&quot;,
+      &quot;innerTabItems&quot;: [ &quot;movements&quot;, &quot;cards&quot;, &quot;fcy&quot;, &quot;savings&quot;, &quot;loans&quot; ]
+    },
+    {
+      &quot;type&quot;: &quot;payments&quot;,
+      &quot;innerTabItems&quot;: [ &quot;payments&quot;, &quot;cheques&quot;, &quot;mandates&quot; ]
+    },
+    {
+      &quot;type&quot;: &quot;myWealth&quot;,
+      &quot;innerTabItems&quot;: [ &quot;myWealthLobby&quot;, &quot;pensions&quot; ]
+    },
+    { &quot;type&quot;: &quot;securities&quot; }
+  ]
+}</code></pre>
+                    </div>
+
+                    <div class="screenshot-container">
+                        <div class="screenshot-header">Firebase — app_tabs_configuration (Remote Config)</div>
+                        <img src="firebase_app_tabs_configuration.png" alt="Firebase Remote Config showing app_tabs_configuration parameter and conditional values" class="screenshot-img">
+
+                    </div>
+
+                    <table class="info-table">
+                        <tr>
+                            <td>Platform</td>
+                            <td>ANDROID</td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>REMOTECONFIG</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>✅ Tested & Verified</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-number">2</div>
+                    <div class="feature-title">Allow any partner in Add Partner (CanAddAnyPartner)</div>
+                    <div class="feature-badges">
+                        <span class="badge badge-platform-both">BOTH</span>
+                        <span class="badge badge-type-feature">FEATURE</span>
+                    </div>
+                </div>
+                <div class="feature-body">
+                    <div class="feature-description">
+                        <p>Add Partner is split by a backend flag — CanAddAnyPartner — based on whether the inviter had tax-related transactions in the current tax year. When true, customers may add any relationship type (not married-only), the ID slip step is skipped per updated Figma, and copy/analytics differ; when false, the legacy married-only flow and mandatory ID slip remain unchanged. Validate both paths on Android and iOS.</p>
+                        <ul>
+                            <li>📋 Story: OZ-97910 — https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-97910 (acceptance criteria + DoD).</li>
+                            <li>🧮 When CanAddAnyPartner = true: inviter may add any partner; skip ID slip upload; new “ID expired” UI needs only front + back (no slip) per Figma; remove the married-only bottom-sheet line (בן/בת זוג); eligibility copy updated (e.g. remove “married spouse in ID appendix” style wording per ticket).</li>
+                            <li>🔒 When CanAddAnyPartner = false: keep existing married-only flow; ID slip (ספח ת&quot;ז) stays mandatory; UI and localization unchanged vs baseline.</li>
+                            <li>📡 Analytics (Firebase / Mobile Events): fire add_partner_flow when the “who can be added” screen opens; param type = any_partner or married_only.</li>
+                            <li>🎨 Design: Figma link also appears under screenshots below (Onboarding / Add Partner).</li>
+                        </ul>
+                        <p class="feature-snippet-caption">📡 Analytics — event shape (per story)</p>
+                        <pre><code>event name: add_partner_flow
+// when &quot;את מי אפשר לצרף לחשבון&quot; (eligibility) is shown
+param: type = any_partner | married_only</code></pre>
+                    </div>
+
+                    <div class="screenshot-container">
+                        <div class="screenshot-header">Figma — Add partner flow (invitee details, relationship, eligibility)</div>
+                        <img src="add_partner_figma_flow.png" alt="Figma screens for add partner: invitee details, relationship selection, who can be added" class="screenshot-img">
+
+                        <div class="figma-link-container">
+                            <span class="figma-icon">F</span>
+                            <a href="https://www.figma.com/design/OAAaZnw3MbVdTpzZ0PqqpO/Onboarding?node-id=14313-38142&amp;t=um8FJ55y5boTq4wK-4" class="figma-link" target="_blank">
+                                View in Figma: Onboarding — Add Partner (node 14313-38142)
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <div class="screenshot-container">
+                        <div class="screenshot-header">Figma — ID expired (front/back only, no slip)</div>
+                        <img src="add_partner_id_expired_no_slip.png" alt="Add partner screen for expired ID: upload front and back only, confirm disabled until both set" class="screenshot-img">
+
+                        <div class="figma-link-container">
+                            <span class="figma-icon">F</span>
+                            <a href="https://www.figma.com/design/OAAaZnw3MbVdTpzZ0PqqpO/Onboarding?node-id=14313-38142&amp;t=um8FJ55y5boTq4wK-4" class="figma-link" target="_blank">
+                                View in Figma: Onboarding — Add Partner (node 14313-38142)
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <table class="info-table">
+                        <tr>
+                            <td>Platform</td>
+                            <td>BOTH</td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>FEATURE</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>✅ Tested & Verified</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="status-section">
+                <h2>Definition of Done</h2>
+                <p>All features listed above have been tested and verified by the QA team.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <strong>Prepared by:</strong> QA Team &nbsp;|&nbsp; <strong>Date:</strong> 2026-03-24
+        </div>
+    </div>
+</body>
+</html>
