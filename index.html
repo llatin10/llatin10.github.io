@@ -22,8 +22,12 @@
             box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
         }
         h1 { font-size: 1.25rem; font-weight: 600; color: #1c1917; margin-bottom: 16px; }
-        ul { list-style: none; }
-        li { margin-bottom: 10px; }
+        h2.section { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #78716c; margin: 20px 0 10px 0; }
+        h2.section:first-of-type { margin-top: 0; }
+        h2.section-other { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }
+        .section-hint { font-size: 0.75rem; color: #a8a29e; margin: -4px 0 10px 0; }
+        ul.page-list { list-style: none; }
+        ul.page-list li { margin-bottom: 10px; }
         a { color: #0d9488; text-decoration: none; font-weight: 500; }
         a:hover { text-decoration: underline; }
         .hint { font-size: 0.875rem; color: #78716c; margin-top: 20px; }
@@ -32,14 +36,19 @@
 <body>
     <div class="container">
         <h1>Pages</h1>
-        <p style="font-size:0.875rem;color:#78716c;margin-bottom:12px;">Sorted A–Z by page title.</p>
-        <ul>
-            <li><a href="cursor-commands-and-scripts-reference.html">Cursor commands &amp;amp; version-prep scripts</a></li>
+<p style="font-size:0.875rem;color:#78716c;margin-bottom:12px;">Deep links first; other pages A–Z by title.</p>
+            <h2 class="section">Deep links</h2>
+            <ul class="page-list">
             <li><a href="deeplinks-tappable-mobile copy.html">Deep links</a></li>
+            </ul>
+            <h2 class="section section-other">Other pages</h2>
+            <p class="section-hint">Sorted A–Z by title.</p>
+            <ul class="page-list">
+            <li><a href="cursor-commands-and-scripts-reference.html">Cursor commands &amp; version-prep scripts</a></li>
             <li><a href="html-features-workflow-summary.html">HTML Features Workflow — Prompt, Scripts &amp; Result</a></li>
             <li><a href="qa-features-summary-3.13.0 copy.html">QA Features Summary - Version 3.13.0</a></li>
             <li><a href="savings-compose-fix-guide.html">Savings Compose Test ID Fix Guide</a></li>
-        </ul>
+            </ul>
         <p class="hint">Add <code>.html</code> files in this folder, run <strong>/html URL</strong> in Cursor to refresh this list and push.</p>
     </div>
 </body>
