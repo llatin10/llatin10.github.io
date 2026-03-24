@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate index.html: Deep links first; other *.html sorted A–Z by <title>."""
+"""Regenerate index.html: Deep links first; QA Features by version (newest first); other A–Z by title."""
 from __future__ import annotations
 
 import html
@@ -20,6 +20,29 @@ def is_deep_links_page(title: str, filename: str) -> bool:
     if "deeplink" in filename.casefold():
         return True
     return False
+
+
+def is_qa_features_page(title: str, filename: str) -> bool:
+    """QA Features Summary pages (by title or filename pattern)."""
+    if "qa features summary" in title.casefold():
+        return True
+    if filename.casefold().startswith("qa_features_summary") and filename.lower().endswith(
+        ".html"
+    ):
+        return True
+    return False
+
+
+def version_tuple_for_sort(title: str, filename: str) -> tuple[int, int, int]:
+    """Parse X.Y.Z (or X.Y) from title/filename for ordering; missing -> (0,0,0)."""
+    for s in (title, filename):
+        m = re.search(r"(\d+)\.(\d+)\.(\d+)", s)
+        if m:
+            return int(m.group(1)), int(m.group(2)), int(m.group(3))
+        m = re.search(r"(?<![.\d])(\d+)\.(\d+)(?!\.?\d)", s)
+        if m:
+            return int(m.group(1)), int(m.group(2)), 0
+    return (0, 0, 0)
 
 
 def extract_title(path: Path) -> str:
@@ -49,40 +72,61 @@ def main() -> int:
         all_pages.append((title, p.name))
 
     pinned: list[tuple[str, str]] = []
+    qa_features: list[tuple[str, str]] = []
     rest: list[tuple[str, str]] = []
     for title, name in all_pages:
         if is_deep_links_page(title, name):
             pinned.append((title, name))
+        elif is_qa_features_page(title, name):
+            qa_features.append((title, name))
         else:
             rest.append((title, name))
 
     pinned.sort(key=lambda x: x[1].casefold())
+    qa_features.sort(
+        key=lambda row: version_tuple_for_sort(row[0], row[1]),
+        reverse=True,
+    )
     rest.sort(key=lambda x: x[0].casefold())
 
-    pages: list[tuple[str, str]] = pinned + rest
+    pages: list[tuple[str, str]] = pinned + qa_features + rest
 
     if not all_pages:
         body = "            <li><em>No pages yet</em></li>"
         section_note = ""
-    elif pinned:
-        block_pinned = _list_items(pinned)
-        block_rest = _list_items(rest) if rest else "            <li><em>No other pages</em></li>"
-        body = f"""            <h2 class="section">Deep links</h2>
+    else:
+        blocks: list[str] = []
+        hints: list[str] = []
+        if pinned:
+            hints.append("Deep links first")
+            blocks.append(
+                f"""            <h2 class="section">Deep links</h2>
             <ul class="page-list">
-{block_pinned}
-            </ul>
-            <h2 class="section section-other">Other pages</h2>
+{_list_items(pinned)}
+            </ul>"""
+            )
+        if qa_features:
+            hints.append("QA Features by version (newest first)")
+            blocks.append(
+                f"""            <h2 class="section section-qa">QA Features Summary</h2>
+            <p class="section-hint">Sorted by version number (newest first).</p>
+            <ul class="page-list">
+{_list_items(qa_features)}
+            </ul>"""
+            )
+        if rest:
+            hints.append("Other pages A–Z by title")
+            sep = " section-other" if blocks else ""
+            blocks.append(
+                f"""            <h2 class="section{sep}">Other pages</h2>
             <p class="section-hint">Sorted A–Z by title.</p>
             <ul class="page-list">
-{block_rest}
+{_list_items(rest)}
             </ul>"""
-        section_note = '<p style="font-size:0.875rem;color:#78716c;margin-bottom:12px;">Deep links first; other pages A–Z by title.</p>'
-    else:
-        block = _list_items(rest)
-        body = f"""            <ul class="page-list">
-{block}
-            </ul>"""
-        section_note = '<p style="font-size:0.875rem;color:#78716c;margin-bottom:12px;">Sorted A–Z by page title.</p>'
+            )
+        body = "\n".join(blocks)
+        hint_text = "; ".join(hints) + "."
+        section_note = f'<p style="font-size:0.875rem;color:#78716c;margin-bottom:12px;">{html.escape(hint_text)}</p>'
 
     out = f"""<!DOCTYPE html>
 <html lang="en">
@@ -110,6 +154,7 @@ def main() -> int:
         h1 {{ font-size: 1.25rem; font-weight: 600; color: #1c1917; margin-bottom: 16px; }}
         h2.section {{ font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #78716c; margin: 20px 0 10px 0; }}
         h2.section:first-of-type {{ margin-top: 0; }}
+        h2.section-qa {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         h2.section-other {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         .section-hint {{ font-size: 0.75rem; color: #a8a29e; margin: -4px 0 10px 0; }}
         ul.page-list {{ list-style: none; }}
@@ -140,14 +185,16 @@ def main() -> int:
         for title, filename in pinned:
             url = f"{SITE_BASE}/{quote(filename, safe='/')}"
             print(f"  - {title} — {url}")
-        if rest:
-            print()
-            print("  Other pages (A–Z):")
-            for title, filename in rest:
-                url = f"{SITE_BASE}/{quote(filename, safe='/')}"
-                print(f"  - {title} — {url}")
-    else:
-        for title, filename in pages:
+    if qa_features:
+        print()
+        print("  QA Features Summary (by version, newest first):")
+        for title, filename in qa_features:
+            url = f"{SITE_BASE}/{quote(filename, safe='/')}"
+            print(f"  - {title} — {url}")
+    if rest:
+        print()
+        print("  Other pages (A–Z):")
+        for title, filename in rest:
             url = f"{SITE_BASE}/{quote(filename, safe='/')}"
             print(f"  - {title} — {url}")
     return 0
