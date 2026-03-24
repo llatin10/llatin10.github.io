@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursor commands &amp; version-prep scripts</title>
+    <style>
+        :root {
+            --bg: #faf9f7;
+            --card: #fff;
+            --text: #44403c;
+            --heading: #1c1917;
+            --accent: #0d9488;
+            --accent-dim: #ccfbf1;
+            --border: #e7e5e4;
+            --code-bg: #f5f5f4;
+            --muted: #78716c;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            padding: 24px 16px 48px;
+        }
+        .wrap {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+        header {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 28px 32px;
+            box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--heading);
+            margin-bottom: 8px;
+        }
+        header p.lead {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        .paths {
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        .paths code {
+            display: block;
+            margin-top: 6px;
+            padding: 8px 10px;
+            background: var(--code-bg);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            word-break: break-all;
+        }
+        nav.toc {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+        nav.toc h2 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+        nav.toc ul { list-style: none; }
+        nav.toc li { margin-bottom: 8px; }
+        nav.toc a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        nav.toc a:hover { text-decoration: underline; }
+        section {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 12px rgba(45, 42, 38, 0.04);
+        }
+        section h2 {
+            font-size: 1.15rem;
+            color: var(--heading);
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-dim);
+        }
+        .cmd {
+            margin-bottom: 22px;
+        }
+        .cmd:last-child { margin-bottom: 0; }
+        .cmd h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--heading);
+            margin-bottom: 6px;
+        }
+        .cmd h3 kbd {
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+            font-size: 0.95em;
+            background: var(--accent-dim);
+            color: #115e59;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .cmd p.desc {
+            color: var(--text);
+            font-size: 0.92rem;
+            margin-bottom: 8px;
+        }
+        .example {
+            margin-top: 8px;
+        }
+        .example strong {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--muted);
+        }
+        pre, .cmd code.block {
+            display: block;
+            margin-top: 6px;
+            padding: 12px 14px;
+            background: var(--code-bg);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+        }
+        .cmd code.block { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; }
+        table.scripts {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+        table.scripts th, table.scripts td {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        table.scripts th {
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        table.scripts tr:last-child td { border-bottom: none; }
+        table.scripts code { font-size: 0.85em; }
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 28px;
+        }
+        footer a { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <h1>Cursor commands &amp; version-prep scripts</h1>
+            <p class="lead">Quick reference for slash commands in <code>~/.cursor/commands</code> and Python tooling in <code>version-prep/scripts</code>, with copy-paste examples where they help.</p>
+            <div class="paths">
+                <span>Commands folder</span>
+                <code>/Users/llatin/.cursor/commands</code>
+                <span style="margin-top:12px;display:block;">Scripts folder</span>
+                <code>/Users/llatin/.cursor/version-prep/scripts</code>
+            </div>
+        </header>
+
+        <nav class="toc" aria-label="On this page">
+            <h2>On this page</h2>
+            <ul>
+                <li><a href="#commands">Cursor slash commands</a></li>
+                <li><a href="#scripts">version-prep Python scripts</a></li>
+            </ul>
+        </nav>
+
+        <section id="commands">
+            <h2>Cursor slash commands</h2>
+            <p style="margin-bottom:18px;color:var(--muted);font-size:0.9rem;">Type <kbd>/</kbd> in Cursor chat and pick a command, or reference the name below.</p>
+
+            <div class="cmd">
+                <h3><kbd>/deep link</kbd></h3>
+                <p class="desc">Confluence or spec deltas → tappable HTML + PDF for iOS/Android deep link testing. Output under <code>~/.cursor/version-prep/Deep links testing/</code>.</p>
+                <div class="example">
+                    <strong>Regenerate artifacts</strong>
+                    <pre>python3 /Users/llatin/.cursor/version-prep/scripts/render_deep_links_testing.py</pre>
+                </div>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/demo-pr</kbd></h3>
+                <p class="desc">Interactive demo package: Slack MD, HTML, PDF under <code>~/.cursor/Demo/&lt;feature&gt;/</code> using git diff + <code>generate_html.py demo</code>.</p>
+                <div class="example">
+                    <strong>Generate demo HTML</strong>
+                    <pre>python3 ~/.cursor/version-prep/scripts/generate_html.py demo \
+  ~/.cursor/Demo/my-feature/demo_data.json \
+  ~/.cursor/Demo/my-feature/DEMO_my-feature.html</pre>
+                </div>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/explain-pr</kbd></h3>
+                <p class="desc">PR summary with highlights and explain-pr HTML/PDF; JSON in <code>~/.cursor/presentations/</code>, themes: warm / minimal / dark.</p>
+                <div class="example">
+                    <strong>Generate HTML</strong>
+                    <pre>python3 ~/.cursor/version-prep/scripts/generate_html.py explain-pr \
+  ~/.cursor/presentations/PR_PRESENTATION_my-branch_data.json \
+  ~/.cursor/presentations/PR_PRESENTATION_my-branch.html</pre>
+                </div>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/html features</kbd></h3>
+                <p class="desc">Interactive QA Features Summary (screenshots, version folder under <code>~/.cursor/version-prep/[VERSION]/</code>).</p>
+                <div class="example">
+                    <strong>Generate summary HTML</strong>
+                    <pre>python3 ~/.cursor/version-prep/scripts/generate_html.py features \
+  ~/.cursor/version-prep/3.14.0/features_data.json \
+  ~/.cursor/version-prep/3.14.0/QA_Features_Summary_3.14.0.html</pre>
+                </div>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/html-pr</kbd></h3>
+                <p class="desc">Standalone PR presentation HTML/PDF from branch data JSON.</p>
+                <div class="example">
+                    <strong>Generate presentation</strong>
+                    <pre>python3 ~/.cursor/version-prep/scripts/generate_html.py pr-presentation \
+  ~/.cursor/presentations/PR_PRESENTATION_my-branch_data.json \
+  ~/.cursor/presentations/PR_PRESENTATION_my-branch.html</pre>
+                </div>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/html URL</kbd></h3>
+                <p class="desc">Regenerate GitHub Pages index (A–Z by <code>&lt;title&gt;</code>), commit, push for <strong>https://llatin10.github.io/</strong>.</p>
+                <div class="example">
+                    <strong>Sync index &amp; deploy</strong>
+                    <pre>python3 "/Users/llatin/.cursor/HTML URL/sync_index.py"
+cd "/Users/llatin/.cursor/HTML URL" &amp;&amp; git add -A &amp;&amp; git status</pre>
+                </div>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/manual-tests</kbd></h3>
+                <p class="desc">Manual test docs (Markdown and/or TTM) from PR diff or Jira; outputs under <code>~/.cursor/manual flows/{FEATURE_FOLDER}/</code>.</p>
+                <div class="example">
+                    <strong>Git context (excerpt)</strong>
+                    <pre>BASE_BRANCH=$(python3 ~/.cursor/version-prep/scripts/git_utils.py detect-base-branch)
+python3 ~/.cursor/version-prep/scripts/git_utils.py fetch-base-branch "$BASE_BRANCH"
+DIFF=$(python3 ~/.cursor/version-prep/scripts/git_utils.py get-diff "$BASE_BRANCH")</pre>
+                </div>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/OnDemand specific test run</kbd></h3>
+                <p class="desc">Build the workflow line for <code>run-specific-tests.yml</code>: comma-separated <code>*ClassName</code> list plus verification table.</p>
+                <div class="example">
+                    <strong>Example paste line</strong>
+                    <pre>*DepositChequeTest,*ToggleBiometricTest,*QuickLogInBlockedAfter5TimesTest</pre>
+                </div>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/fix-element</kbd></h3>
+                <p class="desc">Trace Appium “can’t locate element” to Compose <code>testTag</code>s; workspace <code>mobile-tests</code>, read-only <code>android-banking</code>.</p>
+                <div class="example">
+                    <strong>Find usages of an ID</strong>
+                    <pre>grep -r "button_continue" src/</pre>
+                </div>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/run a test</kbd></h3>
+                <p class="desc">Run one test on a physical Android device via project script (Appium, self-heal).</p>
+                <div class="example">
+                    <strong>From mobile-tests repo root</strong>
+                    <pre>python3 scripts/run_test_on_device.py "DailySavingsCreateNewDailySavingWithAll2RulesTurnedOn"</pre>
+                </div>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/pr-review</kbd></h3>
+                <p class="desc">Full PR review with platform criteria (iOS / Android / TS / Java / CI); uses <code>git_utils.py</code> for diff; optional <code>linter_utils.py run</code> for auto-fix.</p>
+                <div class="example">
+                    <strong>Fetch diff</strong>
+                    <pre>BASE_BRANCH=$(python3 ~/.cursor/version-prep/scripts/git_utils.py detect-base-branch)
+python3 ~/.cursor/version-prep/scripts/git_utils.py fetch-base-branch "$BASE_BRANCH"
+python3 ~/.cursor/version-prep/scripts/git_utils.py get-diff "$BASE_BRANCH"</pre>
+                </div>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/pr-description</kbd></h3>
+                <p class="desc">Markdown PR description from full diff; saved as <code>PR_DESCRIPTION_TEMP.md</code> via <code>file_utils.py</code>.</p>
+                <div class="example">
+                    <strong>Write temp file</strong>
+                    <pre>python3 ~/.cursor/version-prep/scripts/file_utils.py create PR_DESCRIPTION_TEMP.md "$CONTENT" "$(pwd)"</pre>
+                </div>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/slack-pr</kbd></h3>
+                <p class="desc">Slack announcement from diff; Unicode emojis; file under <code>~/.cursor/Slack messages/SLACK_&lt;branch&gt;.md</code>.</p>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/quick-commit</kbd></h3>
+                <p class="desc">No prompts: detect linter, <code>linter_utils.py run</code>, auto message, commit, push.</p>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/commit-small</kbd> · <kbd>/commit-major</kbd></h3>
+                <p class="desc">Conventional commits: one-liner vs multi-paragraph with body/footer (feat/fix/docs…).</p>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/integration-tests</kbd></h3>
+                <p class="desc">Summary of new/changed tests in PR → <code>integration_tests_summary.md</code>.</p>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/debug-day</kbd></h3>
+                <p class="desc">Strip assertions, add logging (Kotlin <code>Timber</code>, Swift <code>print</code>/<code>OZLogger</code>, etc.) for full-flow diagnosis.</p>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/pull-all</kbd></h3>
+                <p class="desc"><code>git fetch --all --prune</code>, report behind/gone branches, confirm before fast-forward or delete.</p>
+            </div>
+
+            <div class="cmd">
+                <h3><kbd>/colleague-pr</kbd></h3>
+                <p class="desc">Apply fixes for review comments and draft copy-paste replies.</p>
+            </div>
+        </section>
+
+        <section id="scripts">
+            <h2>version-prep Python scripts</h2>
+            <p style="margin-bottom:16px;color:var(--muted);font-size:0.9rem;">All scripts live in <code>/Users/llatin/.cursor/version-prep/scripts</code>. Utilities are imported by the main tools.</p>
+            <table class="scripts">
+                <thead>
+                    <tr>
+                        <th>Script</th>
+                        <th>Role</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>create_qa_features.py</code></td>
+                        <td>Interactive QA Features Summary HTML workflow.</td>
+                        <td>Usually driven via <kbd>/html features</kbd>; pairs with <code>generate_html.py features</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><code>generate_html.py</code></td>
+                        <td>HTML from JSON or Markdown: modes <code>features</code>, <code>pr-presentation</code>, <code>explain-pr</code>, <code>demo</code>, <code>markdown</code>. Themes: <code>warm</code>, <code>minimal</code>, <code>dark</code> (features also <code>classic</code>).</td>
+                        <td><code>python3 generate_html.py markdown path/to/doc.md path/to/out.html</code> (needs <code>pip install markdown</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>features_summary_themes.py</code></td>
+                        <td>CSS themes for QA Features Summary.</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><code>document_templates_themes.py</code></td>
+                        <td>CSS for pr-presentation, explain-pr, demo.</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><code>generate_pdf.py</code></td>
+                        <td>HTML → PDF (Playwright Chromium recommended).</td>
+                        <td><code>python3 generate_pdf.py input.html output.pdf</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>render_deep_links_testing.py</code></td>
+                        <td>Build deeplink HTML + PDF from <code>deeplinks-data.json</code> in Deep links testing folder.</td>
+                        <td><code>python3 render_deep_links_testing.py</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>git_utils.py</code></td>
+                        <td>Branch/diff helpers: <code>detect-base-branch</code>, <code>fetch-base-branch</code>, <code>get-diff</code>, <code>get-diff-stat</code>, <code>get-current-branch</code>, <code>get-project-type</code>.</td>
+                        <td><code>python3 git_utils.py detect-base-branch</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>file_utils.py</code></td>
+                        <td>Create/delete files from shell-friendly args (used by PR description, Slack path, etc.).</td>
+                        <td><code>python3 file_utils.py create NAME.md "content" "/path/to/dir"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>linter_utils.py</code></td>
+                        <td>Detect and run project linter (<code>detect</code>, <code>run</code>).</td>
+                        <td><code>python3 linter_utils.py run</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>GitHub Pages site folder</h2>
+            <p style="font-size:0.92rem;">Published HTML for <strong>llatin10.github.io</strong> lives at <code>/Users/llatin/.cursor/HTML URL</code>. After adding pages, run <code>sync_index.py</code> (as in <kbd>/html URL</kbd>) so the home page lists every <code>*.html</code> by title.</p>
+        </section>
+
+        <footer>
+            <p>Reference generated from local <code>commands</code> and <code>version-prep/scripts</code>. <a href="index.html">Site index</a></p>
+        </footer>
+    </div>
+</body>
+</html>
