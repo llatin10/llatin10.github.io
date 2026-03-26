@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Regenerate index.html: Deep links first; QA Features by version (newest first); other A–Z by title."""
+"""Regenerate index.html: Deep links first; QA Features by version (newest first); other A–Z by title.
+
+After writing index.html, stages all *.html in this folder, commits if needed, and git push."""
 from __future__ import annotations
 
 import html
 import re
+import subprocess
 import sys
 from pathlib import Path
 from urllib.parse import quote
@@ -61,6 +64,55 @@ def _list_items(rows: list[tuple[str, str]]) -> str:
         label = html.escape(title)
         lines.append(f'            <li><a href="{safe_href}">{label}</a></li>')
     return "\n".join(lines)
+
+
+def git_push_site() -> int:
+    """Stage *.html and sync_index.py, commit if there are changes, push. No-op if not a git repo."""
+    if not (ROOT / ".git").is_dir():
+        print("Git: skip push (not a git repository).")
+        return 0
+
+    paths: list[str] = [p.name for p in sorted(ROOT.glob("*.html"))]
+    script = ROOT / "sync_index.py"
+    if script.is_file():
+        paths.append(script.name)
+    try:
+        subprocess.run(
+            ["git", "add", "--", *paths],
+            cwd=ROOT,
+            check=True,
+        )
+    except subprocess.CalledProcessError as e:
+        print(f"Git: git add failed: {e}", file=sys.stderr)
+        return 1
+
+    r = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT)
+    if r.returncode == 0:
+        print("Git: nothing to commit (HTML unchanged).")
+        return 0
+
+    r = subprocess.run(
+        ["git", "commit", "-m", "Update site index and HTML pages"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    if r.returncode != 0:
+        print(r.stderr or r.stdout or "git commit failed", file=sys.stderr)
+        return r.returncode
+
+    r = subprocess.run(
+        ["git", "push"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    if r.returncode != 0:
+        print(r.stderr or r.stdout or "git push failed", file=sys.stderr)
+        return r.returncode
+
+    print("Git: committed and pushed.")
+    return 0
 
 
 def main() -> int:
@@ -169,7 +221,7 @@ def main() -> int:
         <h1>Pages</h1>
 {section_note}
 {body}
-        <p class="hint">Add <code>.html</code> files in this folder, run <strong>/html URL</strong> in Cursor to refresh this list and push.</p>
+        <p class="hint">Add <code>.html</code> files in this folder, run <strong>/html URL</strong> in Cursor to refresh this list (commits and pushes).</p>
     </div>
 </body>
 </html>
@@ -197,7 +249,8 @@ def main() -> int:
         for title, filename in rest:
             url = f"{SITE_BASE}/{quote(filename, safe='/')}"
             print(f"  - {title} — {url}")
-    return 0
+    print()
+    return git_push_site()
 
 
 if __name__ == "__main__":
