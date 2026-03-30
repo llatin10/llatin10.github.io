@@ -179,8 +179,8 @@
       <input type="text" id="conv" value="CONVERSATION_ID" autocomplete="off" />
     </div>
     <div class="row">
-      <label for="sdk">Session data key (Open Banking payment initiation)</label>
-      <input type="text" id="sdk" value="SESSION_DATA_KEY" autocomplete="off" spellcheck="false" />
+      <label for="sdk">Session data key (Payment Initiation Out)</label>
+      <input type="text" id="sdk" placeholder="paste real key from flow" value="" autocomplete="off" spellcheck="false" />
     </div>
     <p class="warn" id="fileWarn" hidden>If you opened this file from <strong>Files</strong>, iOS may open links in Safari first — that is normal; the app should still open if links are verified.</p>
   </div>
@@ -250,14 +250,26 @@
         ],
       },
       {
+        section: "Open Banking — payment & account out",
+        items: [
+          {
+            label: "Payment Initiation Out",
+            wikiLine: "Path (Confluence / UAT): https://app.stgfdb.net/openbanking/paymentinitiation?sessionDataKey=<sessionDataKey> — paste a real key in the field above to tap (since 3.14).",
+            href: (b, q) => {
+              const k = q.sessionDataKey;
+              return b + "/openbanking/paymentinitiation?sessionDataKey=" + encodeURIComponent(k);
+            },
+          },
+          { label: "Account selection out (sample sessionDataKey)", href: (b) => b + "/openbanking/accountSelection?sessionDataKey=12fe5ac9-c2fe-42d5-bc29-f3ed0ec043f7" },
+        ],
+      },
+      {
         section: "Open Banking",
         items: [
           { label: "My accounts", href: (b) => b + "/openbanking/accounts" },
           { label: "My assets", href: (b) => b + "/openbanking/assets" },
           { label: "Create new consent", href: (b) => b + "/openbanking/create" },
           { label: "Consent management", href: (b) => b + "/openbanking/consent-management" },
-          { label: "Open Banking Out — account selection (sample sessionDataKey)", href: (b) => b + "/openbanking/accountSelection?sessionDataKey=12fe5ac9-c2fe-42d5-bc29-f3ed0ec043f7" },
-          { label: "Payment initiation (uses Session data key field; since 3.14)", href: (b, q) => b + "/openbanking/paymentinitiation?sessionDataKey=" + encodeURIComponent(q.sessionDataKey) },
         ],
       },
       {
@@ -298,8 +310,16 @@
         token: document.getElementById("token").value.trim() || "TOKEN",
         instrument: document.getElementById("instrument").value.trim() || "INSTRUMENT_ID",
         conv: document.getElementById("conv").value.trim() || "CONVERSATION_ID",
-        sessionDataKey: document.getElementById("sdk").value.trim() || "SESSION_DATA_KEY",
+        sessionDataKey: document.getElementById("sdk").value.trim() || "sessionDataKey",
       };
+    }
+
+    function escAttr(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
     }
 
     function base() {
@@ -321,7 +341,10 @@
           a.className = "link-btn";
           a.href = url;
           a.rel = "noopener noreferrer";
-          a.innerHTML = item.label + "<small>" + url + "</small>";
+          const smallLines = [];
+          if (item.wikiLine) smallLines.push(escAttr(item.wikiLine));
+          smallLines.push(escAttr(url));
+          a.innerHTML = item.label + "<small>" + smallLines.join("<br>") + "</small>";
           root.appendChild(a);
         }
       }
