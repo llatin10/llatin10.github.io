@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="color-scheme" content="light dark" />
-  <title>Deep links</title>
+  <title>Deep links (tap to open app)</title>
   <style>
     :root {
       --bg: #f4f4f5;
@@ -12,6 +12,7 @@
       --text: #18181b;
       --muted: #71717a;
       --accent: #0d9488;
+      --accent-dim: #ccfbf1;
       --border: #e4e4e7;
       --link-bg: #ecfdf5;
       --danger: #b91c1c;
@@ -23,6 +24,7 @@
         --text: #fafafa;
         --muted: #a1a1aa;
         --accent: #2dd4bf;
+        --accent-dim: #134e4a;
         --border: #27272a;
         --link-bg: #134e4a;
       }
@@ -149,7 +151,7 @@
 </head>
 <body>
   <h1>Deep links</h1>
-  <p class="lead">Tap a row to open the URL. Works in Safari (iOS) and Chrome (Android) if universal / app links are configured. Use HTTPS on a real device (hosted page, not file://) for the most reliable handoff to the app.</p>
+  <p class="lead">Tap a row to open the URL. Works in Safari (iOS) and Chrome (Android) if universal / app links are configured. Use <strong>HTTPS</strong> on a real device (not <code>file://</code>) for the most reliable handoff to the app.</p>
 
   <div class="panel">
     <div class="row">
@@ -161,27 +163,31 @@
       </select>
     </div>
     <div class="row">
-      <label for="pid">Portfolio ID (for paths with &#123;portfolioId&#125;)</label>
+      <label for="pid">Portfolio ID (for “specific portfolio” links)</label>
       <input type="text" id="pid" value="PORTFOLIO_ID" inputmode="numeric" autocomplete="off" />
     </div>
     <div class="row">
-      <label for="token">Token (for &#123;token&#125;)</label>
+      <label for="token">Token (video / chat placeholders)</label>
       <input type="text" id="token" value="TOKEN" autocomplete="off" />
     </div>
     <div class="row">
-      <label for="instrument">Instrument ID (for &#123;instrumentId&#125;)</label>
+      <label for="instrument">Instrument ID (securities placeholder)</label>
       <input type="text" id="instrument" value="INSTRUMENT_ID" autocomplete="off" />
     </div>
     <div class="row">
-      <label for="conv">Conversation ID (for &#123;conversationId&#125;)</label>
+      <label for="conv">Conversation ID (chat placeholder)</label>
       <input type="text" id="conv" value="CONVERSATION_ID" autocomplete="off" />
+    </div>
+    <div class="row">
+      <label for="sdk">Session data key (Open Banking payment initiation)</label>
+      <input type="text" id="sdk" value="SESSION_DATA_KEY" autocomplete="off" spellcheck="false" />
     </div>
     <p class="warn" id="fileWarn" hidden>If you opened this file from <strong>Files</strong>, iOS may open links in Safari first — that is normal; the app should still open if links are verified.</p>
   </div>
 
   <div id="sections"></div>
 
-  <p class="note"><strong>HTML vs PDF:</strong> Use this HTML for tapping links and switching environment. PDF is better for printing or formal handoff. Regenerate with <code>python3 render_deep_links_testing.py</code> after editing <code>deeplinks-data.json</code>.</p>
+  <p class="note"><strong>HTML vs PDF:</strong> Use this HTML for tapping links and switching environment. PDF is better for printing or formal handoff; links in PDF work but are harder to maintain and less flexible (no live portfolio field).</p>
 
   <script>
     (function () {
@@ -190,7 +196,101 @@
       }
     })();
 
-    const CFG = JSON.parse("{\"title\": \"Deep links\", \"lead\": \"Tap a row to open the URL. Works in Safari (iOS) and Chrome (Android) if universal / app links are configured. Use HTTPS on a real device (hosted page, not file://) for the most reliable handoff to the app.\", \"sections\": [{\"title\": \"Settings\", \"items\": [{\"label\": \"Add partner\", \"path\": \"/portfolio/settings/add-partner\"}, {\"label\": \"Proxy identifier\", \"path\": \"/portfolio/settings/proxyidentifier\"}, {\"label\": \"Settings lobby \u2014 active\", \"path\": \"/portfolio/settings\"}, {\"label\": \"Settings \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/settings\"}, {\"label\": \"Inbox \u2014 active\", \"path\": \"/portfolio/settings/inbox\"}, {\"label\": \"Inbox \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/settings/inbox\"}, {\"label\": \"Change password\", \"path\": \"/portfolio/settings/password\"}, {\"label\": \"Documents \u2014 Account Statement (half year)\", \"path\": \"/portfolio/settings/reports/transactions\"}, {\"label\": \"Documents \u2014 Account Ownership\", \"path\": \"/portfolio/settings/reports/ownership\"}, {\"label\": \"Documents \u2014 Account summary\", \"path\": \"/portfolio/settings/reports/accountSummary\"}, {\"label\": \"Notifications\", \"path\": \"/portfolio/settings/notifications\"}, {\"label\": \"Notifications \u2014 Push tab (channel=PUSH)\", \"path\": \"/portfolio/settings/notifications?channel=PUSH\"}, {\"label\": \"Notifications \u2014 email/SMS (channel=OTHER)\", \"path\": \"/portfolio/settings/notifications?channel=OTHER\"}, {\"label\": \"Notifications \u2014 Personal insight (channel=PERSONAL_INSIGHT)\", \"path\": \"/portfolio/settings/notifications?channel=PERSONAL_INSIGHT\"}, {\"label\": \"OD Limits \u2014 active\", \"path\": \"/portfolio/settings/od-limits\"}, {\"label\": \"OD Limits \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/settings/od-limits\"}, {\"label\": \"Open Banking Finanda (settings)\", \"path\": \"/portfolio/settings/obi-as-tpp\"}, {\"label\": \"Open Banking Finanda \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/settings/obi-as-tpp\"}, {\"label\": \"Select Plan (subscription)\", \"path\": \"/portfolio/settings/selectPlan\"}, {\"label\": \"Activation \u2014 Fill Profile\", \"path\": \"/portfolio/settings/activation-main\"}, {\"label\": \"Activation \u2014 Transfer Funds\", \"path\": \"/portfolio/settings/activation/transfer\"}]}, {\"title\": \"Loans, Savings, Current account, Cards, Cheques, FCY, Pension\", \"items\": [{\"label\": \"Loans lobby\", \"path\": \"/portfolio/loans\"}, {\"label\": \"Savings lobby \u2014 active\", \"path\": \"/portfolio/ils/deposits\"}, {\"label\": \"Savings \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/ils/deposits\"}, {\"label\": \"Current account (Movements)\", \"path\": \"/portfolio\"}, {\"label\": \"Cards lobby\", \"path\": \"/portfolio/cards\"}, {\"label\": \"Cheques lobby\", \"path\": \"/portfolio/cheques\"}, {\"label\": \"FCY lobby\", \"path\": \"/portfolio/fcy\"}, {\"label\": \"FCY \u2014 Convert\", \"path\": \"/portfolio/fcy/convert\"}, {\"label\": \"FCY \u2014 AutoFx (internal toggle)\", \"path\": \"/portfolio/fcy/autofx\"}, {\"label\": \"Pension\", \"path\": \"/portfolio/pension\"}]}, {\"title\": \"Payments & Mandates\", \"items\": [{\"label\": \"Payments lobby \u2014 active\", \"path\": \"/portfolio/payments\"}, {\"label\": \"Payments \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/payments\"}, {\"label\": \"Transfer \u2014 active\", \"path\": \"/portfolio/payments/transfer\"}, {\"label\": \"Transfer \u2014 specific portfolio\", \"path\": \"/portfolios/{portfolioId}/payments/transfer\"}, {\"label\": \"Mandates (direct debit)\", \"path\": \"/portfolio/direct-debit\"}]}, {\"title\": \"Open Banking\", \"items\": [{\"label\": \"My accounts\", \"path\": \"/openbanking/accounts\"}, {\"label\": \"My assets\", \"path\": \"/openbanking/assets\"}, {\"label\": \"Create new consent\", \"path\": \"/openbanking/create\"}, {\"label\": \"Consent management\", \"path\": \"/openbanking/consent-management\"}, {\"label\": \"Open Banking Out \u2014 account selection (sample sessionDataKey)\", \"path\": \"/openbanking/accountSelection?sessionDataKey=12fe5ac9-c2fe-42d5-bc29-f3ed0ec043f7\"}]}, {\"title\": \"Securities\", \"items\": [{\"label\": \"Securities lobby\", \"path\": \"/portfolio/securities\"}, {\"label\": \"Order Book\", \"path\": \"/portfolio/securities/order-book\"}, {\"label\": \"Store\", \"path\": \"/portfolio/securities/store\"}, {\"label\": \"Sectors (example: TECHNOLOGY)\", \"path\": \"/portfolio/securities/sectors?sectorName=TECHNOLOGY\"}, {\"label\": \"Asset page \u2014 instrumentId\", \"path\": \"/portfolio/securities/assetPage?instrumentId={instrumentId}\"}, {\"label\": \"Asset page \u2014 QQQ / US_EXCHANGES\", \"path\": \"/portfolio/securities/assetPage?symbol=QQQ&exchangeGroup=US_EXCHANGES\"}, {\"label\": \"Recurring orders\", \"path\": \"/portfolio/securities/recurringOrders\"}, {\"label\": \"Popular recurring orders\", \"path\": \"/portfolio/securities/popularRecurringOrders\"}, {\"label\": \"ETF\", \"path\": \"/portfolio/securities/etf\"}, {\"label\": \"Mutual funds\", \"path\": \"/portfolio/securities/mutualFunds\"}, {\"label\": \"TLV125\", \"path\": \"/portfolio/securities/tlv125\"}]}, {\"title\": \"Mobility, Notifications, Communications\", \"items\": [{\"label\": \"Mobility \u2014 statuses\", \"path\": \"/portfolio/mobility/statuses\"}, {\"label\": \"Notification center\", \"path\": \"/notificationCenter\"}, {\"label\": \"Twilio \u2014 video (uses Token field)\", \"path\": \"/communications/video?token={token}\"}, {\"label\": \"Chat (old) \u2014 active\", \"path\": \"/communications/chat?someParam=someValue\"}, {\"label\": \"Chat (old) \u2014 specific portfolio\", \"path\": \"/communications/chat/{portfolioId}?someParam=someValue\"}, {\"label\": \"Chat (new) \u2014 main / trigger insight\", \"path\": \"/communications/conversations/main/trigger-insight/\"}, {\"label\": \"Chat (new) \u2014 conversation\", \"path\": \"/communications/conversations/{conversationId}\"}, {\"label\": \"Ella intro\", \"path\": \"/communications/conversations/main/intro\"}, {\"label\": \"Attach Agent (banker)\", \"path\": \"/actions/attach_agent\"}]}]}");
+    /** @type {{ section: string, items: { label: string, href: (b: string, q: Record<string,string>) => string }[] }[]} */
+    const DATA = [
+      {
+        section: "Settings",
+        items: [
+          { label: "Add partner", href: (b) => b + "/portfolio/settings/add-partner" },
+          { label: "Proxy identifier", href: (b) => b + "/portfolio/settings/proxyidentifier" },
+          { label: "Settings lobby — active", href: (b) => b + "/portfolio/settings" },
+          { label: "Settings — specific portfolio", href: (b, q) => b + "/portfolios/" + encodeURIComponent(q.pid) + "/settings" },
+          { label: "Inbox — active", href: (b) => b + "/portfolio/settings/inbox" },
+          { label: "Inbox — specific portfolio", href: (b, q) => b + "/portfolios/" + encodeURIComponent(q.pid) + "/settings/inbox" },
+          { label: "Change password", href: (b) => b + "/portfolio/settings/password" },
+          { label: "Documents — Account Statement (half year)", href: (b) => b + "/portfolio/settings/reports/transactions" },
+          { label: "Documents — Account Ownership", href: (b) => b + "/portfolio/settings/reports/ownership" },
+          { label: "Documents — Account summary", href: (b) => b + "/portfolio/settings/reports/accountSummary" },
+          { label: "Notifications", href: (b) => b + "/portfolio/settings/notifications" },
+          { label: "Notifications — Push tab (channel=PUSH)", href: (b) => b + "/portfolio/settings/notifications?channel=PUSH" },
+          { label: "Notifications — email/SMS (channel=OTHER)", href: (b) => b + "/portfolio/settings/notifications?channel=OTHER" },
+          { label: "Notifications — Personal insight (channel=PERSONAL_INSIGHT)", href: (b) => b + "/portfolio/settings/notifications?channel=PERSONAL_INSIGHT" },
+          { label: "OD Limits — active", href: (b) => b + "/portfolio/settings/od-limits" },
+          { label: "OD Limits — specific portfolio", href: (b, q) => b + "/portfolios/" + encodeURIComponent(q.pid) + "/settings/od-limits" },
+          { label: "Open Banking Finanda (settings)", href: (b) => b + "/portfolio/settings/obi-as-tpp" },
+          { label: "Open Banking Finanda — specific portfolio", href: (b, q) => b + "/portfolios/" + encodeURIComponent(q.pid) + "/settings/obi-as-tpp" },
+          { label: "Select Plan (subscription)", href: (b) => b + "/portfolio/settings/selectPlan" },
+          { label: "Activation — Fill Profile", href: (b) => b + "/portfolio/settings/activation-main" },
+          { label: "Activation — Transfer Funds", href: (b) => b + "/portfolio/settings/activation/transfer" },
+        ],
+      },
+      {
+        section: "Loans, Savings, Current account, Cards, Cheques, FCY, Pension",
+        items: [
+          { label: "Loans lobby", href: (b) => b + "/portfolio/loans" },
+          { label: "Savings lobby — active", href: (b) => b + "/portfolio/ils/deposits" },
+          { label: "Savings — specific portfolio", href: (b, q) => b + "/portfolios/" + encodeURIComponent(q.pid) + "/ils/deposits" },
+          { label: "Current account (Movements)", href: (b) => b + "/portfolio" },
+          { label: "Cards lobby", href: (b) => b + "/portfolio/cards" },
+          { label: "Cheques lobby", href: (b) => b + "/portfolio/cheques" },
+          { label: "FCY lobby", href: (b) => b + "/portfolio/fcy" },
+          { label: "FCY — Convert", href: (b) => b + "/portfolio/fcy/convert" },
+          { label: "FCY — Auto FX", href: (b) => b + "/portfolio/fcy/autofx" },
+          { label: "Pension", href: (b) => b + "/portfolio/pension" },
+        ],
+      },
+      {
+        section: "Payments & Mandates",
+        items: [
+          { label: "Payments lobby — active", href: (b) => b + "/portfolio/payments" },
+          { label: "Payments — specific portfolio", href: (b, q) => b + "/portfolios/" + encodeURIComponent(q.pid) + "/payments" },
+          { label: "Transfer — active", href: (b) => b + "/portfolio/payments/transfer" },
+          { label: "Transfer — specific portfolio", href: (b, q) => b + "/portfolios/" + encodeURIComponent(q.pid) + "/payments/transfer" },
+          { label: "Mandates (direct debit)", href: (b) => b + "/portfolio/direct-debit" },
+        ],
+      },
+      {
+        section: "Open Banking",
+        items: [
+          { label: "My accounts", href: (b) => b + "/openbanking/accounts" },
+          { label: "My assets", href: (b) => b + "/openbanking/assets" },
+          { label: "Create new consent", href: (b) => b + "/openbanking/create" },
+          { label: "Consent management", href: (b) => b + "/openbanking/consent-management" },
+          { label: "Open Banking Out — account selection (sample sessionDataKey)", href: (b) => b + "/openbanking/accountSelection?sessionDataKey=12fe5ac9-c2fe-42d5-bc29-f3ed0ec043f7" },
+          { label: "Payment initiation (uses Session data key field; since 3.14)", href: (b, q) => b + "/openbanking/paymentinitiation?sessionDataKey=" + encodeURIComponent(q.sessionDataKey) },
+        ],
+      },
+      {
+        section: "Securities",
+        items: [
+          { label: "Securities lobby", href: (b) => b + "/portfolio/securities" },
+          { label: "Order Book", href: (b) => b + "/portfolio/securities/order-book" },
+          { label: "Store", href: (b) => b + "/portfolio/securities/store" },
+          { label: "Sectors (example: TECHNOLOGY)", href: (b) => b + "/portfolio/securities/sectors?sectorName=TECHNOLOGY" },
+          { label: "Asset page — instrumentId", href: (b, q) => b + "/portfolio/securities/assetPage?instrumentId=" + encodeURIComponent(q.instrument) },
+          { label: "Asset page — QQQ / US_EXCHANGES", href: (b) => b + "/portfolio/securities/assetPage?symbol=QQQ&exchangeGroup=US_EXCHANGES" },
+          { label: "Recurring orders", href: (b) => b + "/portfolio/securities/recurringOrders" },
+          { label: "Popular recurring orders", href: (b) => b + "/portfolio/securities/popularRecurringOrders" },
+          { label: "ETF", href: (b) => b + "/portfolio/securities/etf" },
+          { label: "Mutual funds", href: (b) => b + "/portfolio/securities/mutualFunds" },
+          { label: "TLV125", href: (b) => b + "/portfolio/securities/tlv125" },
+        ],
+      },
+      {
+        section: "Mobility, Notifications, Communications",
+        items: [
+          { label: "Mobility — statuses", href: (b) => b + "/portfolio/mobility/statuses" },
+          { label: "Notification center", href: (b) => b + "/notificationCenter" },
+          { label: "Twilio — video (uses Token field)", href: (b, q) => b + "/communications/video?token=" + encodeURIComponent(q.token) },
+          { label: "Chat (old) — active", href: (b) => b + "/communications/chat?someParam=someValue" },
+          { label: "Chat (old) — specific portfolio", href: (b, q) => b + "/communications/chat/" + encodeURIComponent(q.pid) + "?someParam=someValue" },
+          { label: "Chat (new) — main / trigger insight", href: (b) => b + "/communications/conversations/main/trigger-insight/" },
+          { label: "Chat (new) — conversation", href: (b, q) => b + "/communications/conversations/" + encodeURIComponent(q.conv) },
+          { label: "Ella intro", href: (b) => b + "/communications/conversations/main/intro" },
+          { label: "Attach Agent (banker)", href: (b) => b + "/actions/attach_agent" },
+        ],
+      },
+    ];
 
     function qs() {
       return {
@@ -198,6 +298,7 @@
         token: document.getElementById("token").value.trim() || "TOKEN",
         instrument: document.getElementById("instrument").value.trim() || "INSTRUMENT_ID",
         conv: document.getElementById("conv").value.trim() || "CONVERSATION_ID",
+        sessionDataKey: document.getElementById("sdk").value.trim() || "SESSION_DATA_KEY",
       };
     }
 
@@ -205,36 +306,22 @@
       return document.getElementById("env").value.replace(/\/$/, "");
     }
 
-    function expandPath(template, q) {
-      return template
-        .replace(/{portfolioId}/g, encodeURIComponent(q.pid))
-        .replace(/{token}/g, encodeURIComponent(q.token))
-        .replace(/{instrumentId}/g, encodeURIComponent(q.instrument))
-        .replace(/{conversationId}/g, encodeURIComponent(q.conv));
-    }
-
-    function itemHref(b, q, pathTemplate) {
-      const path = expandPath(pathTemplate, q);
-      return b + (path.startsWith("/") ? path : "/" + path);
-    }
-
     function render() {
       const b = base();
       const q = qs();
       const root = document.getElementById("sections");
       root.innerHTML = "";
-      const sections = CFG.sections || [];
-      for (const block of sections) {
+      for (const block of DATA) {
         const h2 = document.createElement("h2");
-        h2.textContent = block.title || "";
+        h2.textContent = block.section;
         root.appendChild(h2);
-        for (const item of block.items || []) {
-          const url = itemHref(b, q, item.path || "");
+        for (const item of block.items) {
+          const url = item.href(b, q);
           const a = document.createElement("a");
           a.className = "link-btn";
           a.href = url;
           a.rel = "noopener noreferrer";
-          a.innerHTML = (item.label || "") + "<small>" + url + "</small>";
+          a.innerHTML = item.label + "<small>" + url + "</small>";
           root.appendChild(a);
         }
       }
@@ -245,6 +332,7 @@
     document.getElementById("token").addEventListener("input", render);
     document.getElementById("instrument").addEventListener("input", render);
     document.getElementById("conv").addEventListener("input", render);
+    document.getElementById("sdk").addEventListener("input", render);
     render();
   </script>
 </body>
