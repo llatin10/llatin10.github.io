@@ -14,6 +14,7 @@ from urllib.parse import quote
 ROOT = Path(__file__).resolve().parent
 SKIP = {"index.html"}
 SITE_BASE = "https://llatin10.github.io"
+CONFLUENCE_SYNC = ROOT / "sync_confluence_deeplinks.py"
 
 
 def is_deep_links_page(title: str, filename: str) -> bool:
@@ -116,6 +117,29 @@ def git_push_site() -> int:
 
 
 def main() -> int:
+    # Step 0: Try to sync deep links from Confluence (safe no-op if missing creds).
+    if CONFLUENCE_SYNC.is_file():
+        try:
+            r = subprocess.run(
+                [sys.executable, str(CONFLUENCE_SYNC)],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+            )
+            out = (r.stdout or "").strip()
+            err = (r.stderr or "").strip()
+            if out:
+                print(out)
+            if err:
+                print(err, file=sys.stderr)
+            if r.returncode != 0:
+                print(
+                    f"Confluence: sync script returned {r.returncode} (continuing).",
+                    file=sys.stderr,
+                )
+        except Exception as e:
+            print(f"Confluence: sync failed ({e}) — continuing.", file=sys.stderr)
+
     all_pages: list[tuple[str, str]] = []
     for p in sorted(ROOT.glob("*.html")):
         if p.name.lower() in {s.lower() for s in SKIP}:
