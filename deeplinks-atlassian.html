@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="color-scheme" content="light dark" />
-  <title>Deep links (Atlassian doc)</title>
-  <meta http-equiv="refresh" content="0; url=https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RD/pages/475794673/Deeplinks" />
+  <title>Deep links (from Confluence)</title>
   <style>
     :root {
       --bg: #f4f4f5;
@@ -14,7 +13,7 @@
       --muted: #71717a;
       --accent: #0d9488;
       --border: #e4e4e7;
-      --link-bg: #ecfdf5;
+      --rowbg: #ecfdf5;
     }
     @media (prefers-color-scheme: dark) {
       :root {
@@ -24,7 +23,7 @@
         --muted: #a1a1aa;
         --accent: #2dd4bf;
         --border: #27272a;
-        --link-bg: #134e4a;
+        --rowbg: #134e4a;
       }
     }
     * { box-sizing: border-box; }
@@ -35,19 +34,19 @@
       color: var(--text);
       line-height: 1.45;
       padding: max(12px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
-      max-width: 720px;
+      max-width: 780px;
       margin-left: auto;
       margin-right: auto;
     }
     h1 {
       font-size: 1.35rem;
-      margin: 0 0 8px;
+      margin: 0 0 6px;
       font-weight: 700;
     }
-    .lead {
-      color: var(--muted);
-      font-size: 0.95rem;
+    .sub {
       margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 0.92rem;
     }
     .panel {
       background: var(--card);
@@ -55,39 +54,120 @@
       border-radius: 12px;
       padding: 14px;
     }
-    a.link-btn {
+    .row {
       display: block;
-      padding: 14px 16px;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text);
-      background: var(--link-bg);
-      border: 1px solid var(--border);
+      padding: 12px 12px;
       border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--rowbg);
       text-decoration: none;
+      color: var(--text);
+      margin-bottom: 10px;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
-      word-break: break-word;
     }
-    a.link-btn small {
-      display: block;
-      font-weight: 400;
-      font-size: 0.8rem;
-      color: var(--muted);
+    .row:active { opacity: 0.86; transform: scale(0.995); }
+    .label { font-weight: 600; }
+    .href {
       margin-top: 6px;
+      font-size: 0.82rem;
+      color: var(--muted);
       word-break: break-all;
+    }
+    .empty { color: var(--muted); font-size: 0.95rem; }
+    .meta {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.92em;
     }
   </style>
 </head>
 <body>
-  <h1>Deep links (Atlassian doc)</h1>
-  <p class="lead">Redirecting to Confluence. If you’re not logged in (or scripts are blocked), use the link below.</p>
-
+  <h1>Deeplinks</h1>
+  <p class="sub">Generated from Confluence page <code>475794673</code>. Tap a row to open.</p>
   <div class="panel">
-    <a class="link-btn" href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RD/pages/475794673/Deeplinks" rel="noopener noreferrer">
-      Open “Deeplinks” (Atlassian)
-      <small>https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RD/pages/475794673/Deeplinks</small>
-    </a>
+      <a class="row" href="https://app.stgfdb.net/portfolio/settings/add-partner" rel="noopener noreferrer">
+        <div class="label">https://app.stgfdb.net/portfolio/settings/add-partner</div>
+        <div class="href">https://app.stgfdb.net/portfolio/settings/add-partner</div>
+      </a>
+      <a class="row" href="https://app.stgfdb.net/portfolio/settings/proxyidentifier" rel="noopener noreferrer">
+        <div class="label">https://app.stgfdb.net/portfolio/settings/proxyidentifier</div>
+        <div class="href">https://app.stgfdb.net/portfolio/settings/proxyidentifier</div>
+      </a>
+      <a class="row" href="https://app.devfdb.net/portfolio/loans" rel="noopener noreferrer">
+        <div class="label">https://app.devfdb.net/portfolio/loans</div>
+        <div class="href">https://app.devfdb.net/portfolio/loans</div>
+      </a>
+      <a class="row" href="https://app.stgfdb.net/portfolio/loans" rel="noopener noreferrer">
+        <div class="label">https://app.stgfdb.net/portfolio/loans</div>
+        <div class="href">https://app.stgfdb.net/portfolio/loans</div>
+      </a>
+      <a class="row" href="https://app.tfd-bank.com/portfolio/loans" rel="noopener noreferrer">
+        <div class="label">https://app.tfd-bank.com/portfolio/loans</div>
+        <div class="href">https://app.tfd-bank.com/portfolio/loans</div>
+      </a>
+      <a class="row" href="https://app.tfd-bank.com/portfolio/ils/deposits" rel="noopener noreferrer">
+        <div class="label">https://app.tfd-bank.com/portfolio/ils/deposits</div>
+        <div class="href">https://app.tfd-bank.com/portfolio/ils/deposits</div>
+      </a>
+      <a class="row" href="https://app.tfd-bank.com/portfolio/cards" rel="noopener noreferrer">
+        <div class="label">https://app.tfd-bank.com/portfolio/cards</div>
+        <div class="href">https://app.tfd-bank.com/portfolio/cards</div>
+      </a>
+      <a class="row" href="https://app.tfd-bank.com/portfolio/payments" rel="noopener noreferrer">
+        <div class="label">https://app.tfd-bank.com/portfolio/payments</div>
+        <div class="href">https://app.tfd-bank.com/portfolio/payments</div>
+      </a>
+      <a class="row" href="https://app.tfd-bank.com/portfolio/payments/transfer" rel="noopener noreferrer">
+        <div class="label">https://app.tfd-bank.com/portfolio/payments/transfer</div>
+        <div class="href">https://app.tfd-bank.com/portfolio/payments/transfer</div>
+      </a>
+      <a class="row" href="https://app.tfd-bank.com/portfolio/direct-debit" rel="noopener noreferrer">
+        <div class="label">https://app.tfd-bank.com/portfolio/direct-debit</div>
+        <div class="href">https://app.tfd-bank.com/portfolio/direct-debit</div>
+      </a>
+      <a class="row" href="https://app.tfd-bank.com/portfolio/settings" rel="noopener noreferrer">
+        <div class="label">https://app.tfd-bank.com/portfolio/settings</div>
+        <div class="href">https://app.tfd-bank.com/portfolio/settings</div>
+      </a>
+      <a class="row" href="https://app.tfd-bank.com/portfolio/settings/inbox" rel="noopener noreferrer">
+        <div class="label">https://app.tfd-bank.com/portfolio/settings/inbox</div>
+        <div class="href">https://app.tfd-bank.com/portfolio/settings/inbox</div>
+      </a>
+      <a class="row" href="https://app.tfd-bank.com/portfolio/settings/password" rel="noopener noreferrer">
+        <div class="label">https://app.tfd-bank.com/portfolio/settings/password</div>
+        <div class="href">https://app.tfd-bank.com/portfolio/settings/password</div>
+      </a>
+      <a class="row" href="https://app.tfd-bank.com/portfolio/settings/reports/transactions" rel="noopener noreferrer">
+        <div class="label">https://app.tfd-bank.com/portfolio/settings/reports/transactions</div>
+        <div class="href">https://app.tfd-bank.com/portfolio/settings/reports/transactions</div>
+      </a>
+      <a class="row" href="https://app.tfd-bank.com/portfolio/settings/reports/ownership" rel="noopener noreferrer">
+        <div class="label">https://app.tfd-bank.com/portfolio/settings/reports/ownership</div>
+        <div class="href">https://app.tfd-bank.com/portfolio/settings/reports/ownership</div>
+      </a>
+      <a class="row" href="https://app.tfd-bank.com/portfolio/settings/reports/accountSummary" rel="noopener noreferrer">
+        <div class="label">https://app.tfd-bank.com/portfolio/settings/reports/accountSummary</div>
+        <div class="href">https://app.tfd-bank.com/portfolio/settings/reports/accountSummary</div>
+      </a>
+      <a class="row" href="https://app.stgfdb.net/portfolio/settings/notifications" rel="noopener noreferrer">
+        <div class="label">https://app.stgfdb.net/portfolio/settings/notifications</div>
+        <div class="href">https://app.stgfdb.net/portfolio/settings/notifications</div>
+      </a>
+      <a class="row" href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RD/pages/475794673/Deeplinks" rel="noopener noreferrer">
+        <div class="label">https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RD/pages/475794673/Deeplinks</div>
+        <div class="href">https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RD/pages/475794673/Deeplinks</div>
+      </a>
+    <div class="meta">
+      Confluence version: <code>126</code><br />
+      Updated: <code>2026-03-31T12:12:23.353Z</code>
+    </div>
   </div>
 </body>
 </html>

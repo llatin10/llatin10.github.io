@@ -4,17 +4,21 @@ Fetch the Confluence 'Deeplinks' page and generate an HTML page in this folder.
 
 This is intended to run as part of /html URL automation.
 
-Auth:
-  - Set ATLASSIAN_EMAIL and ATLASSIAN_API_TOKEN in your environment
-    (API token from Atlassian account settings).
+Preferred input:
+  - Use Atlassian MCP to fetch the page and save JSON locally, then run:
+      python3 sync_confluence_deeplinks.py --from-mcp-json deeplinks.mcp.json
+
+Fallback auth (direct Confluence REST API):
+  - Set ATLASSIAN_EMAIL and ATLASSIAN_API_TOKEN in your environment.
 
 Output:
-  - deeplinks-confluence.html (generated)
-  - deeplinks-confluence.meta.json (page id + version + updated timestamp)
+  - deeplinks-atlassian.html (generated)
+  - deeplinks-atlassian.meta.json (page id + version + updated timestamp)
 """
 
 from __future__ import annotations
 
+import argparse
 import base64
 import html
 import json
@@ -32,8 +36,8 @@ PAGE_ID = "475794673"
 CONFLUENCE_BASE = "https://thefirstdigitalbankinsetup.atlassian.net/wiki"
 API_URL = f"{CONFLUENCE_BASE}/rest/api/content/{PAGE_ID}?expand=body.storage,version"
 
-OUT_HTML = ROOT / "deeplinks-confluence.html"
-OUT_META = ROOT / "deeplinks-confluence.meta.json"
+OUT_HTML = ROOT / "deeplinks-atlassian.html"
+OUT_META = ROOT / "deeplinks-atlassian.meta.json"
 
 
 @dataclass(frozen=True)
@@ -127,9 +131,74 @@ def extract_links_from_storage(storage_html: str) -> list[Link]:
     return out
 
 
+def extract_links_from_markdownish(text: str) -> list[Link]:
+    """
+    Best-effort extraction from MCP markdown output (which may include:
+      - Markdown links: [label](url)
+      - Bare URLs: https://...
+      - Confluence smartlinks/mentions rendered as <custom ...>...</custom>
+    """
+    links: list[Link] = []
+    s = text or ""
+
+    # Markdown links
+    for m in re.finditer(r"\[([^\]]+)\]\((https?://[^)\s]+)\)", s, flags=re.IGNORECASE):
+        label = m.group(1).strip()
+        href = html.unescape(m.group(2)).strip()
+        links.append(Link(label=label or href, href=href))
+
+    # Bare URLs
+    for m in re.finditer(r"(https?://[^\s)>\"]+)", s, flags=re.IGNORECASE):
+        href = html.unescape(m.group(1)).strip()
+        links.append(Link(label=href, href=href))
+
+    # Extract URLs embedded in <custom ...>https://...</custom>
+    for m in re.finditer(r"<custom\b[^>]*>(.*?)</custom>", s, flags=re.IGNORECASE | re.DOTALL):
+        inner = _strip_tags(m.group(1))
+        for u in re.finditer(r"(https?://[^\s)]+)", inner, flags=re.IGNORECASE):
+            href = html.unescape(u.group(1)).strip()
+            links.append(Link(label=href, href=href))
+
+    # Normalize and filter
+    out: list[Link] = []
+    seen: set[tuple[str, str]] = set()
+    for l in links:
+        href = l.href
+        label = l.label
+
+        if href.startswith("/wiki/"):
+            href = "https://thefirstdigitalbankinsetup.atlassian.net" + href
+
+        keep = False
+        if href.startswith("/"):
+            keep = True
+        if re.search(r"https?://app\.(stg|dev)fdb\.net\b", href):
+            keep = True
+        if re.search(r"https?://app\.tfd-bank\.com\b", href):
+            keep = True
+        if re.search(r"^onezerobank://", href, re.IGNORECASE):
+            keep = True
+        if "thefirstdigitalbankinsetup.atlassian.net/wiki/" in href:
+            keep = True
+        if "thefirstdigitalbankinsetup.atlassian.net/browse/" in href:
+            keep = True
+
+        if not keep:
+            continue
+
+        key = (label, href)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(Link(label=label, href=href))
+
+    return out
+
+
 def render_html(links: list[Link], meta: dict) -> str:
-    updated = meta.get("version", {}).get("when") or ""
-    version = meta.get("version", {}).get("number")
+    version_obj = meta.get("version", {}) if isinstance(meta.get("version", {}), dict) else {}
+    updated = version_obj.get("when") or version_obj.get("createdAt") or ""
+    version = version_obj.get("number")
     title = meta.get("title") or "Deep links (from Confluence)"
 
     def esc(s: str) -> str:
@@ -248,12 +317,39 @@ def render_html(links: list[Link], meta: dict) -> str:
 """
 
 
-def main() -> int:
-    try:
-        payload = fetch_confluence_json()
-    except RuntimeError as e:
-        print(f"Confluence: {e}")
-        return 0
+def _load_mcp_json(path: Path) -> dict:
+    payload = json.loads(path.read_text(encoding="utf-8", errors="replace"))
+    if not isinstance(payload, dict):
+        raise ValueError("MCP JSON must be a JSON object")
+    if str(payload.get("id", "")).strip() != PAGE_ID:
+        raise ValueError(f"MCP JSON page id mismatch (expected {PAGE_ID})")
+    return payload
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Sync Confluence Deeplinks HTML into this folder.")
+    parser.add_argument(
+        "--from-mcp-json",
+        dest="from_mcp_json",
+        type=str,
+        default="",
+        help="Path to Atlassian MCP getConfluencePage JSON response",
+    )
+    args = parser.parse_args(argv)
+
+    payload: dict
+    if args.from_mcp_json:
+        try:
+            payload = _load_mcp_json(Path(args.from_mcp_json))
+        except Exception as e:
+            print(f"Confluence(MCP): failed to load {args.from_mcp_json}: {e}", file=sys.stderr)
+            return 1
+    else:
+        try:
+            payload = fetch_confluence_json()
+        except RuntimeError as e:
+            print(f"Confluence: {e}")
+            return 0
 
     current_version = payload.get("version", {}).get("number")
     try:
@@ -266,12 +362,12 @@ def main() -> int:
         # If meta is corrupted/unreadable, just regenerate.
         pass
 
-    storage_html = (
-        payload.get("body", {})
-        .get("storage", {})
-        .get("value", "")
-    )
-    links = extract_links_from_storage(storage_html)
+    links: list[Link]
+    if isinstance(payload.get("body"), dict):
+        storage_html = payload.get("body", {}).get("storage", {}).get("value", "")
+        links = extract_links_from_storage(storage_html)
+    else:
+        links = extract_links_from_markdownish(str(payload.get("body", "")))
 
     OUT_HTML.write_text(render_html(links, payload), encoding="utf-8")
     OUT_META.write_text(
@@ -280,7 +376,8 @@ def main() -> int:
                 "pageId": PAGE_ID,
                 "fetchedAt": datetime.utcnow().isoformat(timespec="seconds") + "Z",
                 "confluenceVersion": current_version,
-                "confluenceUpdatedAt": payload.get("version", {}).get("when"),
+                "confluenceUpdatedAt": payload.get("version", {}).get("when")
+                or payload.get("version", {}).get("createdAt"),
                 "linksCount": len(links),
             },
             indent=2,
