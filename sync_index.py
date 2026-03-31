@@ -74,9 +74,15 @@ def git_push_site() -> int:
         return 0
 
     paths: list[str] = [p.name for p in sorted(ROOT.glob("*.html"))]
-    script = ROOT / "sync_index.py"
-    if script.is_file():
-        paths.append(script.name)
+    # Include sync scripts + generated metadata.
+    for extra in (
+        "sync_index.py",
+        "sync_confluence_deeplinks.py",
+        "deeplinks-confluence.meta.json",
+    ):
+        p = ROOT / extra
+        if p.is_file():
+            paths.append(p.name)
     try:
         subprocess.run(
             ["git", "add", "--", *paths],
