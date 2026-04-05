@@ -119,6 +119,9 @@
         .md-content pre { margin: 16px 0; }
         .md-content pre code { background: transparent !important; border: none !important; padding: 0 !important; }
     .muted { color: #78716c; font-size: 0.9rem; margin: 8px 0 16px; }
+    .muted { color: #78716c; font-size: 0.9rem; margin: 8px 0 16px; }
+    .muted { color: #78716c; font-size: 0.9rem; margin: 8px 0 16px; }
+    .muted { color: #78716c; font-size: 0.9rem; margin: 8px 0 16px; }
   </style>
 </head>
 <body class="doc-theme-warm">
@@ -127,27 +130,40 @@
 <h1>Deep Link Coverage Report</h1>
 <p>This file is <strong>generated</strong>. Do not edit by hand. Regenerate with:</p>
 <pre><code class="language-bash">python3 &quot;/Users/llatin/.cursor/version-prep/scripts/deeplink_coverage.py&quot; write-html</code></pre>
-<p class="muted">Generated 2026-04-05 08:12 UTC · mobile-tests: <code>/Users/llatin/mobile-tests</code></p>
+<p class="muted">CLI checks: <code>python3 &quot;/Users/llatin/.cursor/version-prep/scripts/deeplink_coverage.py&quot; check-atlassian</code></p>
+<p class="muted">Publish (GitHub Pages, same as <strong>/html URL</strong>): <code>python3 &quot;/Users/llatin/.cursor/version-prep/scripts/sync_github_pages_html_url.py&quot;</code></p>
+<p class="muted">Generated 2026-04-05 08:44 UTC · mobile-tests: <code>/Users/llatin/mobile-tests</code></p>
 <h2>Scope and method</h2>
 <ul>
-<li>Canonical deep link list: <code>src/main/resources/deeplinks.json</code></li>
-<li>Test inputs: <code>src/test/resources/testData/deeplinks/*.csv</code> (columns <code>deeplinkUrl</code>, <code>mode</code>)</li>
+<li><strong>Primary</strong> — Confluence Deeplinks snapshot vs mode-CSVs (gap-focused).</li>
+<li><strong>Reference</strong> — <code>deeplinks.json</code> (34 paths): formal automation catalog vs the same CSVs.</li>
+<li>Test inputs: <code>src/test/resources/testData/deeplinks/*.csv</code></li>
 <li>Excludes: <code>DeeplinksTestData.csv</code>, <code>DeeplinksUrls.csv</code></li>
-<li><strong>Covered</strong> = path appears with both <code>close</code> and <code>background</code></li>
-<li><strong>Partially covered</strong> = path appears but only one mode</li>
-<li><strong>Not covered</strong> = path missing from qualifying CSVs</li>
 </ul>
-<h2>Summary</h2>
+<h2>Summary — automation coverage vs documentation</h2>
+<p>Parsed from a Confluence storage snapshot (same page as <a href="https://llatin10.github.io/deeplinks-atlassian.html">deeplinks-atlassian.html</a>). Compared to <code>src/test/resources/testData/deeplinks/*.csv</code> (<code>deeplinkUrl</code> + <code>mode</code>). Template rows, placeholders, and incomplete query values are skipped when reading the wiki.</p>
 <table>
 <thead><tr><th>Metric</th><th>Count</th></tr></thead>
 <tbody>
-<tr><td>Total deep links</td><td>34</td></tr>
-<tr><td>Covered</td><td>34</td></tr>
-<tr><td>Partially covered</td><td>0</td></tr>
-<tr><td>Not covered</td><td>0</td></tr>
+<tr><td>Wiki rows parsed (raw)</td><td>62</td></tr>
+<tr><td>Actionable unique paths</td><td>45</td></tr>
+<tr><td>Fully covered in tests</td><td>29</td></tr>
+<tr><td><strong>Gaps</strong> (missing close + background)</td><td><strong>16</strong></td></tr>
 </tbody>
 </table>
-<h2>Coverage table</h2>
+<p class="muted">Snapshot: <code>/Users/llatin/.cursor/HTML URL/deeplinks-confluence-body.snapshot.txt</code> · Parse skips: brace-templates=11, angle-placeholder=1, incomplete query=2, doc-example=1</p>
+<p class="muted"><code>deeplinks.json</code> (34 paths) is the checked-in automation catalog; all of those paths have both <code>close</code> and <code>background</code> in mode-CSVs. The wiki still documents additional links — the gap list below is what matters for full product coverage.</p>
+<h2>Gap list (wiki → tests)</h2>
+<p>These paths appear in the Confluence Deeplinks snapshot but do not have both <code>close</code> and <code>background</code> rows in qualifying mode-CSVs (or no row at all).</p>
+<table>
+<thead><tr><th>Path (wiki)</th><th>Normalized</th><th>Wiki row</th><th>Status</th><th>Modes in CSVs</th><th>CSV source(s)</th></tr></thead>
+<tbody>
+<tr><td><code>/portfolio/settings/add-partner</code></td><td><code>/portfolio/settings/add-partner</code></td><td>Add partner — Settings - Add partner flow</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/portfolio/settings/notifications?channel=PUSH</code></td><td><code>/portfolio/settings/notifications?channel=PUSH</code></td><td>Settings — Notifications</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/portfolio/settings/notifications?channel=other</code></td><td><code>/portfolio/settings/notifications?channel=other</code></td><td>Settings — Notifications</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/openbanking/create</code></td><td><code>/openbanking/create</code></td><td>Openbanking finanda — Create new consent</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/openbanking/consent-management</code></td><td><code>/openbanking/consent-management</code></td><td>Openbanking finanda — Navigate to Finanda Consents Screen Or NewMy Wealth screen (depends on My Wealth Tab feature flag</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/openbanking/accountSelection?sessionDataKey=12fe5ac9-c2fe-42d5-bc29-f3ed0ec043f7</code></td><td><code>/openbanking/accountselection?sessionDataKey=12fe5ac9-c2fe-42d5-bc29-f3ed0ec043f7</code></td><td>Open Banking Out — Open banking out - select accounts</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/portfolio/securities/assetPage?symbol=QQQ&amp;exchangeGroup=US_EXCHANGES</code></td><td><code>/portfolio/securities/assetpage?symbol=QQQ&amp;exchangeGroup=US_EXCHANGES</code></td><td>Securities — AssetPage</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/portfolio/securities/recurringOrders</code></td><td><code>/portfolio/securities/recurringorders</code></td><td>Securities — RecurringOrders</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/portfolio/securities/popularRecurringOrders</code></td><td><code>/portfolio/securities/popularrecurringorders</code></td><td>Securities — Popular Recurring Orders</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/portfolio/securities/mutualFunds</code></td><td><code>/portfolio/securities/mutualfunds</code></td><td>Securities — MutualFunds</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/portfolio/securities/tlv125</code></td><td><code>/portfolio/securities/tlv125</code></td><td>Securities — tlv125</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/actions/attach_agent</code></td><td><code>/actions/attach_agent</code></td><td>Attach Agent (banker) — New Inquiry for bankers</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/portfolio/fcy/convert</code></td><td><code>/portfolio/fcy/convert</code></td><td>FCY — Convert FCY screen</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/portfolio/settings/activation-main</code></td><td><code>/portfolio/settings/activation-main</code></td><td>Activation Engine — Fill Profile Screen</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/portfolio/settings/activation/transfer</code></td><td><code>/portfolio/settings/activation/transfer</code></td><td>Activation Engine — Activation Feature Screen - Transfer Funds</td><td>Not covered</td><td>—</td><td>—</td></tr><tr><td><code>/portfolio/fcy/autofx</code></td><td><code>/portfolio/fcy/autofx</code></td><td>FCY - AutoFx — Auto FX internal page to turn on the toggel</td><td>Not covered</td><td>—</td><td>—</td></tr>
+</tbody>
+</table>
+
+<h2>Reference — deeplinks.json vs mode-CSVs</h2>
+<p class="muted">Per-path detail for the checked-in catalog only (not the full wiki).</p>
 <table>
 <thead>
 <tr>
@@ -168,10 +184,9 @@
 <ul>
 <li>Flow: full login → deep link in <code>close</code> and <code>background</code> modes → assert destination via <code>deeplink.path</code> → page mapping.</li>
 <li>Opens HTTPS app URLs (Android uses browser navigation; aligns with tappable link behavior).</li>
-<li>Inventory for automation: <code>deeplinks.json</code>.</li>
 </ul>
 <h2>Next steps</h2>
-<p>After regenerating, publish the site with <strong>/html URL</strong> (or <code>sync_github_pages_html_url.py</code>) so GitHub Pages updates.</p>
+<p>After regenerating, run <code>sync_github_pages_html_url.py</code> (or Cursor <strong>/deeplink coverage</strong> / <strong>/html URL</strong>) to push this file to GitHub Pages.</p>
 
     </div>
   </div>
