@@ -9,7 +9,8 @@ Preferred input:
       python3 sync_confluence_deeplinks.py --from-mcp-json deeplinks.mcp.json
 
 Fallback auth (direct Confluence REST API):
-  - Set ATLASSIAN_EMAIL and ATLASSIAN_API_TOKEN in your environment.
+  - Set ATLASSIAN_EMAIL and ATLASSIAN_API_TOKEN in your environment, or in Cursor
+    User settings under terminal.integrated.env.osx (linux/windows) — see cursor_integrated_env.py.
 
 Output:
   - deeplinks-atlassian.html (generated — single link to the Confluence wiki; no mirrored table)
@@ -52,6 +53,14 @@ HTML_TEMPLATE_MARK = "confluence-deeplinks-template:wiki-link-v1"
 
 SNAPSHOT_BODY = ROOT / "deeplinks-confluence-body.snapshot.txt"
 SNAPSHOT_PREVIOUS = ROOT / "deeplinks-confluence-body.previous.txt"
+
+
+def _apply_cursor_env() -> None:
+    try:
+        from cursor_integrated_env import apply_atlassian_from_cursor_settings
+    except ImportError:
+        return
+    apply_atlassian_from_cursor_settings()
 
 
 def canonical_body_text(payload: dict) -> str:
@@ -248,6 +257,7 @@ def _load_mcp_json(path: Path) -> dict:
 
 
 def main(argv: list[str] | None = None) -> int:
+    _apply_cursor_env()
     parser = argparse.ArgumentParser(description="Sync Confluence Deeplinks HTML into this folder.")
     parser.add_argument(
         "--from-mcp-json",
