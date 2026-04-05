@@ -12,8 +12,10 @@ Fallback auth (direct Confluence REST API):
   - Set ATLASSIAN_EMAIL and ATLASSIAN_API_TOKEN in your environment.
 
 Output:
-  - deeplinks-atlassian.html (generated)
-  - deeplinks-atlassian.meta.json (page id + version + updated timestamp)
+  - deeplinks-atlassian.html (generated — single link to the Confluence wiki; no mirrored table)
+  - deeplinks-atlassian.meta.json (page id + version + fetched timestamp)
+
+Do not commit deeplinks.mcp.json (gitignored). Keep MCP exports local only.
 """
 
 from __future__ import annotations
@@ -23,11 +25,9 @@ import base64
 import html
 import json
 import os
-import re
 import sys
 import urllib.error
 import urllib.request
-from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
@@ -38,12 +38,10 @@ API_URL = f"{CONFLUENCE_BASE}/rest/api/content/{PAGE_ID}?expand=body.storage,ver
 
 OUT_HTML = ROOT / "deeplinks-atlassian.html"
 OUT_META = ROOT / "deeplinks-atlassian.meta.json"
-
-
-@dataclass(frozen=True)
-class Link:
-    label: str
-    href: str
+# Canonical Deeplinks wiki URL (published HTML points here only).
+WIKI_PAGE_URL = f"{CONFLUENCE_BASE}/spaces/RD/pages/{PAGE_ID}/Deeplinks"
+# Bumps when generated HTML shape changes (forces rewrite even if Confluence version unchanged).
+HTML_TEMPLATE_MARK = "confluence-deeplinks-template:wiki-link-v1"
 
 
 def _basic_auth_header(email: str, token: str) -> str:
@@ -80,149 +78,25 @@ def fetch_confluence_json() -> dict:
     return json.loads(data.decode("utf-8", errors="replace"))
 
 
-def _strip_tags(s: str) -> str:
-    s = re.sub(r"<[^>]+>", " ", s)
-    s = re.sub(r"\s+", " ", s).strip()
-    return html.unescape(s)
-
-
-def extract_links_from_storage(storage_html: str) -> list[Link]:
-    """
-    Best-effort extraction:
-      - Find <a href="...">label</a>
-      - Keep only links that look like "deep links" targets:
-        app.*fdb*.net domains, tfd-bank.com, or paths starting with /
-    """
-    links: list[Link] = []
-    for m in re.finditer(
-        r'<a\b[^>]*\bhref="([^"]+)"[^>]*>(.*?)</a>',
-        storage_html,
-        flags=re.IGNORECASE | re.DOTALL,
-    ):
-        href = html.unescape(m.group(1)).strip()
-        label = _strip_tags(m.group(2)) or href
-
-        # Normalize Confluence relative links
-        if href.startswith("/wiki/"):
-            href = "https://thefirstdigitalbankinsetup.atlassian.net" + href
-
-        keep = False
-        if href.startswith("/"):
-            keep = True
-        if re.search(r"https?://app\.(stg|dev)fdb\.net\b", href):
-            keep = True
-        if re.search(r"https?://app\.tfd-bank\.com\b", href):
-            keep = True
-        if re.search(r"https?://app\.onezerobank\.com\b", href):
-            keep = True
-        if re.search(r"^onezerobank://", href, re.IGNORECASE):
-            keep = True
-
-        if keep:
-            links.append(Link(label=label, href=href))
-
-    # Deduplicate while preserving order
-    seen: set[tuple[str, str]] = set()
-    out: list[Link] = []
-    for l in links:
-        key = (l.label, l.href)
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(l)
-    return out
-
-
-def extract_links_from_markdownish(text: str) -> list[Link]:
-    """
-    Best-effort extraction from MCP markdown output (which may include:
-      - Markdown links: [label](url)
-      - Bare URLs: https://...
-      - Confluence smartlinks/mentions rendered as <custom ...>...</custom>
-    """
-    links: list[Link] = []
-    s = text or ""
-
-    # Markdown links
-    for m in re.finditer(r"\[([^\]]+)\]\((https?://[^)\s]+)\)", s, flags=re.IGNORECASE):
-        label = m.group(1).strip()
-        href = html.unescape(m.group(2)).strip()
-        links.append(Link(label=label or href, href=href))
-
-    # Bare URLs
-    for m in re.finditer(r"(https?://[^\s)>\"]+)", s, flags=re.IGNORECASE):
-        href = html.unescape(m.group(1)).strip()
-        links.append(Link(label=href, href=href))
-
-    # Extract URLs embedded in <custom ...>https://...</custom>
-    for m in re.finditer(r"<custom\b[^>]*>(.*?)</custom>", s, flags=re.IGNORECASE | re.DOTALL):
-        inner = _strip_tags(m.group(1))
-        for u in re.finditer(r"(https?://[^\s)]+)", inner, flags=re.IGNORECASE):
-            href = html.unescape(u.group(1)).strip()
-            links.append(Link(label=href, href=href))
-
-    # Normalize and filter
-    out: list[Link] = []
-    seen: set[tuple[str, str]] = set()
-    for l in links:
-        href = l.href
-        label = l.label
-
-        if href.startswith("/wiki/"):
-            href = "https://thefirstdigitalbankinsetup.atlassian.net" + href
-
-        keep = False
-        if href.startswith("/"):
-            keep = True
-        if re.search(r"https?://app\.(stg|dev)fdb\.net\b", href):
-            keep = True
-        if re.search(r"https?://app\.tfd-bank\.com\b", href):
-            keep = True
-        if re.search(r"https?://app\.onezerobank\.com\b", href):
-            keep = True
-        if re.search(r"^onezerobank://", href, re.IGNORECASE):
-            keep = True
-        if "thefirstdigitalbankinsetup.atlassian.net/wiki/" in href:
-            keep = True
-        if "thefirstdigitalbankinsetup.atlassian.net/browse/" in href:
-            keep = True
-
-        if not keep:
-            continue
-
-        key = (label, href)
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(Link(label=label, href=href))
-
-    return out
-
-
-def render_html(links: list[Link], meta: dict) -> str:
+def render_wiki_link_page(meta: dict) -> str:
+    """Single link to Confluence — no extracted URLs or MCP body on GitHub Pages."""
     version_obj = meta.get("version", {}) if isinstance(meta.get("version", {}), dict) else {}
     updated = version_obj.get("when") or version_obj.get("createdAt") or ""
     version = version_obj.get("number")
-    title = meta.get("title") or "Deep links (from Confluence)"
+    title = "Deep links (from Confluence)"
 
     def esc(s: str) -> str:
         return html.escape(str(s), quote=True)
 
-    rows = "\n".join(
-        f"""      <a class="row" href="{esc(l.href)}" rel="noopener noreferrer">
-        <div class="label">{esc(l.label)}</div>
-        <div class="href">{esc(l.href)}</div>
-      </a>"""
-        for l in links
-    ) or '<div class="empty">No links found (check Confluence formatting / filters).</div>'
-
+    wiki = WIKI_PAGE_URL
     return f"""<!DOCTYPE html>
+<!-- {HTML_TEMPLATE_MARK} -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="color-scheme" content="light dark" />
-  <title>Deep links (from Confluence)</title>
+  <title>{esc(title)}</title>
   <style>
     :root {{
       --bg: #f4f4f5;
@@ -252,17 +126,17 @@ def render_html(links: list[Link], meta: dict) -> str:
       color: var(--text);
       line-height: 1.45;
       padding: max(12px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
-      max-width: 780px;
+      max-width: 560px;
       margin-left: auto;
       margin-right: auto;
     }}
     h1 {{
       font-size: 1.35rem;
-      margin: 0 0 6px;
+      margin: 0 0 8px;
       font-weight: 700;
     }}
     .sub {{
-      margin: 0 0 16px;
+      margin: 0 0 18px;
       color: var(--muted);
       font-size: 0.92rem;
     }}
@@ -270,31 +144,31 @@ def render_html(links: list[Link], meta: dict) -> str:
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 14px;
+      padding: 18px;
     }}
-    .row {{
+    .wiki-link {{
       display: block;
-      padding: 12px 12px;
+      padding: 14px 16px;
       border-radius: 12px;
       border: 1px solid var(--border);
       background: var(--rowbg);
       text-decoration: none;
       color: var(--text);
-      margin-bottom: 10px;
+      font-weight: 600;
+      text-align: center;
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
     }}
-    .row:active {{ opacity: 0.86; transform: scale(0.995); }}
-    .label {{ font-weight: 600; }}
-    .href {{
-      margin-top: 6px;
-      font-size: 0.82rem;
+    .wiki-link:active {{ opacity: 0.86; transform: scale(0.995); }}
+    .url {{
+      margin-top: 10px;
+      font-size: 0.78rem;
+      font-weight: 400;
       color: var(--muted);
       word-break: break-all;
     }}
-    .empty {{ color: var(--muted); font-size: 0.95rem; }}
     .meta {{
-      margin-top: 14px;
+      margin-top: 16px;
       color: var(--muted);
       font-size: 0.8rem;
       border-top: 1px solid var(--border);
@@ -308,10 +182,12 @@ def render_html(links: list[Link], meta: dict) -> str:
 </head>
 <body>
   <h1>{esc(title)}</h1>
-  <p class="sub">Generated from Confluence page <code>{esc(PAGE_ID)}</code>. Tap a row to open.</p>
+  <p class="sub">Open the canonical Deeplinks table in Confluence (sign in if prompted).</p>
   <div class="panel">
-{rows}
+    <a class="wiki-link" href="{esc(wiki)}" rel="noopener noreferrer">Open Deeplinks in Confluence</a>
+    <p class="url">{esc(wiki)}</p>
     <div class="meta">
+      Page ID: <code>{esc(PAGE_ID)}</code><br />
       Confluence version: <code>{esc(version)}</code><br />
       Updated: <code>{esc(updated)}</code>
     </div>
@@ -341,7 +217,7 @@ def _load_mcp_json(path: Path) -> dict:
                 "minorEdit": False,
             },
             "body": payload["text"],
-            "webUrl": f"{CONFLUENCE_BASE}/spaces/RD/pages/{PAGE_ID}/Deeplinks",
+            "webUrl": WIKI_PAGE_URL,
         }
 
     if str(payload.get("id", "")).strip() != PAGE_ID:
@@ -376,23 +252,20 @@ def main(argv: list[str] | None = None) -> int:
 
     current_version = payload.get("version", {}).get("number")
     try:
-        if OUT_META.is_file():
+        if OUT_META.is_file() and OUT_HTML.is_file():
             prev = json.loads(OUT_META.read_text(encoding="utf-8", errors="replace"))
-            if prev.get("confluenceVersion") == current_version and OUT_HTML.is_file():
+            html_text = OUT_HTML.read_text(encoding="utf-8", errors="replace")
+            if (
+                prev.get("confluenceVersion") == current_version
+                and HTML_TEMPLATE_MARK in html_text
+            ):
                 print(f"Confluence: up to date (version {current_version}).")
                 return 0
     except Exception:
         # If meta is corrupted/unreadable, just regenerate.
         pass
 
-    links: list[Link]
-    if isinstance(payload.get("body"), dict):
-        storage_html = payload.get("body", {}).get("storage", {}).get("value", "")
-        links = extract_links_from_storage(storage_html)
-    else:
-        links = extract_links_from_markdownish(str(payload.get("body", "")))
-
-    OUT_HTML.write_text(render_html(links, payload), encoding="utf-8")
+    OUT_HTML.write_text(render_wiki_link_page(payload), encoding="utf-8")
     OUT_META.write_text(
         json.dumps(
             {
@@ -401,7 +274,7 @@ def main(argv: list[str] | None = None) -> int:
                 "confluenceVersion": current_version,
                 "confluenceUpdatedAt": payload.get("version", {}).get("when")
                 or payload.get("version", {}).get("createdAt"),
-                "linksCount": len(links),
+                "wikiPageUrl": WIKI_PAGE_URL,
             },
             indent=2,
             sort_keys=True,
@@ -409,7 +282,7 @@ def main(argv: list[str] | None = None) -> int:
         + "\n",
         encoding="utf-8",
     )
-    print(f"Confluence: wrote {OUT_HTML.name} ({len(links)} link(s))")
+    print(f"Confluence: wrote {OUT_HTML.name} (wiki link only → {WIKI_PAGE_URL})")
     return 0
 
 

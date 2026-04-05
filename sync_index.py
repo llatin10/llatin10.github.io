@@ -81,7 +81,7 @@ def git_push_site() -> int:
         "sync_confluence_deeplinks.py",
         "stamp_tappable_deeplinks_updated.py",
         "deeplinks-atlassian.meta.json",
-        "deeplinks.mcp.json",
+        ".gitignore",
     ):
         p = ROOT / extra
         if p.is_file():
