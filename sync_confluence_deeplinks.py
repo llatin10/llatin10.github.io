@@ -113,6 +113,8 @@ def extract_links_from_storage(storage_html: str) -> list[Link]:
             keep = True
         if re.search(r"https?://app\.tfd-bank\.com\b", href):
             keep = True
+        if re.search(r"https?://app\.onezerobank\.com\b", href):
+            keep = True
         if re.search(r"^onezerobank://", href, re.IGNORECASE):
             keep = True
 
@@ -175,6 +177,8 @@ def extract_links_from_markdownish(text: str) -> list[Link]:
         if re.search(r"https?://app\.(stg|dev)fdb\.net\b", href):
             keep = True
         if re.search(r"https?://app\.tfd-bank\.com\b", href):
+            keep = True
+        if re.search(r"https?://app\.onezerobank\.com\b", href):
             keep = True
         if re.search(r"^onezerobank://", href, re.IGNORECASE):
             keep = True
@@ -321,6 +325,25 @@ def _load_mcp_json(path: Path) -> dict:
     payload = json.loads(path.read_text(encoding="utf-8", errors="replace"))
     if not isinstance(payload, dict):
         raise ValueError("MCP JSON must be a JSON object")
+
+    # Atlassian MCP fetchAtlassian export (confluence-page) uses `text` and ARI `id`.
+    if payload.get("type") == "confluence-page" and isinstance(payload.get("text"), str):
+        meta = payload.get("metadata") or {}
+        return {
+            "id": PAGE_ID,
+            "type": "page",
+            "status": str(meta.get("status") or "current"),
+            "title": str(payload.get("title") or "Deeplinks"),
+            "version": {
+                "number": meta.get("version"),
+                "createdAt": meta.get("createdAt"),
+                "message": "",
+                "minorEdit": False,
+            },
+            "body": payload["text"],
+            "webUrl": f"{CONFLUENCE_BASE}/spaces/RD/pages/{PAGE_ID}/Deeplinks",
+        }
+
     if str(payload.get("id", "")).strip() != PAGE_ID:
         raise ValueError(f"MCP JSON page id mismatch (expected {PAGE_ID})")
     return payload
