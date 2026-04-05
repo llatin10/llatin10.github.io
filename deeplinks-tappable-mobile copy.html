@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="color-scheme" content="light dark" />
-  <title>Deep links (tap to open app)</title>
+  <title>Deep links (tap to open app) — updated on 2026-04-05</title>
   <style>
     :root {
       --bg: #f4f4f5;
@@ -45,6 +45,12 @@
       font-size: 1.35rem;
       margin: 0 0 8px;
       font-weight: 700;
+    }
+    .page-updated {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin: -4px 0 12px;
+      font-weight: 500;
     }
     .lead {
       color: var(--muted);
@@ -151,6 +157,7 @@
 </head>
 <body>
   <h1>Deep links</h1>
+    <p class="page-updated">Updated on 2026-04-05</p>
   <p class="lead">Tap a row to open the URL. Works in Safari (iOS) and Chrome (Android) if universal / app links are configured. Use <strong>HTTPS</strong> on a real device (not <code>file://</code>) for the most reliable handoff to the app.</p>
 
   <div class="panel">

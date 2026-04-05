@@ -4,6 +4,7 @@
 After writing index.html, stages all *.html in this folder, commits if needed, and git push."""
 from __future__ import annotations
 
+import argparse
 import html
 import re
 import subprocess
@@ -78,6 +79,7 @@ def git_push_site() -> int:
     for extra in (
         "sync_index.py",
         "sync_confluence_deeplinks.py",
+        "stamp_tappable_deeplinks_updated.py",
         "deeplinks-atlassian.meta.json",
         "deeplinks.mcp.json",
     ):
@@ -124,8 +126,25 @@ def git_push_site() -> int:
 
 
 def main() -> int:
-    # Step 0: Try to sync deep links from Confluence (safe no-op if missing creds).
-    if CONFLUENCE_SYNC.is_file():
+    ap = argparse.ArgumentParser(description="Regenerate index.html and push GitHub Pages site.")
+    ap.add_argument(
+        "--skip-confluence-sync",
+        action="store_true",
+        help="Do not run sync_confluence_deeplinks.py (use after MCP JSON sync or sync_github_pages_html_url.py).",
+    )
+    ns = ap.parse_args()
+
+    # Stamp tappable deeplinks page title + visible date (URL filename unchanged).
+    stamp_script = ROOT / "stamp_tappable_deeplinks_updated.py"
+    if stamp_script.is_file():
+        subprocess.run(
+            [sys.executable, str(stamp_script), "--site-root", str(ROOT)],
+            cwd=ROOT,
+            check=False,
+        )
+
+    # Optional: Confluence REST sync (no-op without ATLASSIAN_* env).
+    if not ns.skip_confluence_sync and CONFLUENCE_SYNC.is_file():
         try:
             r = subprocess.run(
                 [sys.executable, str(CONFLUENCE_SYNC)],
