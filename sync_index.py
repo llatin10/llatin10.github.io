@@ -60,16 +60,16 @@ def extract_title(path: Path) -> str:
 
 
 def _list_items(rows: list[tuple[str, str]], root: Path) -> str:
-    """Append ?v=mtime so updated HTML pages bust CDN/browser caches from the site index."""
+    """Plain hrefs (no query string). For the coverage report, append build id to visible text only."""
     lines = []
     for title, filename in rows:
         p = root / filename
-        suffix = ""
-        if p.is_file():
-            suffix = f"?v={int(p.stat().st_mtime)}"
-        safe_href = html.escape(filename + suffix, quote=True)
-        label = html.escape(title)
-        lines.append(f'            <li><a href="{safe_href}">{label}</a></li>')
+        label = title
+        if p.is_file() and "deeplinkscoveragereport" in filename.casefold():
+            label = f"{title} (v={int(p.stat().st_mtime)})"
+        safe_href = html.escape(filename, quote=True)
+        safe_label = html.escape(label)
+        lines.append(f'            <li><a href="{safe_href}">{safe_label}</a></li>')
     return "\n".join(lines)
 
 
