@@ -157,7 +157,7 @@
 </head>
 <body>
   <h1>Deep links</h1>
-        <p class="page-updated">Updated on 2026-04-05</p>
+          <p class="page-updated">Updated on 2026-04-05</p>
   <p class="lead">Tap a row to open the URL. Works in Safari (iOS) and Chrome (Android) if universal / app links are configured. Use <strong>HTTPS</strong> on a real device (not <code>file://</code>) for the most reliable handoff to the app.</p>
 
   <div class="panel">
@@ -226,7 +226,27 @@
           { label: "OD Limits — specific portfolio", href: (b, q) => b + "/portfolios/" + encodeURIComponent(q.pid) + "/settings/od-limits" },
           { label: "Open Banking Finanda (settings)", href: (b) => b + "/portfolio/settings/obi-as-tpp" },
           { label: "Open Banking Finanda — specific portfolio", href: (b, q) => b + "/portfolios/" + encodeURIComponent(q.pid) + "/settings/obi-as-tpp" },
-          { label: "Select Plan (subscription)", href: (b) => b + "/portfolio/settings/selectPlan" },
+          {
+            label: "Select Plan — current plan (app.onezerobank.com)",
+            wikiLine: "Confluence: subscription / plan selection uses OneZero host, not the env dropdown.",
+            href: (b, q) => "https://app.onezerobank.com/portfolio/settings/selectPlan",
+          },
+          {
+            label: "Select Plan — plan=ZERO",
+            href: (b, q) => "https://app.onezerobank.com/portfolio/settings/selectPlan?plan=ZERO",
+          },
+          {
+            label: "Select Plan — plan=ONE",
+            href: (b, q) => "https://app.onezerobank.com/portfolio/settings/selectPlan?plan=ONE",
+          },
+          {
+            label: "Select Plan — plan=ONE_PLUS",
+            href: (b, q) => "https://app.onezerobank.com/portfolio/settings/selectPlan?plan=ONE_PLUS",
+          },
+          {
+            label: "Select Plan — env base (UAT/SIT/PROD path only)",
+            href: (b) => b + "/portfolio/settings/selectPlan",
+          },
           { label: "Activation — Fill Profile", href: (b) => b + "/portfolio/settings/activation-main" },
           { label: "Activation — Transfer Funds", href: (b) => b + "/portfolio/settings/activation/transfer" },
         ],

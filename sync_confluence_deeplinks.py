@@ -13,7 +13,12 @@ Fallback auth (direct Confluence REST API):
 
 Output:
   - deeplinks-atlassian.html (generated — single link to the Confluence wiki; no mirrored table)
-  - deeplinks-atlassian.meta.json (page id + version + fetched timestamp)
+  - deeplinks-atlassian.meta.json (version + bodySha256 + timestamps)
+  - deeplinks-confluence-body.snapshot.txt (gitignored — full raw body from last fetch)
+  - deeplinks-confluence-body.previous.txt (gitignored — prior snapshot when body hash changes, for diff)
+
+Change detection uses SHA-256 of the canonical page body, not only Confluence's version number
+(edits sometimes ship without a visible version bump in MCP/API metadata).
 
 Do not commit deeplinks.mcp.json (gitignored). Keep MCP exports local only.
 """
@@ -22,9 +27,11 @@ from __future__ import annotations
 
 import argparse
 import base64
+import hashlib
 import html
 import json
 import os
+import shutil
 import sys
 import urllib.error
 import urllib.request
@@ -42,6 +49,21 @@ OUT_META = ROOT / "deeplinks-atlassian.meta.json"
 WIKI_PAGE_URL = f"{CONFLUENCE_BASE}/spaces/RD/pages/{PAGE_ID}/Deeplinks"
 # Bumps when generated HTML shape changes (forces rewrite even if Confluence version unchanged).
 HTML_TEMPLATE_MARK = "confluence-deeplinks-template:wiki-link-v1"
+
+SNAPSHOT_BODY = ROOT / "deeplinks-confluence-body.snapshot.txt"
+SNAPSHOT_PREVIOUS = ROOT / "deeplinks-confluence-body.previous.txt"
+
+
+def canonical_body_text(payload: dict) -> str:
+    """Raw page body as returned by API (storage HTML) or MCP (markdown-ish string)."""
+    b = payload.get("body")
+    if isinstance(b, dict):
+        return str(b.get("storage", {}).get("value", "") or "")
+    return str(b or "")
+
+
+def sha256_hex(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def _basic_auth_header(email: str, token: str) -> str:
@@ -251,19 +273,50 @@ def main(argv: list[str] | None = None) -> int:
             return 0
 
     current_version = payload.get("version", {}).get("number")
+    body_text = canonical_body_text(payload)
+    body_hash = sha256_hex(body_text)
+
     try:
         if OUT_META.is_file() and OUT_HTML.is_file():
             prev = json.loads(OUT_META.read_text(encoding="utf-8", errors="replace"))
             html_text = OUT_HTML.read_text(encoding="utf-8", errors="replace")
+            prev_hash = prev.get("bodySha256")
             if (
-                prev.get("confluenceVersion") == current_version
+                prev_hash == body_hash
                 and HTML_TEMPLATE_MARK in html_text
             ):
-                print(f"Confluence: up to date (version {current_version}).")
+                print(
+                    f"Confluence: up to date (body sha256 unchanged; "
+                    f"Confluence reports version {current_version})."
+                )
                 return 0
     except Exception:
         # If meta is corrupted/unreadable, just regenerate.
         pass
+
+    prev_hash_for_msg: str | None = None
+    try:
+        if OUT_META.is_file():
+            prev_hash_for_msg = json.loads(
+                OUT_META.read_text(encoding="utf-8", errors="replace")
+            ).get("bodySha256")
+    except Exception:
+        pass
+
+    if prev_hash_for_msg and prev_hash_for_msg != body_hash:
+        print(
+            f"Confluence: page body changed (sha256 {prev_hash_for_msg[:12]}… → {body_hash[:12]}…). "
+            f"Compare: diff -u {SNAPSHOT_PREVIOUS.name} {SNAPSHOT_BODY.name} "
+            f"(after sync, previous copy is the last snapshot).",
+            file=sys.stderr,
+        )
+        if SNAPSHOT_BODY.is_file():
+            try:
+                shutil.copy2(SNAPSHOT_BODY, SNAPSHOT_PREVIOUS)
+            except OSError as e:
+                print(f"Confluence: could not save {SNAPSHOT_PREVIOUS.name}: {e}", file=sys.stderr)
+
+    SNAPSHOT_BODY.write_text(body_text, encoding="utf-8")
 
     OUT_HTML.write_text(render_wiki_link_page(payload), encoding="utf-8")
     OUT_META.write_text(
@@ -275,6 +328,8 @@ def main(argv: list[str] | None = None) -> int:
                 "confluenceUpdatedAt": payload.get("version", {}).get("when")
                 or payload.get("version", {}).get("createdAt"),
                 "wikiPageUrl": WIKI_PAGE_URL,
+                "bodySha256": body_hash,
+                "bodyCharCount": len(body_text),
             },
             indent=2,
             sort_keys=True,
@@ -283,6 +338,7 @@ def main(argv: list[str] | None = None) -> int:
         encoding="utf-8",
     )
     print(f"Confluence: wrote {OUT_HTML.name} (wiki link only → {WIKI_PAGE_URL})")
+    print(f"Confluence: saved body snapshot {SNAPSHOT_BODY.name} ({len(body_text)} chars, sha256={body_hash[:16]}…)")
     return 0
 
 

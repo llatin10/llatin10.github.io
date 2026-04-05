@@ -2,3 +2,7 @@
 
 # Local Atlassian MCP export — do not commit or publish (sensitive / large).
 deeplinks.mcp.json
+
+# Full Confluence page body snapshots (local diff vs last fetch; not for git).
+deeplinks-confluence-body.snapshot.txt
+deeplinks-confluence-body.previous.txt
