@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Link Coverage Report</title>
-    <style>
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deep Link Coverage Report</title>
+  <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: "Helvetica Neue", Helvetica, -apple-system, Arial, sans-serif;
             background: #faf9f7;
@@ -119,49 +118,33 @@
         .md-content p { margin: 12px 0; }
         .md-content pre { margin: 16px 0; }
         .md-content pre code { background: transparent !important; border: none !important; padding: 0 !important; }
-    
-    </style>
+    .muted { color: #78716c; font-size: 0.9rem; margin: 8px 0 16px; }
+  </style>
 </head>
 <body class="doc-theme-warm">
-    <div class="container">
-        <div class="md-content">
+  <div class="container">
+    <div class="md-content">
 <h1>Deep Link Coverage Report</h1>
 <p>This file is <strong>generated</strong>. Do not edit by hand. Regenerate with:</p>
-<pre><code class="language-bash">python3 scripts/generate_deep_links_coverage_report.py
-</code></pre>
+<pre><code class="language-bash">python3 &quot;/Users/llatin/.cursor/version-prep/scripts/deeplink_coverage.py&quot; write-html</code></pre>
+<p class="muted">Generated 2026-04-05 08:12 UTC · mobile-tests: <code>/Users/llatin/mobile-tests</code></p>
 <h2>Scope and method</h2>
 <ul>
 <li>Canonical deep link list: <code>src/main/resources/deeplinks.json</code></li>
-<li>Test inputs: <code>src/test/resources/testData/deeplinks/*.csv</code> (column <code>deeplinkUrl</code>, optional <code>mode</code>)</li>
+<li>Test inputs: <code>src/test/resources/testData/deeplinks/*.csv</code> (columns <code>deeplinkUrl</code>, <code>mode</code>)</li>
+<li>Excludes: <code>DeeplinksTestData.csv</code>, <code>DeeplinksUrls.csv</code></li>
 <li><strong>Covered</strong> = path appears with both <code>close</code> and <code>background</code></li>
 <li><strong>Partially covered</strong> = path appears but only one mode</li>
-<li><strong>Not covered</strong> = path missing from CSVs</li>
+<li><strong>Not covered</strong> = path missing from qualifying CSVs</li>
 </ul>
 <h2>Summary</h2>
 <table>
-<thead>
-<tr>
-<th>Metric</th>
-<th>Count</th>
-</tr>
-</thead>
+<thead><tr><th>Metric</th><th>Count</th></tr></thead>
 <tbody>
-<tr>
-<td>Total deep links</td>
-<td>34</td>
-</tr>
-<tr>
-<td>Covered</td>
-<td>34</td>
-</tr>
-<tr>
-<td>Partially covered</td>
-<td>0</td>
-</tr>
-<tr>
-<td>Not covered</td>
-<td>0</td>
-</tr>
+<tr><td>Total deep links</td><td>34</td></tr>
+<tr><td>Covered</td><td>34</td></tr>
+<tr><td>Partially covered</td><td>0</td></tr>
+<tr><td>Not covered</td><td>0</td></tr>
 </tbody>
 </table>
 <h2>Coverage table</h2>
@@ -178,312 +161,7 @@
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>/portfolio/settings/proxyidentifier</code></td>
-<td>Lobbies - Settings main page - active portfolio</td>
-<td><code>FastPaymentProxyIntroPage</code></td>
-<td>1.0.0.197</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSettingsPartAUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/loans</code></td>
-<td>Lobbies - Loans lobby - active portfolio</td>
-<td><code>Loans</code></td>
-<td>1.0.0.197</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksLoansUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/ILS/deposits</code></td>
-<td>Lobbies - Deposits lobby - active portfolio</td>
-<td><code>Deposits</code></td>
-<td>1.0.0.197</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSavingsUrls.csv, DeeplinksTestData.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio</code></td>
-<td>portfolio lobby</td>
-<td><code>portfolio</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksCurrentAccountUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/cards</code></td>
-<td>Lobbies - Cards lobby - active portfolio</td>
-<td><code>Cards</code></td>
-<td>1.0.0.197</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksCardsUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/payments</code></td>
-<td>Lobbies - Payments lobby - active portfolio</td>
-<td><code>Payments</code></td>
-<td>1.0.0.197</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksPaymentsUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/payments/transfer</code></td>
-<td>Payments lobby - Transfer - active portfolio</td>
-<td><code>Transfer</code></td>
-<td>1.0.0.197</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksPaymentsUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/direct-debit</code></td>
-<td>Lobbies - Direct Debit (Mandate) lobby - active portfolio</td>
-<td><code>Direct-Debit</code></td>
-<td>1.0.0.197</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksMandatesUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/settings</code></td>
-<td>Lobbies - Settings main page - active portfolio</td>
-<td><code>Settings</code></td>
-<td>1.0.0.197</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSettingsPartAUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/settings/inbox</code></td>
-<td>Inbox - active portfolio</td>
-<td><code>MessageInbox</code></td>
-<td>1.0.0.197</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSettingsPartBUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/settings/password</code></td>
-<td>Change Password</td>
-<td><code>ChangePassword</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSettingsPartBUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/settings/reports/transactions</code></td>
-<td>Documents - Account Statement half year</td>
-<td><code>accountStatementHalfYear</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSettingsReportsUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/settings/reports/ownership</code></td>
-<td>Documents - Account Ownership</td>
-<td><code>AccountOwnership</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSettingsReportsUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/settings/reports/accountSummary</code></td>
-<td>Documents - Account summary</td>
-<td><code>accountSummary</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSettingsReportsUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/settings/notifications</code></td>
-<td>Notifications</td>
-<td><code>notifications</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSettingsPartCUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/settings/od-limits</code></td>
-<td>OD Limits popup - active portfolio</td>
-<td><code>Od-Limits</code></td>
-<td>1.1.0.8</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSettingsPartCUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/settings/obi-as-tpp</code></td>
-<td>Open Banking – Finanda iFrame first page - active portfolio</td>
-<td><code>Mandates</code></td>
-<td>1.0.0.197</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSettingsPartCUrls.csv</td>
-</tr>
-<tr>
-<td><code>/openbanking/accounts</code></td>
-<td>My accounts (Currently finanda)</td>
-<td><code>myAccounts</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksOpenBankingUrls.csv, DeeplinksUrls.csv</td>
-</tr>
-<tr>
-<td><code>/openbanking/assets</code></td>
-<td>My Assets</td>
-<td><code>myAssets</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksOpenBankingUrls.csv, DeeplinksUrls.csv</td>
-</tr>
-<tr>
-<td><code>/notificationCenter</code></td>
-<td>notification Center</td>
-<td><code>notificationCenter</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksNotificationCenterUrls.csv</td>
-</tr>
-<tr>
-<td><code>/communications/conversations/main/intro</code></td>
-<td>Main chat screen (Ella)</td>
-<td><code>Chat</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksChatUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/mobility/statuses</code></td>
-<td>Mobility statuses</td>
-<td><code>mobilityStatuses</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksMobilityUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/settings/selectPlan</code></td>
-<td>Subscription Select Plan</td>
-<td><code>subscriptionSelectPlan</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSubscriptionUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/securities</code></td>
-<td>Securities lobby page</td>
-<td><code>Lobby</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSecuritiesUrlsPartB.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/securities/order-book</code></td>
-<td>Securities order book page</td>
-<td><code>OrderBook</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSecuritiesUrlsPartA.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/securities/store</code></td>
-<td>Securities store page</td>
-<td><code>Store</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSecuritiesUrlsPartB.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/securities/sectors?sectorName=CONSUMPTION</code></td>
-<td>Securities Sectors</td>
-<td><code>Sectors</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSecuritiesSectorsUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/securities/sectors?sectorName=TECHNOLOGY</code></td>
-<td>Securities Sectors</td>
-<td><code>Sectors</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSecuritiesSectorsUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/securities/assetPage?symbol=PRG&amp;exchangeGroup=US_EXCHANGES</code></td>
-<td>Securities AssetPage</td>
-<td><code>AssetPage</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSecuritiesAssetUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/securities/assetPage?symbol=F&amp;exchangeGroup=US_EXCHANGES</code></td>
-<td>Securities AssetPage</td>
-<td><code>AssetPage</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSecuritiesAssetUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/securities/etf</code></td>
-<td>Securities instrument etfs page</td>
-<td><code>EtfsPage</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksSecuritiesUrlsPartA.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/cheques</code></td>
-<td>Lobbies - Cheques lobby - active portfolio</td>
-<td><code>Cheques</code></td>
-<td>1.0.0.197</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksChequeUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/fcy</code></td>
-<td>portfolio fcy</td>
-<td><code>portfolioFcy</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksFCYUrls.csv</td>
-</tr>
-<tr>
-<td><code>/portfolio/pension</code></td>
-<td>Pension screen</td>
-<td><code>pensionScreen</code></td>
-<td>2.0.1</td>
-<td>background + close</td>
-<td>Covered</td>
-<td>DeeplinksPensionUrls.csv</td>
-</tr>
+<tr><td><code>/portfolio/settings/proxyidentifier</code></td><td>Lobbies - Settings main page - active portfolio</td><td>FastPaymentProxyIntroPage</td><td>1.0.0.197</td><td>background + close</td><td>Covered</td><td>DeeplinksSettingsPartAUrls.csv</td></tr><tr><td><code>/portfolio/loans</code></td><td>Lobbies - Loans lobby - active portfolio</td><td>Loans</td><td>1.0.0.197</td><td>background + close</td><td>Covered</td><td>DeeplinksLoansUrls.csv</td></tr><tr><td><code>/portfolio/ILS/deposits</code></td><td>Lobbies - Deposits lobby - active portfolio</td><td>Deposits</td><td>1.0.0.197</td><td>background + close</td><td>Covered</td><td>DeeplinksSavingsUrls.csv</td></tr><tr><td><code>/portfolio</code></td><td>portfolio lobby</td><td>portfolio</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksCurrentAccountUrls.csv</td></tr><tr><td><code>/portfolio/cards</code></td><td>Lobbies - Cards lobby - active portfolio</td><td>Cards</td><td>1.0.0.197</td><td>background + close</td><td>Covered</td><td>DeeplinksCardsUrls.csv</td></tr><tr><td><code>/portfolio/payments</code></td><td>Lobbies - Payments lobby - active portfolio</td><td>Payments</td><td>1.0.0.197</td><td>background + close</td><td>Covered</td><td>DeeplinksPaymentsUrls.csv</td></tr><tr><td><code>/portfolio/payments/transfer</code></td><td>Payments lobby - Transfer - active portfolio</td><td>Transfer</td><td>1.0.0.197</td><td>background + close</td><td>Covered</td><td>DeeplinksPaymentsUrls.csv</td></tr><tr><td><code>/portfolio/direct-debit</code></td><td>Lobbies - Direct Debit (Mandate) lobby - active portfolio</td><td>Direct-Debit</td><td>1.0.0.197</td><td>background + close</td><td>Covered</td><td>DeeplinksMandatesUrls.csv</td></tr><tr><td><code>/portfolio/settings</code></td><td>Lobbies - Settings main page - active portfolio</td><td>Settings</td><td>1.0.0.197</td><td>background + close</td><td>Covered</td><td>DeeplinksSettingsPartAUrls.csv</td></tr><tr><td><code>/portfolio/settings/inbox</code></td><td>Inbox - active portfolio</td><td>MessageInbox</td><td>1.0.0.197</td><td>background + close</td><td>Covered</td><td>DeeplinksSettingsPartBUrls.csv</td></tr><tr><td><code>/portfolio/settings/password</code></td><td>Change Password</td><td>ChangePassword</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSettingsPartBUrls.csv</td></tr><tr><td><code>/portfolio/settings/reports/transactions</code></td><td>Documents - Account Statement half year</td><td>accountStatementHalfYear</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSettingsReportsUrls.csv</td></tr><tr><td><code>/portfolio/settings/reports/ownership</code></td><td>Documents - Account Ownership</td><td>AccountOwnership</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSettingsReportsUrls.csv</td></tr><tr><td><code>/portfolio/settings/reports/accountSummary</code></td><td>Documents - Account summary</td><td>accountSummary</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSettingsReportsUrls.csv</td></tr><tr><td><code>/portfolio/settings/notifications</code></td><td>Notifications</td><td>notifications</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSettingsPartCUrls.csv</td></tr><tr><td><code>/portfolio/settings/od-limits</code></td><td>OD Limits popup - active portfolio</td><td>Od-Limits</td><td>1.1.0.8</td><td>background + close</td><td>Covered</td><td>DeeplinksSettingsPartCUrls.csv</td></tr><tr><td><code>/portfolio/settings/obi-as-tpp</code></td><td>Open Banking – Finanda iFrame first page - active portfolio</td><td>Mandates</td><td>1.0.0.197</td><td>background + close</td><td>Covered</td><td>DeeplinksSettingsPartCUrls.csv</td></tr><tr><td><code>/openbanking/accounts</code></td><td>My accounts (Currently finanda)</td><td>myAccounts</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksOpenBankingUrls.csv</td></tr><tr><td><code>/openbanking/assets</code></td><td>My Assets</td><td>myAssets</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksOpenBankingUrls.csv</td></tr><tr><td><code>/notificationCenter</code></td><td>notification Center</td><td>notificationCenter</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksNotificationCenterUrls.csv</td></tr><tr><td><code>/communications/conversations/main/intro</code></td><td>Main chat screen (Ella)</td><td>Chat</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksChatUrls.csv</td></tr><tr><td><code>/portfolio/mobility/statuses</code></td><td>Mobility statuses</td><td>mobilityStatuses</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksMobilityUrls.csv</td></tr><tr><td><code>/portfolio/settings/selectPlan</code></td><td>Subscription Select Plan</td><td>subscriptionSelectPlan</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSubscriptionUrls.csv</td></tr><tr><td><code>/portfolio/securities</code></td><td>Securities lobby page</td><td>Lobby</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSecuritiesUrlsPartB.csv</td></tr><tr><td><code>/portfolio/securities/order-book</code></td><td>Securities order book page</td><td>OrderBook</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSecuritiesUrlsPartA.csv</td></tr><tr><td><code>/portfolio/securities/store</code></td><td>Securities store page</td><td>Store</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSecuritiesUrlsPartB.csv</td></tr><tr><td><code>/portfolio/securities/sectors?sectorName=CONSUMPTION</code></td><td>Securities Sectors</td><td>Sectors</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSecuritiesSectorsUrls.csv</td></tr><tr><td><code>/portfolio/securities/sectors?sectorName=TECHNOLOGY</code></td><td>Securities Sectors</td><td>Sectors</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSecuritiesSectorsUrls.csv</td></tr><tr><td><code>/portfolio/securities/assetPage?symbol=PRG&amp;exchangeGroup=US_EXCHANGES</code></td><td>Securities AssetPage</td><td>AssetPage</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSecuritiesAssetUrls.csv</td></tr><tr><td><code>/portfolio/securities/assetPage?symbol=F&amp;exchangeGroup=US_EXCHANGES</code></td><td>Securities AssetPage</td><td>AssetPage</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSecuritiesAssetUrls.csv</td></tr><tr><td><code>/portfolio/securities/etf</code></td><td>Securities instrument etfs page</td><td>EtfsPage</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksSecuritiesUrlsPartA.csv</td></tr><tr><td><code>/portfolio/cheques</code></td><td>Lobbies - Cheques lobby - active portfolio</td><td>Cheques</td><td>1.0.0.197</td><td>background + close</td><td>Covered</td><td>DeeplinksChequeUrls.csv</td></tr><tr><td><code>/portfolio/fcy</code></td><td>portfolio fcy</td><td>portfolioFcy</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksFCYUrls.csv</td></tr><tr><td><code>/portfolio/pension</code></td><td>Pension screen</td><td>pensionScreen</td><td>2.0.1</td><td>background + close</td><td>Covered</td><td>DeeplinksPensionUrls.csv</td></tr>
 </tbody>
 </table>
 <h2>Current deep link test approach</h2>
@@ -491,27 +169,11 @@
 <li>Flow: full login → deep link in <code>close</code> and <code>background</code> modes → assert destination via <code>deeplink.path</code> → page mapping.</li>
 <li>Opens HTTPS app URLs (Android uses browser navigation; aligns with tappable link behavior).</li>
 <li>Inventory for automation: <code>deeplinks.json</code>.</li>
-<li>Deep link suite is Android-focused until iOS deep link runs are stable in CI.</li>
 </ul>
-<h2>Strengths and limitations</h2>
-<p><strong>Strengths:</strong> realistic link opening, destination assertions, dual app-state coverage.</p>
-<p><strong>Limitations:</strong> keep JSON / CSV / any external HTML link list in sync; host/environment may be fixed to UAT; iOS parity pending.</p>
-<h2>Action items (next sprint)</h2>
-<ol>
-<li><strong>Single source of truth</strong> — Align <code>deeplinks.json</code> with the hosted deep-link page data; generate HTML and test inputs from one source where possible.</li>
-<li><strong>Automated report</strong> — Run this script in CI or nightly and publish the Markdown (or HTML) artifact.</li>
-<li><strong>Drift checks</strong> — Fail or warn when canonical list and CSVs diverge.</li>
-<li><strong>Configurable host</strong> — Support UAT/SIT/PROD for deep link runs if needed.</li>
-<li><strong>Definition of covered</strong> — Document that both modes are required unless waived (track as <strong>Blocked</strong> with owner).</li>
-<li><strong>iOS parity</strong> — Plan smoke coverage once BrowserStack/Safari issues are resolved.</li>
-<li><strong>Risk-based smoke</strong> — Keep a small high-value subset for fast CI; full matrix on schedule.</li>
-</ol>
-<h2>HTML rendering</h2>
-<p>To produce a styled HTML page for stakeholders, use your <code>Generate-html.py</code> (or equivalent), for example:</p>
-<pre><code class="language-bash">python3 Generate-html.py docs/DeepLinksCoverageReport.md
-</code></pre>
-<p>Adjust the command to match where <code>Generate-html.py</code> lives in your environment.</p>
-        </div>
+<h2>Next steps</h2>
+<p>After regenerating, publish the site with <strong>/html URL</strong> (or <code>sync_github_pages_html_url.py</code>) so GitHub Pages updates.</p>
+
     </div>
+  </div>
 </body>
 </html>
