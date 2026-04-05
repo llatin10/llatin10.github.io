@@ -59,16 +59,12 @@ def extract_title(path: Path) -> str:
     return path.stem
 
 
-def _list_items(rows: list[tuple[str, str]], root: Path) -> str:
-    """Plain hrefs (no query string). For the coverage report, append build id to visible text only."""
+def _list_items(rows: list[tuple[str, str]]) -> str:
+    """Link text comes from each page's <title> (e.g. tappable deeplinks + coverage report include '— updated on …')."""
     lines = []
     for title, filename in rows:
-        p = root / filename
-        label = title
-        if p.is_file() and "deeplinkscoveragereport" in filename.casefold():
-            label = f"{title} (v={int(p.stat().st_mtime)})"
         safe_href = html.escape(filename, quote=True)
-        safe_label = html.escape(label)
+        safe_label = html.escape(title)
         lines.append(f'            <li><a href="{safe_href}">{safe_label}</a></li>')
     return "\n".join(lines)
 
@@ -209,7 +205,7 @@ def main() -> int:
             blocks.append(
                 f"""            <h2 class="section">Deep links</h2>
             <ul class="page-list">
-{_list_items(pinned, ROOT)}
+{_list_items(pinned)}
             </ul>"""
             )
         if qa_features:
@@ -218,7 +214,7 @@ def main() -> int:
                 f"""            <h2 class="section section-qa">QA Features Summary</h2>
             <p class="section-hint">Sorted by version number (newest first).</p>
             <ul class="page-list">
-{_list_items(qa_features, ROOT)}
+{_list_items(qa_features)}
             </ul>"""
             )
         if rest:
@@ -228,7 +224,7 @@ def main() -> int:
                 f"""            <h2 class="section{sep}">Other pages</h2>
             <p class="section-hint">Sorted A–Z by title.</p>
             <ul class="page-list">
-{_list_items(rest, ROOT)}
+{_list_items(rest)}
             </ul>"""
             )
         body = "\n".join(blocks)
