@@ -11,6 +11,8 @@ Preferred input:
 Fallback auth (direct Confluence REST API):
   - Set ATLASSIAN_EMAIL and ATLASSIAN_API_TOKEN in your environment, or in Cursor
     User settings under terminal.integrated.env.osx (linux/windows) — see cursor_integrated_env.py.
+  - If HTTPS fails with CERTIFICATE_VERIFY_FAILED: ``pip install certifi`` (bundle used automatically),
+    or set SSL_CERT_FILE / REQUESTS_CA_BUNDLE to a PEM (e.g. corporate root CA).
 
 Output:
   - deeplinks-atlassian.html (generated — single link to the Confluence wiki; no mirrored table)
@@ -33,6 +35,7 @@ import html
 import json
 import os
 import shutil
+import ssl
 import sys
 import urllib.error
 import urllib.request
@@ -81,6 +84,20 @@ def _basic_auth_header(email: str, token: str) -> str:
     return f"Basic {b64}"
 
 
+def _ssl_context_for_confluence() -> ssl.SSLContext:
+    """CA bundle: env override, else certifi if installed, else system default."""
+    for key in ("SSL_CERT_FILE", "REQUESTS_CA_BUNDLE"):
+        path = os.environ.get(key, "").strip()
+        if path and Path(path).is_file():
+            return ssl.create_default_context(cafile=path)
+    try:
+        import certifi
+
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        return ssl.create_default_context()
+
+
 def fetch_confluence_json() -> dict:
     email = os.environ.get("ATLASSIAN_EMAIL", "").strip()
     token = os.environ.get("ATLASSIAN_API_TOKEN", "").strip()
@@ -98,7 +115,8 @@ def fetch_confluence_json() -> dict:
         method="GET",
     )
     try:
-        with urllib.request.urlopen(req, timeout=25) as resp:
+        ctx = _ssl_context_for_confluence()
+        with urllib.request.urlopen(req, timeout=25, context=ctx) as resp:
             data = resp.read()
     except urllib.error.HTTPError as e:
         body = e.read().decode("utf-8", errors="replace") if hasattr(e, "read") else ""
