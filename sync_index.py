@@ -59,10 +59,15 @@ def extract_title(path: Path) -> str:
     return path.stem
 
 
-def _list_items(rows: list[tuple[str, str]]) -> str:
+def _list_items(rows: list[tuple[str, str]], root: Path) -> str:
+    """Append ?v=mtime so updated HTML pages bust CDN/browser caches from the site index."""
     lines = []
     for title, filename in rows:
-        safe_href = html.escape(filename, quote=True)
+        p = root / filename
+        suffix = ""
+        if p.is_file():
+            suffix = f"?v={int(p.stat().st_mtime)}"
+        safe_href = html.escape(filename + suffix, quote=True)
         label = html.escape(title)
         lines.append(f'            <li><a href="{safe_href}">{label}</a></li>')
     return "\n".join(lines)
@@ -204,7 +209,7 @@ def main() -> int:
             blocks.append(
                 f"""            <h2 class="section">Deep links</h2>
             <ul class="page-list">
-{_list_items(pinned)}
+{_list_items(pinned, ROOT)}
             </ul>"""
             )
         if qa_features:
@@ -213,7 +218,7 @@ def main() -> int:
                 f"""            <h2 class="section section-qa">QA Features Summary</h2>
             <p class="section-hint">Sorted by version number (newest first).</p>
             <ul class="page-list">
-{_list_items(qa_features)}
+{_list_items(qa_features, ROOT)}
             </ul>"""
             )
         if rest:
@@ -223,7 +228,7 @@ def main() -> int:
                 f"""            <h2 class="section{sep}">Other pages</h2>
             <p class="section-hint">Sorted A–Z by title.</p>
             <ul class="page-list">
-{_list_items(rest)}
+{_list_items(rest, ROOT)}
             </ul>"""
             )
         body = "\n".join(blocks)
