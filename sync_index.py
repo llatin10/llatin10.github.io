@@ -78,7 +78,8 @@ def git_push_site() -> int:
     for extra in (
         "sync_index.py",
         "sync_confluence_deeplinks.py",
-        "deeplinks-confluence.meta.json",
+        "deeplinks-atlassian.meta.json",
+        "deeplinks.mcp.json",
     ):
         p = ROOT / extra
         if p.is_file():
