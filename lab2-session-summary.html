@@ -199,6 +199,25 @@
 - tool smoke test<br />
 - refund scenario<br />
 - escalation scenario</p>
+<h2>Real Session Evidence (from @Local (2) and @Local (3))</h2>
+<h3>Example 1 — Full refund flow with MCP data + action</h3>
+<p>From your real terminal run:<br />
+- Input was from <code>sam.r@example.com</code> with double-charge refund request.<br />
+- App asked one clarification question.<br />
+- You provided dates (<code>April 3</code> and <code>April 4</code>) and approved action.</p>
+<p>Observed in reasoning/output:<br />
+- <code>MCP lookup: found customer Sam (plan=Basic, status=active)</code><br />
+- <code>MCP action: recorded refund_request as act-1776243341825</code><br />
+- Final action: <code>RefundTicketCreated</code></p>
+<h3>Example 2 — JSON persistence confirms real business action</h3>
+<p>From your <code>cat support_actions.json</code> output:<br />
+- A new record exists with:<br />
+  - <code>action_id</code>: <code>act-1776243341825</code><br />
+  - <code>customer_email</code>: <code>sam.r@example.com</code><br />
+  - <code>action_type</code>: <code>refund_request</code><br />
+  - policy-linked details (<code>intent</code>, <code>policy_action</code>, <code>escalate</code>, etc.)</p>
+<p>Why this matters:<br />
+- This proves Lab 2 is no longer text-only: the host triggered a real MCP tool call and persisted a concrete support action.</p>
 <h2>How To Run (Lab 2)</h2>
 <h3>Terminal 1 — start MCP server</h3>
 <pre><code class="language-bash">cd /Users/llatin/Geek-Academy-Spec-Driven-workshop/support-ops-mcp-python
