@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 2 Session Summary — Customer Support Agentic App with MCP (Python)</title>
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, -apple-system, Arial, sans-serif;
+            background: #faf9f7;
+            padding: 24px;
+            line-height: 1.65;
+            color: #44403c;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+            padding: 28px 32px 40px;
+        }
+        h1 {
+            color: #1c1917;
+            border-bottom: 2px solid #e7e5e0;
+            font-weight: 700;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #0d9488;
+            border-bottom: 1px solid #e7e5e0;
+            margin-top: 36px;
+            padding-bottom: 10px;
+        }
+        h3 { color: #0f766e; margin-top: 24px; }
+        .section-block {
+            background: #fafaf9;
+            border: 1px solid #e7e5e0;
+            border-left: 4px solid #14b8a6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .intro-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border: 1px solid #99f6e4;
+            border-left: 4px solid #14b8a6;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: "Consolas", ui-monospace, monospace;
+            border-left: 4px solid #14b8a6;
+            line-height: 1.55;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f5f5f4;
+            color: #0f766e;
+            padding: 0.2em 0.45em;
+            border-radius: 4px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.9em;
+            border: 1px solid #e7e5e0;
+        }
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .highlight-card {
+            background: #fff;
+            border: 1px solid #e7e5e0;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 3px solid #14b8a6;
+        }
+        
+        @media print {
+            body {
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .container {
+                box-shadow: none !important;
+                padding: 40px;
+                margin: 0 auto;
+                max-width: 100%;
+                width: 100%;
+                border-radius: 0;
+                box-sizing: border-box;
+            }
+            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
+            .section-block, .intro-block, .highlight-card, pre,
+            .simple-explanation, .next-steps { page-break-inside: avoid; break-inside: avoid; }
+            pre { white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden; }
+            @page { size: 210mm 1800mm; margin: 0; }
+        }
+
+
+        .md-content { margin-top: 8px; }
+        .md-content table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.88rem; }
+        .md-content th, .md-content td { border: 1px solid #e7e5e0; padding: 8px 10px; text-align: left; vertical-align: top; }
+        .md-content th { background: #f5f5f4; font-weight: 600; }
+        .md-content tr:nth-child(even) { background: #fafaf9; }
+        .md-content hr { margin: 28px 0; border: none; border-top: 1px solid #e7e5e0; }
+        .md-content ul, .md-content ol { margin: 12px 0 12px 1.5em; }
+        .md-content p { margin: 12px 0; }
+        .md-content pre { margin: 16px 0; }
+        .md-content pre code { background: transparent !important; border: none !important; padding: 0 !important; }
+    
+    </style>
+</head>
+<body class="doc-theme-warm">
+    <div class="container">
+        <div class="md-content">
+<h1>Lab 2 Session Summary — Customer Support Agentic App with MCP (Python)</h1>
+<h2>Session Context</h2>
+<ul>
+<li><strong>Workshop repo</strong>: Geek Academy Spec-Driven Workshop</li>
+<li><strong>Lab</strong>: Lab 2 (Python path)</li>
+<li><strong>Goal</strong>: Extend Lab 1 so the host app can use MCP for real data access and business actions.</li>
+</ul>
+<h2>What We Added in Lab 2</h2>
+<h3>1) Separate local MCP server (SupportOps)</h3>
+<p>We added a new standalone MCP project:<br />
+- <code>support-ops-mcp-python/main.py</code><br />
+- Streamable HTTP endpoint: <code>http://127.0.0.1:5058/mcp</code><br />
+- Stateless HTTP transport for simple request/response workshop flow.</p>
+<h3>2) MCP tools (minimum requirements met)</h3>
+<p>Implemented two required tool categories:<br />
+- <strong>Data-access tool</strong>: <code>lookup_customer(customer_email)</code><br />
+  - Reads customer/account context from <code>mock-data-lab2/mock_customers.json</code>.<br />
+- <strong>Business-action tool</strong>: <code>create_support_action(customer_email, action_type, reason, details)</code><br />
+  - Records real support actions into <code>support-ops-mcp-python/data/support_actions.json</code>.</p>
+<h3>3) Host integration (Lab 1 app extended)</h3>
+<p>In <code>support-agent-python</code> host app:<br />
+- Added MCP client in <code>app/mcp_client.py</code> using streamable HTTP client/session.<br />
+- Updated <code>app/processor.py</code> to:<br />
+  - detect customer email from input<br />
+  - call MCP lookup before policy decision<br />
+  - include account context in reasoning + policy prompt<br />
+  - call MCP action tool for real outcomes (refund/escalation/general)</p>
+<h2>Architecture (Simple)</h2>
+<ul>
+<li>Host app still does classification/policy/response with MAF agents.</li>
+<li>MCP now provides operational capabilities (lookup + action recording).</li>
+<li>Customer still sees one clean support response.</li>
+</ul>
+<h2>Files Added / Updated</h2>
+<h3>New</h3>
+<ul>
+<li><code>support-ops-mcp-python/main.py</code></li>
+<li><code>support-ops-mcp-python/requirements.txt</code></li>
+<li><code>support-ops-mcp-python/README.md</code></li>
+<li><code>support-agent-python/app/mcp_client.py</code></li>
+</ul>
+<h3>Updated</h3>
+<ul>
+<li><code>support-agent-python/app/processor.py</code></li>
+</ul>
+<h2>Real Validation Results</h2>
+<h3>MCP server/tool validation</h3>
+<ul>
+<li>Server started and listened on port <code>5058</code>.</li>
+<li>Programmatic tool checks passed:</li>
+<li><code>lookup_customer('sam.r@example.com')</code> -&gt; found customer</li>
+<li><code>create_support_action(...)</code> -&gt; action created</li>
+</ul>
+<h3>End-to-end host scenarios</h3>
+<h4>Scenario A — Refund flow with lookup + approval</h4>
+<p>Input used <code>sam.r@example.com</code> and duplicate-charge complaint.</p>
+<p>Observed:<br />
+- Host reasoning included MCP lookup result (customer found + plan/status).<br />
+- Clarification asked once.<br />
+- Human approval requested.<br />
+- Action recorded via MCP as <code>refund_request</code>.<br />
+- Final action shown by host: <code>RefundTicketCreated</code>.</p>
+<h4>Scenario B — Escalation flow with lookup + action recording</h4>
+<p>Input used <code>tomas.l@example.com</code> and explicit manager/escalation demand.</p>
+<p>Observed:<br />
+- Host reasoning included MCP lookup result.<br />
+- Escalation path selected.<br />
+- Action recorded via MCP as <code>escalation</code>.<br />
+- Final action shown by host: <code>EscalatedToHuman</code>.</p>
+<h3>Persistence proof</h3>
+<p><code>support-ops-mcp-python/data/support_actions.json</code> contains recorded actions from:<br />
+- tool smoke test<br />
+- refund scenario<br />
+- escalation scenario</p>
+<h2>How To Run (Lab 2)</h2>
+<h3>Terminal 1 — start MCP server</h3>
+<pre><code class="language-bash">cd /Users/llatin/Geek-Academy-Spec-Driven-workshop/support-ops-mcp-python
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python main.py
+</code></pre>
+<h3>Terminal 2 — run host app</h3>
+<pre><code class="language-bash">cd /Users/llatin/Geek-Academy-Spec-Driven-workshop/support-agent-python
+source .venv/bin/activate
+python main.py
+</code></pre>
+<h2>Optional MCP Inspector Check</h2>
+<pre><code class="language-bash">npx -y @modelcontextprotocol/inspector
+</code></pre>
+<p>Then connect to:<br />
+- <code>http://127.0.0.1:5058/mcp</code></p>
+<h2>Outcome vs Lab 2 Expectations</h2>
+<ul>
+<li>✅ Lab 1 app extended, not replaced</li>
+<li>✅ Local MCP server added as separate app</li>
+<li>✅ At least one data-access tool and one action tool implemented</li>
+<li>✅ Host now performs real MCP calls for behavior beyond text-only</li>
+<li>✅ End-to-end support flow works with MCP-backed lookup/action</li>
+</ul>
+<h2>Next Step</h2>
+<ul>
+<li>Generate/publish this summary as HTML (same flow used in Lab 1).</li>
+</ul>
+        </div>
+    </div>
+</body>
+</html>
