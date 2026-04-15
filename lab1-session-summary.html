@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 1 Session Summary — Customer Support Agentic App (Python)</title>
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, -apple-system, Arial, sans-serif;
+            background: #faf9f7;
+            padding: 24px;
+            line-height: 1.65;
+            color: #44403c;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+            padding: 28px 32px 40px;
+        }
+        h1 {
+            color: #1c1917;
+            border-bottom: 2px solid #e7e5e0;
+            font-weight: 700;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #0d9488;
+            border-bottom: 1px solid #e7e5e0;
+            margin-top: 36px;
+            padding-bottom: 10px;
+        }
+        h3 { color: #0f766e; margin-top: 24px; }
+        .section-block {
+            background: #fafaf9;
+            border: 1px solid #e7e5e0;
+            border-left: 4px solid #14b8a6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .intro-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border: 1px solid #99f6e4;
+            border-left: 4px solid #14b8a6;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: "Consolas", ui-monospace, monospace;
+            border-left: 4px solid #14b8a6;
+            line-height: 1.55;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f5f5f4;
+            color: #0f766e;
+            padding: 0.2em 0.45em;
+            border-radius: 4px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.9em;
+            border: 1px solid #e7e5e0;
+        }
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .highlight-card {
+            background: #fff;
+            border: 1px solid #e7e5e0;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 3px solid #14b8a6;
+        }
+        
+        @media print {
+            body {
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .container {
+                box-shadow: none !important;
+                padding: 40px;
+                margin: 0 auto;
+                max-width: 100%;
+                width: 100%;
+                border-radius: 0;
+                box-sizing: border-box;
+            }
+            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
+            .section-block, .intro-block, .highlight-card, pre,
+            .simple-explanation, .next-steps { page-break-inside: avoid; break-inside: avoid; }
+            pre { white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden; }
+            @page { size: 210mm 1800mm; margin: 0; }
+        }
+
+
+        .md-content { margin-top: 8px; }
+        .md-content table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.88rem; }
+        .md-content th, .md-content td { border: 1px solid #e7e5e0; padding: 8px 10px; text-align: left; vertical-align: top; }
+        .md-content th { background: #f5f5f4; font-weight: 600; }
+        .md-content tr:nth-child(even) { background: #fafaf9; }
+        .md-content hr { margin: 28px 0; border: none; border-top: 1px solid #e7e5e0; }
+        .md-content ul, .md-content ol { margin: 12px 0 12px 1.5em; }
+        .md-content p { margin: 12px 0; }
+        .md-content pre { margin: 16px 0; }
+        .md-content pre code { background: transparent !important; border: none !important; padding: 0 !important; }
+    
+    </style>
+</head>
+<body class="doc-theme-warm">
+    <div class="container">
+        <div class="md-content">
+<h1>Lab 1 Session Summary — Customer Support Agentic App (Python)</h1>
+<h2>Session Context</h2>
+<ul>
+<li><strong>Workshop repo</strong>: Geek Academy Spec-Driven Workshop</li>
+<li><strong>Lab</strong>: Lab 1 (Python skeleton)</li>
+<li><strong>Goal</strong>: Build a policy-aware customer support agentic console app using Microsoft Agent Framework (MAF) and Azure OpenAI.</li>
+</ul>
+<h2>What We Implemented</h2>
+<h3>1) Multi-agent collaboration flow</h3>
+<p>We replaced the placeholder single-agent logic with a specialized multi-step pipeline:<br />
+- <strong>Analyzer agent</strong>: classifies intent, sentiment, urgency; decides if clarification/escalation may be needed.<br />
+- <strong>Policy agent</strong>: evaluates allowed action strictly against the support handbook policy.<br />
+- <strong>Responder agent</strong>: writes customer-facing final response in a human, concise style.</p>
+<h3>2) Policy-aware behavior (no policy invention)</h3>
+<ul>
+<li>The app now loads and uses <code>support-agent-python/data/support_handbook.md</code> as grounding policy context.</li>
+<li>Decision logic is based on the handbook constraints (refund rules, cancellation behavior, escalation rules, tone guidance).</li>
+<li>If information is insufficient, it requests clarification instead of guessing.</li>
+</ul>
+<h3>3) One-time clarification flow (optional task)</h3>
+<ul>
+<li>If the analyzer detects missing required details, app asks <strong>one</strong> clarification question.</li>
+<li>User can provide one follow-up line.</li>
+<li>App then continues once with merged context.</li>
+<li>If user skips clarification, action becomes <code>ClarificationRequested</code> with a clear next step.</li>
+</ul>
+<h3>4) Human-in-the-loop approval (optional task)</h3>
+<ul>
+<li>For refund-sensitive scenarios, app pauses with a <strong>Human Approval Required</strong> prompt.</li>
+<li>User can type <code>approve</code> or <code>reject</code>.</li>
+<li><code>reject</code> forces escalation path; <code>approve</code> allows refund action flow.</li>
+</ul>
+<h3>5) Escalation behavior (optional + required policy alignment)</h3>
+<ul>
+<li>Cases with explicit manager request / repeated unresolved issue / high-risk indicators are escalated.</li>
+<li>App returns <code>EscalatedToHuman</code> and presents a suitable customer-facing response.</li>
+</ul>
+<h2>Files Updated</h2>
+<ul>
+<li><code>support-agent-python/app/agent.py</code></li>
+<li>Added <code>create_analyzer_agent</code>, <code>create_policy_agent</code>, <code>create_responder_agent</code>.</li>
+<li>
+<p>Centralized Azure OpenAI client/env setup.</p>
+</li>
+<li>
+<p><code>support-agent-python/app/processor.py</code></p>
+</li>
+<li>Replaced placeholder process with real orchestrated support workflow.</li>
+<li>Added handbook loading, structured parsing helpers, clarification prompt, and approval checkpoint.</li>
+<li>
+<p>Added mapping to <code>SupportRequestResult</code> action outcomes.</p>
+</li>
+<li>
+<p><code>support-agent-python/main.py</code></p>
+</li>
+<li>Removed placeholder-run banner.</li>
+<li>
+<p>Kept clean console UX for multiline input and looped requests.</p>
+</li>
+<li>
+<p><code>support-agent-python/.env</code></p>
+</li>
+<li>Set workshop endpoint/API key.</li>
+<li>
+<p>Set deployment name to <code>llatin</code>.</p>
+</li>
+<li>
+<p><code>plan.md</code></p>
+</li>
+<li>Added practical execution roadmap used during the session.</li>
+</ul>
+<h2>Environment Status</h2>
+<ul>
+<li><code>uv</code> installed and available.</li>
+<li>Python virtual env created and dependencies installed.</li>
+<li>App starts successfully with configured Azure values.</li>
+</ul>
+<h2>End-to-End Validations Performed</h2>
+<h3>Scenario A: Plan question (normal)</h3>
+<p>Input: Basic plan API-access question.<br />
+- Expected behavior: policy-grounded answer (API is Premium-only).<br />
+- Observed: <code>ReplySent</code> with correct policy-aligned response.</p>
+<h3>Scenario B: Refund/billing issue with missing details</h3>
+<p>Input: suspected double-charge request.<br />
+- App requested one clarification.<br />
+- After follow-up and approval, app created refund path.<br />
+- Observed: <code>RefundTicketCreated</code>, with policy-aware explanation and next action.</p>
+<h3>Scenario C: Explicit escalation request</h3>
+<p>Input: customer asks for manager + repeated issue.<br />
+- Expected behavior: escalate immediately.<br />
+- Observed: <code>EscalatedToHuman</code> with appropriate acknowledgment and escalation response.</p>
+<h2>Real Session Examples (from @Local and @Local (2))</h2>
+<h3>Example 1 — Greeting + clarification pitfall (from @Local)</h3>
+<p>Observed flow:<br />
+- Initial input was submitted as <code>hi, how are you ? ---</code> on the same line.<br />
+- The app treated this as a weak/unclear request and entered clarification mode.<br />
+- A full multi-line customer email was then pasted into the clarification prompt (which expects one short line).</p>
+<p>Observed result:<br />
+- Classification: <code>Intent=Question</code>, <code>Sentiment=Neutral</code>, <code>Urgency=Low</code><br />
+- Action: <code>ReplySent</code><br />
+- Customer response: a generic greeting reply.</p>
+<p>Lesson learned:<br />
+- Submit with <code>---</code> on its own line.<br />
+- During clarification step, provide one short line only.</p>
+<h3>Example 2 — Clarification requested correctly (from @Local)</h3>
+<p>Observed flow:<br />
+- Customer reported being charged after cancellation but initially skipped clarification details.</p>
+<p>Observed result:<br />
+- Classification: <code>Intent=Refund</code>, <code>Sentiment=Frustrated</code>, <code>Urgency=Medium</code><br />
+- Action: <code>ClarificationRequested</code><br />
+- Next action text: wait for customer clarification and re-run request.</p>
+<p>Lesson learned:<br />
+- If no clarification is provided, app safely avoids guessing and asks for details.</p>
+<h3>Example 3 — Escalation path works (from @Local and @Local (2))</h3>
+<p>Input pattern:<br />
+- Explicit manager request, repeated unresolved billing issue, high frustration.</p>
+<p>Observed result:<br />
+- Classification: <code>Intent=Complaint</code>, <code>Sentiment=Angry</code>, <code>Urgency=High</code><br />
+- Action: <code>EscalatedToHuman</code><br />
+- Customer response acknowledges frustration and confirms escalation to senior support.</p>
+<p>Lesson learned:<br />
+- Escalation policy from handbook is being applied correctly.</p>
+<h3>Example 4 — Malicious/jailbreak prompt handled safely (from @Local (4))</h3>
+<p>Input pattern:<br />
+- Prompt-injection style request asking to ignore policy, expose internal/company/customer data, and force an invalid refund outcome.</p>
+<p>Observed result after hardening:<br />
+- Classification: <code>Intent=Unclear</code>, <code>Sentiment=Neutral</code>, <code>Urgency=Medium</code><br />
+- Reasoning includes safety marker: content/safety filter triggered and handled gracefully.<br />
+- Action: <code>EscalatedToHuman</code><br />
+- Customer response: explicit refusal for unsafe requests + redirect to legitimate account support.<br />
+- Most importantly: <strong>no crash/traceback</strong> in terminal.</p>
+<p>Lesson learned:<br />
+- Safety behavior is now robust: hostile prompts are blocked and converted to a controlled support response.</p>
+<h2>How To Run</h2>
+<pre><code class="language-bash">cd /Users/llatin/Geek-Academy-Spec-Driven-workshop/support-agent-python
+source .venv/bin/activate
+python main.py
+</code></pre>
+<h2>Input Tips (Important)</h2>
+<ul>
+<li>End each customer message with a line containing only:</li>
+</ul>
+<pre><code>---
+</code></pre>
+<ul>
+<li>For clarification prompts, enter <strong>one short line</strong> (not a full email block).</li>
+<li>Type <code>quit</code> on its own line to exit.</li>
+</ul>
+<h2>Outcome vs Lab 1 Expectations</h2>
+<ul>
+<li>✅ Working console app in Python skeleton</li>
+<li>✅ Spec-driven implementation path documented</li>
+<li>✅ MAF-based multi-agent orchestration</li>
+<li>✅ Policy-aware responses using local handbook</li>
+<li>✅ Optional tasks implemented: human approval, one-time clarification, multi-agent collaboration</li>
+</ul>
+<h2>Suggested Next Step (Lab 2 Readiness)</h2>
+<ul>
+<li>Keep this host app as-is.</li>
+<li>Add SupportOps MCP server for customer lookup + business actions.</li>
+<li>Integrate tool calls while preserving the same customer-facing support experience.</li>
+</ul>
+        </div>
+    </div>
+</body>
+</html>
