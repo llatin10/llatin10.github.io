@@ -38,6 +38,16 @@ def is_qa_features_page(title: str, filename: str) -> bool:
     return False
 
 
+def is_production_issues_page(title: str, filename: str) -> bool:
+    """Production issues brief (fixed GitHub Pages filename + title pattern)."""
+    if filename.casefold() == "production-issues-insights.html":
+        return True
+    tl = title.casefold()
+    if "production issues" in tl and "management brief" in tl:
+        return True
+    return False
+
+
 def version_tuple_for_sort(title: str, filename: str) -> tuple[int, int, int]:
     """Parse X.Y.Z (or X.Y) from title/filename for ordering; missing -> (0,0,0)."""
     for s in (title, filename):
@@ -82,6 +92,7 @@ def git_push_site() -> int:
         "sync_confluence_deeplinks.py",
         "stamp_tappable_deeplinks_updated.py",
         "deeplinks-atlassian.meta.json",
+        "production-issues-state.json",
         ".gitignore",
     ):
         p = ROOT / extra
@@ -176,12 +187,15 @@ def main() -> int:
 
     pinned: list[tuple[str, str]] = []
     qa_features: list[tuple[str, str]] = []
+    production_issues: list[tuple[str, str]] = []
     rest: list[tuple[str, str]] = []
     for title, name in all_pages:
         if is_deep_links_page(title, name):
             pinned.append((title, name))
         elif is_qa_features_page(title, name):
             qa_features.append((title, name))
+        elif is_production_issues_page(title, name):
+            production_issues.append((title, name))
         else:
             rest.append((title, name))
 
@@ -190,9 +204,10 @@ def main() -> int:
         key=lambda row: version_tuple_for_sort(row[0], row[1]),
         reverse=True,
     )
+    production_issues.sort(key=lambda x: x[1].casefold())
     rest.sort(key=lambda x: x[0].casefold())
 
-    pages: list[tuple[str, str]] = pinned + qa_features + rest
+    pages: list[tuple[str, str]] = pinned + qa_features + production_issues + rest
 
     if not all_pages:
         body = "            <li><em>No pages yet</em></li>"
@@ -215,6 +230,16 @@ def main() -> int:
             <p class="section-hint">Sorted by version number (newest first).</p>
             <ul class="page-list">
 {_list_items(qa_features)}
+            </ul>"""
+            )
+        if production_issues:
+            hints.append("Production issues brief (fixed URL)")
+            border = " section-prod" if (pinned or qa_features) else ""
+            blocks.append(
+                f"""            <h2 class="section{border}">Production issues</h2>
+            <p class="section-hint">Stable link for sharing; date in title.</p>
+            <ul class="page-list">
+{_list_items(production_issues)}
             </ul>"""
             )
         if rest:
@@ -258,6 +283,7 @@ def main() -> int:
         h2.section {{ font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #78716c; margin: 20px 0 10px 0; }}
         h2.section:first-of-type {{ margin-top: 0; }}
         h2.section-qa {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
+        h2.section-prod {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         h2.section-other {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         .section-hint {{ font-size: 0.75rem; color: #a8a29e; margin: -4px 0 10px 0; }}
         ul.page-list {{ list-style: none; }}
@@ -292,6 +318,12 @@ def main() -> int:
         print()
         print("  QA Features Summary (by version, newest first):")
         for title, filename in qa_features:
+            url = f"{SITE_BASE}/{quote(filename, safe='/')}"
+            print(f"  - {title} — {url}")
+    if production_issues:
+        print()
+        print("  Production issues:")
+        for title, filename in production_issues:
             url = f"{SITE_BASE}/{quote(filename, safe='/')}"
             print(f"  - {title} — {url}")
     if rest:
