@@ -549,7 +549,7 @@
 <p><strong>Age:</strong> 287 days · <strong>Stale:</strong> 33 · <strong>Status:</strong> Reopened · <strong>Severity:</strong> Medium</p>
 <ul>
 <li><strong>Product / area:</strong> Services / Savings / Savings Screen in App</li>
-<li><strong>Customer impact (summary):</strong> There is a mismatch in the daily savings amounts displayed in the Savings page lobby of the app. At the top of the page, the amount includes the interest accrued, while in the savings row it appears without the interest. At the request of Adi Beker, the product manager, an issue has been opened.</li>
+<li><strong>Customer impact (summary):</strong> There is a mismatch in the daily savings amounts displayed in the Savings page lobby of the app. At the top of the page, the amount includes the interest accrued, while in the savings row it appears without the interest. At the request of Adi Beker, the product manager, an issue has been opened. Time &amp; Date: 01/07/2025 10:49 [ | portfolio [id] saving account id [id] customer id [id] { "depositDetails": { "depositReference": "18001201301746DD005ILS0003", "depositInstrmntType": 549, "depositInstrmntName": "Daily Interest Deposit", "depositOpngDate": "20241009", "depositAmount": , "depositInterestRate": , "depositEstimatedAmount": , ONEZEROIL/3.3.0(387) Lokalize/0 (Android 15 ; Google Pixel 9a)</li>
 <li><strong>Links:</strong></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:159939">ITCC case</a></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/e3ce7950564f11f08e73eeeeeeeeeeee/replay/mobile?sessionStartTime=1751356157285&amp;source_node=0">Glassbox session</a></li>
@@ -559,7 +559,136 @@
 <p><strong>Age:</strong> 217 days · <strong>Stale:</strong> 69 · <strong>Status:</strong> Open · <strong>Severity:</strong> Medium</p>
 <ul>
 <li><strong>Product / area:</strong> Services / Securities / Orders Screen</li>
-<li><strong>Customer impact (summary):</strong> Customer sees the tax debit on 06/09/2025 in app when its Saturday and in bancs or platform DB shows it on 05/09/2025. "booking_date" : "2025-09-05", "trade_date" : "2025-09-05", "value_date" : "2025-09-05", screenshot from the mobile app - screenshot from bancs - date &amp; time of the session 14/09/25 14:05 with the screenshoot { "select *from cash_movement cm where portfolio_id = '[id]' and description_hebrew like '%SOXL%'order by movement_timestamp desc limit 10\r\n": [ { "movement_id" : "[id]", "external_movement_id" : "127005741", "movement_timestamp" : "2025-09-06T21:39:44.000Z", "movement_type" : "TAX", "portfolio_id" : "[id]", "external_portfolio_id" : "[num]", "account_id" : "[id]", "external_account_id" : "18001201910173CA005ILS0001", "account_type" : "CASH", "is_customer_account" : true, "transaction_id" : "[id]", "external_transaction_id" : "410-194938", "transaction_type" : "SECURITIES_TAX", "sub_transaction_id" : "[id]", "external_sub_transaction_id" : "66-556732", "sub_transaction_type" : "ST_ALLOCATION", "credit_debit" : "DEBIT", "booking_date" : "2025-09-05", "trade_date" : "2025-09-05", "value_date" : "2025-09-05", "movement_amount" : 198.9700000, "movement_currency" : "ILS", "transaction_amount" : 198.9700000, "transaction_currency" : "ILS", "conversion_rate" : 1.0000000, "description" : "‭‭SOXL - סמ בויח ע\"ינ סמ", "description_hebrew" : "‭‭SOXL - סמ בויח ע\"ינ סמ", "description_english" : "Tax Securities Tax charge - SOXL", "amount_default_bank_currency" : 198.9700000, "is_reversed" : false, "reversed_date" : null, "movement_reversed_id" : null, "external_movement_reversed_id" : null, "correlation_id" : "[id]", "created_at" : "2025-09-06T21:44:40.195Z", "updated_at" : "2025-09-06T23:16:51.654Z", "business_stream" : "SECURITIES", "running_balance" :…</li>
+<li><strong>Customer impact (summary):</strong> Customer sees the tax debit on 06/09/2025 in app when its Saturday and in bancs or platform DB shows it on 05/09/2025. "booking_date" : "2025-09-05", "trade_date" : "2025-09-05", "value_date" : "2025-09-05", screenshot from the mobile app - screenshot from bancs - date &amp; time of the session 14/09/25 14:05 with the screenshoot glassbox session link: [ | Dynatrace session link: can you please check it from your side?</li>
+<li><strong>Extracted from payload:</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>booking / trade / value date</td>
+<td>2025-09-05 (all match)</td>
+</tr>
+<tr>
+<td>movement_id</td>
+<td>ceeab353-d4fd-41bd-875f-9ae90ac9c24b</td>
+</tr>
+<tr>
+<td>movement_timestamp</td>
+<td>2025-09-06T21:39:44.000Z</td>
+</tr>
+<tr>
+<td>movement_type</td>
+<td>TAX</td>
+</tr>
+<tr>
+<td>transaction_type</td>
+<td>SECURITIES_TAX</td>
+</tr>
+<tr>
+<td>sub_transaction_type</td>
+<td>ST_ALLOCATION</td>
+</tr>
+<tr>
+<td>credit_debit</td>
+<td>DEBIT</td>
+</tr>
+<tr>
+<td>movement_status</td>
+<td>BOOKED</td>
+</tr>
+<tr>
+<td>business_stream</td>
+<td>SECURITIES</td>
+</tr>
+<tr>
+<td>platform_domain_type</td>
+<td>SECURITIES</td>
+</tr>
+<tr>
+<td>external_transaction_id</td>
+<td>410-194938</td>
+</tr>
+<tr>
+<td>external_movement_id</td>
+<td>127005741</td>
+</tr>
+<tr>
+<td>portfolio_id</td>
+<td>7e98af26-2997-4609-8a62-b2ebd6c93bb3</td>
+</tr>
+<tr>
+<td>correlation_id</td>
+<td>1b557cc3-34c4-42f4-a4ad-e0e5636fdcee</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>2025-09-06T21:44:40.195Z</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>2025-09-06T23:16:51.654Z</td>
+</tr>
+<tr>
+<td>movement / transaction amount</td>
+<td>198.97 ILS· txn: 198.97 ILS</td>
+</tr>
+<tr>
+<td>running_balance</td>
+<td>6879.21</td>
+</tr>
+<tr>
+<td>description (EN)</td>
+<td>Tax Securities Tax charge - SOXL</td>
+</tr>
+<tr>
+<td>description (HE)</td>
+<td>‭‭SOXL - סמ בויח ע"ינ סמ</td>
+</tr>
+<tr>
+<td>description</td>
+<td>‭‭SOXL - סמ בויח ע"ינ סמ</td>
+</tr>
+<tr>
+<td>account_id</td>
+<td>4eccc8c4-6934-4e52-b395-e449db969fa6</td>
+</tr>
+<tr>
+<td>account_type</td>
+<td>CASH</td>
+</tr>
+<tr>
+<td>amount_default_bank_currency</td>
+<td>198.97</td>
+</tr>
+<tr>
+<td>conversion_rate</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>external_account_id</td>
+<td>18001201910173CA005ILS0001</td>
+</tr>
+<tr>
+<td>external_movement_reversed_id</td>
+<td>null</td>
+</tr>
+<tr>
+<td>external_portfolio_id</td>
+<td>18001201910173</td>
+</tr>
+<tr>
+<td>external_sub_transaction_id</td>
+<td>66-556732</td>
+</tr>
+</tbody>
+</table>
+<ul>
 <li><strong>Links:</strong></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:163580">ITCC case</a></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/user-timeline/e361a6f0915911f08dcfeeeeeeeeeeee/replay/web?userName=098a6d8d-a0fe-4793-b492-190234d0ec5e&amp;sessionStartTime=1757847570143">Glassbox session</a></li>
@@ -588,7 +717,7 @@
 <h3>OZ-88421 — iOS - Masav Transfer Executed with Default Beneficiary Message Instead of Custom One</h3>
 <p><strong>Age:</strong> 164 days · <strong>Stale:</strong> 7 · <strong>Status:</strong> Possible Rejection · <strong>Severity:</strong> Low</p>
 <ul>
-<li><strong>Customer impact (summary):</strong> The customer initiated a Masav transfer via the mobile application. In the "Transfer Summary" screen, under the "Message to Beneficiary" section, the customer replaced the default message ("העברה מבנק ONE ZERO") with a custom note ("בדיקה"). However, the transfer was executed with the default message instead of the one the customer had entered.</li>
+<li><strong>Customer impact (summary):</strong> The customer initiated a Masav transfer via the mobile application. In the "Transfer Summary" screen, under the "Message to Beneficiary" section, the customer replaced the default message ("העברה מבנק ONE ZERO") with a custom note ("בדיקה"). However, the transfer was executed with the default message instead of the one the customer had entered. Time &amp; Date: 05/11/2025 10:58 Glassbox: [ | another case: User - [id] Customer - [id]</li>
 <li><strong>Links:</strong></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/93a22a00ba2511f0a57deeeeeeeeeeee/replay/mobile?sessionStartTime=1762333100192&amp;source_node=0">Glassbox session</a></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/d5c8a580acb511f08f43eeeeeeeeeeee/replay/mobile?sessionStartTime=1760855742424&amp;source_node=0">Glassbox session</a></li>
@@ -610,7 +739,92 @@
 <p><strong>Age:</strong> 132 days · <strong>Stale:</strong> 7 · <strong>Status:</strong> Open · <strong>Severity:</strong> Medium</p>
 <ul>
 <li><strong>Product / area:</strong> Services / Savings / Daily Saving- Withdrawal</li>
-<li><strong>Customer impact (summary):</strong> The Withdrawal and Deposit buttons in the app are missing in the Daily deposit.</li>
+<li><strong>Customer impact (summary):</strong> The Withdrawal and Deposit buttons in the app are missing in the Daily deposit. Customer details - Account Number: 200437357 User : [id] customer id: [id]</li>
+<li><strong>Extracted from payload:</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>portfolio_id</td>
+<td>b8c7713e-ec6e-439c-baff-6c04bddfe401</td>
+</tr>
+<tr>
+<td>correlation_id</td>
+<td>6f0d72c7-fae2-417f-ac3d-1e92a3b701c1</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>2025-08-04T00:28:27.791Z</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>2026-01-01T00:13:42.402Z</td>
+</tr>
+<tr>
+<td>account_opening_amount</td>
+<td>null</td>
+</tr>
+<tr>
+<td>account_opening_date</td>
+<td>null</td>
+</tr>
+<tr>
+<td>account_opening_rule_id</td>
+<td>null</td>
+</tr>
+<tr>
+<td>account_opening_transaction_id</td>
+<td>null</td>
+</tr>
+<tr>
+<td>accrued_interest</td>
+<td>491.56</td>
+</tr>
+<tr>
+<td>auto_renewal</td>
+<td>false</td>
+</tr>
+<tr>
+<td>bank_id</td>
+<td>18</td>
+</tr>
+<tr>
+<td>book_date</td>
+<td>2025-08-04</td>
+</tr>
+<tr>
+<td>branch_code</td>
+<td>001</td>
+</tr>
+<tr>
+<td>checking_account_id</td>
+<td>58445796-467f-4925-b273-1b841b424d21</td>
+</tr>
+<tr>
+<td>close_date</td>
+<td>null</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>ILS</td>
+</tr>
+<tr>
+<td>customer_id</td>
+<td>95f35225-2efb-46c2-bad4-6bc3e809665d</td>
+</tr>
+<tr>
+<td>end_date</td>
+<td>2026-08-04</td>
+</tr>
+</tbody>
+</table>
+<ul>
 <li><strong>Links:</strong></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:167384">ITCC case</a></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/user-timeline/60be5420ca3c11f0b80ceeeeeeeeeeee/replay/web?userName=2ace8f43-fd5d-422b-b7d1-50306a89bac4&amp;sessionStartTime=1764102111842">Glassbox session</a></li>
@@ -622,7 +836,7 @@
 <p><strong>Age:</strong> 110 days · <strong>Stale:</strong> 69 · <strong>Status:</strong> Open · <strong>Severity:</strong> Critical</p>
 <ul>
 <li><strong>Product / area:</strong> Services / Savings / Daily Saving - Details</li>
-<li><strong>Customer impact (summary):</strong> The customer has an active Daily Savings account that was opened on 03/02/2025. In the mobile app, the customer can see transactions in the savings page only up to 05/10/2025.</li>
+<li><strong>Customer impact (summary):</strong> The customer has an active Daily Savings account that was opened on 03/02/2025. In the mobile app, the customer can see transactions in the savings page only up to 05/10/2025. Time &amp; Date: 30/12/2025 User:[id]</li>
 <li><strong>Links:</strong></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:168549">ITCC case</a></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/b575f4c4e55611f086cd9e4053f2c226/replay/mobile?sessionStartTime=1767082101780&amp;source_node=0">Glassbox session</a></li>
@@ -659,6 +873,91 @@
 <ul>
 <li><strong>Product / area:</strong> Services / Cards / Card Balance</li>
 <li><strong>Customer impact (summary):</strong> The Withdrawal and Deposit buttons in the app are missing in the Daily deposit.</li>
+<li><strong>Extracted from payload:</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>portfolio_id</td>
+<td>baae1280-d18d-46b3-bc58-08962172a7cc</td>
+</tr>
+<tr>
+<td>correlation_id</td>
+<td>1c6ac63d-1313-4ff0-a243-86a43cd5f07a</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>2025-01-24T05:36:59.841Z</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>2026-01-19T22:31:16.442Z</td>
+</tr>
+<tr>
+<td>account_opening_amount</td>
+<td>null</td>
+</tr>
+<tr>
+<td>account_opening_date</td>
+<td>null</td>
+</tr>
+<tr>
+<td>account_opening_rule_id</td>
+<td>null</td>
+</tr>
+<tr>
+<td>account_opening_transaction_id</td>
+<td>null</td>
+</tr>
+<tr>
+<td>accrued_interest</td>
+<td>27.3</td>
+</tr>
+<tr>
+<td>auto_renewal</td>
+<td>false</td>
+</tr>
+<tr>
+<td>bank_id</td>
+<td>18</td>
+</tr>
+<tr>
+<td>book_date</td>
+<td>2025-01-24</td>
+</tr>
+<tr>
+<td>branch_code</td>
+<td>001</td>
+</tr>
+<tr>
+<td>checking_account_id</td>
+<td>09ada157-9fc3-429f-a92e-e6b4a1493920</td>
+</tr>
+<tr>
+<td>close_date</td>
+<td>null</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>ILS</td>
+</tr>
+<tr>
+<td>customer_id</td>
+<td>d5e84ce6-ca61-4ac5-b974-fc09c625b02a</td>
+</tr>
+<tr>
+<td>end_date</td>
+<td>2026-01-24</td>
+</tr>
+</tbody>
+</table>
+<ul>
 <li><strong>Links:</strong></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:169786">ITCC case</a></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/70c07820f4c211f087deeeeeeeeeeeee/replay/mobile?sessionStartTime=1768777640098&amp;source_node=0">Glassbox session</a></li>
