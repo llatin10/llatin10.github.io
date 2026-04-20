@@ -6,3 +6,7 @@ deeplinks.mcp.json
 # Full Confluence page body snapshots (local diff vs last fetch; not for git).
 deeplinks-confluence-body.snapshot.txt
 deeplinks-confluence-body.previous.txt
+
+# Python
+__pycache__/
+*.pyc
