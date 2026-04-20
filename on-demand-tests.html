@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>On-demand tests — run-specific-tests.yml (GitHub Actions)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: #faf9f7;
+      padding: 24px;
+      line-height: 1.65;
+      color: #44403c;
+    }
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px 32px 40px;
+      box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+    }
+    h1 {
+      color: #1c1917;
+      border-bottom: 2px solid #e7e5e0;
+      font-weight: 600;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+      font-size: 1.65rem;
+    }
+    h2 {
+      color: #0d9488;
+      border-bottom: 1px solid #e7e5e0;
+      margin-top: 32px;
+      font-weight: 600;
+      padding-bottom: 8px;
+      font-size: 1.2rem;
+    }
+    h3 { color: #0f766e; font-weight: 600; margin-top: 20px; font-size: 1.05rem; }
+    p { margin: 12px 0; }
+    a { color: #0d9488; }
+    a:hover { text-decoration: underline; }
+    .intro-block {
+      background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+      border: 1px solid #99f6e4;
+      border-left: 4px solid #14b8a6;
+      padding: 18px 20px;
+      border-radius: 8px;
+      margin: 0 0 20px 0;
+    }
+    .intro-block strong { color: #0f766e; }
+    .callout {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 4px solid #d97706;
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      margin: 16px 0;
+    }
+    th, td {
+      border: 1px solid #e7e5e0;
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #f5f5f4;
+      font-weight: 600;
+      color: #1c1917;
+    }
+    pre {
+      background: #f5f5f4;
+      color: #1c1917;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+      border: 1px solid #e7e5e0;
+      line-height: 1.45;
+      font-size: 13px;
+      overflow-x: auto;
+    }
+    code {
+      background: #ecfdf5;
+      color: #0f766e;
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+      font-size: 0.88em;
+      border: 1px solid #99f6e4;
+    }
+    ul.checklist { margin: 12px 0 0 1.25rem; }
+    ul.checklist li { margin: 6px 0; }
+    .figure { margin: 20px 0; }
+    .figure img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      border: 1px solid #e7e5e0;
+    }
+    .figure figcaption {
+      font-size: 0.9rem;
+      color: #78716c;
+      margin-top: 8px;
+    }
+    .muted { color: #78716c; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>On-demand (Run specific tests) — GitHub Actions</h1>
+
+    <div class="intro-block">
+      <p><strong>You do not need Cursor.</strong> There is no <code>/on-demand-specific-test-run</code> command in this guide. Use the GitHub Actions UI and normal repo search (GitHub or your IDE) to find <strong>Kotlin test class names</strong>.</p>
+    </div>
+
+    <p>Workflow:</p>
+    <p>
+      <a href="https://github.com/digibank-il/mobile-tests/actions/workflows/run-specific-tests.yml">https://github.com/digibank-il/mobile-tests/actions/workflows/run-specific-tests.yml</a>
+    </p>
+
+    <h2>1. Open “Run workflow”</h2>
+    <ol style="margin-left: 1.25rem;">
+      <li>Open the link above (you need access to the repo and Actions).</li>
+      <li>Click <strong>Run workflow</strong> (top right).</li>
+      <li>Under <strong>Use workflow from</strong>, pick the branch that contains the workflow you want (often <code>mobile_dev</code> or the branch your team uses).</li>
+    </ol>
+
+    <h2>2. Fill the form</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>What to put</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Choose branch</strong></td>
+          <td>The branch the run should use (often matches “Use workflow from”).</td>
+        </tr>
+        <tr>
+          <td><strong>Choose testTag</strong></td>
+          <td>Your team’s tag (e.g. <code>test</code>). If you use “Run specific test class pattern(s)” below, this tag is <strong>overridden</strong> for which tests run.</td>
+        </tr>
+        <tr>
+          <td><strong>choose ios / android</strong></td>
+          <td><code>android</code> or <code>ios</code>.</td>
+        </tr>
+        <tr>
+          <td><strong>choose run type</strong></td>
+          <td>Your team’s value (e.g. <code>-develop</code>).</td>
+        </tr>
+        <tr>
+          <td><strong>app version</strong></td>
+          <td>Your team’s value (e.g. <code>last-version</code>).</td>
+        </tr>
+        <tr>
+          <td><strong>Run specific test class pattern(s), comma-separated. Takes precedence over testTag.</strong></td>
+          <td><strong>This is the important field.</strong> See the next section.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Then click the green <strong>Run workflow</strong> button.</p>
+
+    <h2>3. The important field: “Run specific test class pattern(s)”</h2>
+    <p class="muted">Label in the UI:</p>
+    <div class="callout">
+      <strong>Run specific test class pattern(s), comma-separated. Takes precedence over testTag.</strong>
+    </div>
+
+    <h3>What to paste</h3>
+    <ul style="margin-left: 1.25rem;">
+      <li><strong>Comma-separated</strong> list of <strong>test class</strong> patterns.</li>
+      <li>Each entry uses a leading <code>*</code> plus the <strong>Kotlin class name</strong> (no package, no quotes).</li>
+      <li>No <code>--tests</code> flags, Gradle task names, or file paths—only the <code>*ClassName</code> patterns in this field.</li>
+    </ul>
+
+    <p><strong>One test class:</strong></p>
+    <pre>*DepositChequeTest</pre>
+
+    <p><strong>Several test classes:</strong></p>
+    <pre>*DepositChequeTest,*ToggleBiometricTest,*QuickLogInBlockedAfter5TimesTest</pre>
+
+    <ul style="margin-left: 1.25rem;">
+      <li>If several scenarios map to the <strong>same</strong> class (common for parameterized tests), you only need <strong>one</strong> entry for that class.</li>
+      <li>If this field is <strong>non-empty</strong>, it <strong>takes precedence</strong> over <strong>testTag</strong>.</li>
+    </ul>
+
+    <h2>4. How to find the class name (manual)</h2>
+    <p>You need the <strong>class</strong> name (e.g. <code>DepositChequeTest</code>), not the human-readable test title alone.</p>
+
+    <h3>Option A — Search on GitHub</h3>
+    <ol style="margin-left: 1.25rem;">
+      <li>In the <strong>mobile-tests</strong> repo, use code search in <code>src/test/kotlin</code>.</li>
+      <li>Search for keywords from the test scenario, or for:
+        <ul style="margin: 8px 0 0 1.25rem;">
+          <li>Backtick method names: <code>fun `Some test description here`()</code></li>
+          <li>Parameterized tests: <code>@ParameterizedTest(name = "...")</code></li>
+        </ul>
+      </li>
+      <li>Open the matching <code>.kt</code> file and find the <code>class</code> declaration (e.g. <code>class DepositChequeTest</code>).</li>
+      <li>Use that name as <code>*DepositChequeTest</code>.</li>
+    </ol>
+
+    <h3>Option B — Search locally</h3>
+    <p>If you have the repo cloned, search under <code>src/test/kotlin</code> the same way, then read the class name from the file.</p>
+
+    <h3>Parameterized tests</h3>
+    <p>If a test uses <code>@ParameterizedTest</code>, multiple rows may share one class. You usually still target the class (one <code>*ClassName</code> entry); narrowing to a single parameter row is not guaranteed from this field alone.</p>
+
+    <h2>5. Quick checklist</h2>
+    <ul class="checklist">
+      <li>Correct <strong>platform</strong> (<code>android</code> / <code>ios</code>).</li>
+      <li>Correct <strong>branch</strong> for the code you want to exercise.</li>
+      <li><strong>“Run specific test class pattern(s)”</strong> contains <code>*ClassName</code> entries, comma-separated.</li>
+      <li>You used <strong>class names</strong>, not method names or descriptions.</li>
+    </ul>
+
+    <h2>Screenshot</h2>
+    <figure class="figure">
+      <img src="on-demand-tests-workflow-screenshot.png" alt="GitHub Actions Run workflow dialog showing Run specific test class pattern(s) field" width="640">
+      <figcaption>GitHub Actions — Run workflow (the field at the bottom takes precedence over testTag).</figcaption>
+    </figure>
+  </div>
+</body>
+</html>
