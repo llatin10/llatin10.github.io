@@ -48,6 +48,17 @@ def is_production_issues_page(title: str, filename: str) -> bool:
     return False
 
 
+def is_guides_page(title: str, filename: str) -> bool:
+    """Guides and documentation pages (on-demand tests, workflows, etc.)."""
+    fn = filename.casefold()
+    if "on-demand" in fn or "firebender" in fn or "kiro-steering" in fn:
+        return True
+    tl = title.casefold()
+    if "on-demand" in tl or "firebender" in tl or "kiro" in tl:
+        return True
+    return False
+
+
 def version_tuple_for_sort(title: str, filename: str) -> tuple[int, int, int]:
     """Parse X.Y.Z (or X.Y) from title/filename for ordering; missing -> (0,0,0)."""
     for s in (title, filename):
@@ -188,6 +199,7 @@ def main() -> int:
     pinned: list[tuple[str, str]] = []
     qa_features: list[tuple[str, str]] = []
     production_issues: list[tuple[str, str]] = []
+    guides: list[tuple[str, str]] = []
     rest: list[tuple[str, str]] = []
     for title, name in all_pages:
         if is_deep_links_page(title, name):
@@ -196,6 +208,8 @@ def main() -> int:
             qa_features.append((title, name))
         elif is_production_issues_page(title, name):
             production_issues.append((title, name))
+        elif is_guides_page(title, name):
+            guides.append((title, name))
         else:
             rest.append((title, name))
 
@@ -205,9 +219,10 @@ def main() -> int:
         reverse=True,
     )
     production_issues.sort(key=lambda x: x[1].casefold())
+    guides.sort(key=lambda x: x[0].casefold())
     rest.sort(key=lambda x: x[0].casefold())
 
-    pages: list[tuple[str, str]] = pinned + qa_features + production_issues + rest
+    pages: list[tuple[str, str]] = pinned + qa_features + production_issues + guides + rest
 
     if not all_pages:
         body = "            <li><em>No pages yet</em></li>"
@@ -240,6 +255,16 @@ def main() -> int:
             <p class="section-hint">Stable link for sharing; date in title.</p>
             <ul class="page-list">
 {_list_items(production_issues)}
+            </ul>"""
+            )
+        if guides:
+            hints.append("Guides & documentation (on-demand, workflows, Kiro)")
+            border = " section-guides" if (pinned or qa_features or production_issues) else ""
+            blocks.append(
+                f"""            <h2 class="section{border}">Guides & Documentation</h2>
+            <p class="section-hint">On-demand tests, workflows, and Kiro steering guides.</p>
+            <ul class="page-list">
+{_list_items(guides)}
             </ul>"""
             )
         if rest:
@@ -285,6 +310,7 @@ def main() -> int:
         h2.section-qa {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         h2.section-prod {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         h2.section-other {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
+        h2.section-guides {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         .section-hint {{ font-size: 0.75rem; color: #a8a29e; margin: -4px 0 10px 0; }}
         ul.page-list {{ list-style: none; }}
         ul.page-list li {{ margin-bottom: 10px; }}
@@ -324,6 +350,12 @@ def main() -> int:
         print()
         print("  Production issues:")
         for title, filename in production_issues:
+            url = f"{SITE_BASE}/{quote(filename, safe='/')}"
+            print(f"  - {title} — {url}")
+    if guides:
+        print()
+        print("  Guides & Documentation:")
+        for title, filename in guides:
             url = f"{SITE_BASE}/{quote(filename, safe='/')}"
             print(f"  - {title} — {url}")
     if rest:
