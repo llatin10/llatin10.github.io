@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiro Steering File — OnDemand specific tests</title>
+    <title>Kiro Steering File — OnDemand specific tests (copy/paste)</title>
     <style>
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: "Helvetica Neue", Helvetica, -apple-system, Arial, sans-serif;
@@ -36,22 +35,6 @@
             padding-bottom: 10px;
         }
         h3 { color: #0f766e; margin-top: 24px; }
-        .section-block {
-            background: #fafaf9;
-            border: 1px solid #e7e5e0;
-            border-left: 4px solid #14b8a6;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        .intro-block {
-            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
-            border: 1px solid #99f6e4;
-            border-left: 4px solid #14b8a6;
-            padding: 18px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
         pre {
             background: #1e293b;
             color: #e2e8f0;
@@ -62,6 +45,8 @@
             line-height: 1.55;
             font-size: 14px;
             overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
         code {
             background: #f5f5f4;
@@ -72,153 +57,152 @@
             font-size: 0.9em;
             border: 1px solid #e7e5e0;
         }
-        .highlight-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
+        pre code { background: transparent !important; border: none !important; padding: 0 !important; color: #e2e8f0 !important; }
+        .intro-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border: 1px solid #99f6e4;
+            border-left: 4px solid #14b8a6;
+            padding: 18px;
+            border-radius: 8px;
             margin: 20px 0;
         }
-        .highlight-card {
-            background: #fff;
-            border: 1px solid #e7e5e0;
-            border-radius: 8px;
-            padding: 20px;
-            border-left: 3px solid #14b8a6;
+        blockquote {
+            border-left: 4px solid #14b8a6;
+            padding: 10px 16px;
+            background: #f0fdfa;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            color: #0f766e;
+            font-style: italic;
         }
-        
+        hr { margin: 28px 0; border: none; border-top: 1px solid #e7e5e0; }
+        ul, ol { margin: 12px 0 12px 1.5em; }
+        li { margin-bottom: 6px; }
+        p { margin: 12px 0; }
+        a { color: #0d9488; text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+        .copy-hint {
+            font-size: 0.8rem;
+            color: #78716c;
+            margin-bottom: 6px;
+            font-style: italic;
+        }
         @media print {
-            body {
-                padding: 0 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .container {
-                box-shadow: none !important;
-                padding: 40px;
-                margin: 0 auto;
-                max-width: 100%;
-                width: 100%;
-                border-radius: 0;
-                box-sizing: border-box;
-            }
-            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
-            .section-block, .intro-block, .highlight-card, pre,
-            .simple-explanation, .next-steps { page-break-inside: avoid; break-inside: avoid; }
-            pre { white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden; }
+            body { padding: 0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .container { box-shadow: none !important; padding: 40px; max-width: 100%; border-radius: 0; }
+            h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
+            pre { page-break-inside: avoid; break-inside: avoid; }
             @page { size: 210mm 1800mm; margin: 0; }
         }
-
-
-        .md-content { margin-top: 8px; }
-        .md-content table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.88rem; }
-        .md-content th, .md-content td { border: 1px solid #e7e5e0; padding: 8px 10px; text-align: left; vertical-align: top; }
-        .md-content th { background: #f5f5f4; font-weight: 600; }
-        .md-content tr:nth-child(even) { background: #fafaf9; }
-        .md-content hr { margin: 28px 0; border: none; border-top: 1px solid #e7e5e0; }
-        .md-content ul, .md-content ol { margin: 12px 0 12px 1.5em; }
-        .md-content li > ul { margin-top: 6px; margin-bottom: 6px; }
-        .md-content .md-rtl,
-        .md-content [dir="rtl"] {
-            direction: rtl;
-            text-align: right;
-            unicode-bidi: isolate;
-        }
-        .md-content .md-rtl ul,
-        .md-content .md-rtl ol,
-        .md-content [dir="rtl"] ul,
-        .md-content [dir="rtl"] ol {
-            margin: 12px 0 12px 0;
-            padding-inline-start: 1.5em;
-        }
-        .md-content p { margin: 12px 0; }
-        .md-content pre { margin: 16px 0; }
-        .md-content pre code { background: transparent !important; border: none !important; padding: 0 !important; }
-    
     </style>
 </head>
-<body class="doc-theme-warm">
+<body>
     <div class="container">
-        <div class="md-content">
-<h1>Kiro Steering File — OnDemand specific tests</h1>
-<p>Use this guide when working in <strong>Kiro</strong> to generate the exact string to paste into the GitHub Actions workflow field:</p>
-<blockquote>
-<p><strong>Run specific test class pattern(s), comma-separated. Takes precedence over testTag.</strong></p>
-</blockquote>
-<p>This is the Kiro equivalent of the Cursor <code>/on-demand-specific-test-run</code> command and the Firebender prompt.</p>
-<hr />
-<h2>How to use in Kiro</h2>
-<p>In the Kiro chat, type <code>#on-demand-specific-test-run</code> followed by your test names:</p>
-<pre><code>#on-demand-specific-test-run
+
+        <h1>Kiro Steering File — OnDemand specific tests (copy/paste)</h1>
+
+        <p>Use this steering file in <strong>Kiro</strong> to generate the exact string to paste into the GitHub Actions workflow field:</p>
+        <blockquote><strong>Run specific test class pattern(s), comma-separated. Takes precedence over testTag.</strong></blockquote>
+        <p>This is meant for developers who use <strong>Kiro</strong> and <strong>do not have</strong> the <code>#on-demand-specific-test-run</code> steering file yet.</p>
+
+        <hr>
+
+        <h2>Setup instructions</h2>
+        <ol>
+            <li>Create the file <code>~/.kiro/steering/on-demand-specific-test-run.md</code></li>
+            <li>Copy and paste <strong>everything in the block below</strong> into that file</li>
+            <li>In Kiro chat, type <code>#on-demand-specific-test-run</code> followed by your test names</li>
+        </ol>
+
+        <hr>
+
+        <h2>Steering file content</h2>
+        <p class="copy-hint">👇 Copy everything below and paste into <code>~/.kiro/steering/on-demand-specific-test-run.md</code></p>
+
+        <pre><code>---
+inclusion: manual
+---
+
+Generate the exact string to paste into the **Run specific test(s)** field of the GitHub workflow `run-specific-tests.yml`, plus a verification table.
+
+## Canonical paths
+
+- **Script (test index + lookup):** `~/.kiro/imports from cursor/version-prep/scripts/extract_test_index.py`
+
+## Input
+
+**Ask the user for test name(s)** if not already provided. Accept:
+- Full test description
+- Partial name or keywords
+- One test per line or comma-separated list
+
+## Steps
+
+1. **Resolve each test to a test class**
+
+   **A. Index (preferred)**:
+   ```bash
+   python3 ~/.kiro/imports\ from\ cursor/version-prep/scripts/extract_test_index.py --repo /Users/llatin/mobile-tests
+   ```
+   Then for each fragment:
+   ```bash
+   python3 ~/.kiro/imports\ from\ cursor/version-prep/scripts/extract_test_index.py --repo /Users/llatin/mobile-tests --find "partial description"
+   ```
+
+   **B. Fallback** — If `--find` returns no matches, search `mobile-tests/src/test/kotlin` for Kotlin test files matching the description.
+
+2. **Build the copy-paste line**
+   - Format: comma-separated `*ClassName` entries (no quotes, no `--tests` flags)
+   - Example: `*DepositChequeTest,*ToggleBiometricTest`
+   - **Dedupe** classes when several failures map to the same class
+
+3. **Build the verification table**
+
+| # | Description | Test class |
+|---|-------------|------------|
+| 1 | User-provided test name | ClassNameTest |
+
+## Output format
+
+1. **Copy-paste line** (fenced code block):
+```
+*FirstTestClass,*SecondTestClass
+```
+
+2. **Verification table** (as above)
+
+3. **Short note**: paste the line into the **Run specific test(s)** field in `run-specific-tests.yml`.
+
+## Workspace
+
+- If workspace is **mobile-tests**, use that repo for `--repo`.
+- Otherwise use `/Users/llatin/mobile-tests` as the default.
+
+## Rules
+
+- One test class per test; if one class has multiple matching methods, one entry is enough.
+- If a name matches no test, say so in the table and omit from the copy-paste line.
+- Keep the copy-paste line as a **single line**, no line breaks.</code></pre>
+
+        <hr>
+
+        <h2>How to use in Kiro</h2>
+        <p>Once the file is in place, type in Kiro chat:</p>
+        <pre><code>#on-demand-specific-test-run
 Mobility - mobility request - Joint Account
 downgrade from existing plan
-Dashboard - balances list - open banking is not connected - navigation
-</code></pre>
-<p>Kiro will automatically:<br />
-1. Look up each test name in the <code>mobile-tests</code> index<br />
-2. Resolve it to the correct Kotlin class name<br />
-3. Output a ready-to-paste copy-paste line + verification table</p>
-<hr />
-<h2>What Kiro does under the hood</h2>
-<p>Kiro runs the <code>extract_test_index.py</code> script against the <code>mobile-tests</code> repo:</p>
-<pre><code class="language-bash">python3 ~/.kiro/imports\ from\ cursor/version-prep/scripts/extract_test_index.py \
-  --repo /Users/llatin/mobile-tests \
-  --find &quot;partial test description&quot;
-</code></pre>
-<p>The script searches <code>src/test/kotlin</code> for:<br />
-- Backtick test titles: <code>fun `...`(</code><br />
-- Parameterized display templates: <code>@ParameterizedTest(name = "...")</code></p>
-<hr />
-<h2>Output format</h2>
-<p><strong>1. Copy-paste line</strong> (paste directly into GitHub Actions):</p>
-<pre><code>*MobilityFullFlowJointAccountTest,*DowngradeFromExistingPlanTest,*UpgradeFromExistingPlanTest
-</code></pre>
-<p><strong>2. Verification table:</strong></p>
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>Description</th>
-<th>Test class</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>Mobility - mobility request - Joint Account</td>
-<td>MobilityFullFlowJointAccountTest</td>
-</tr>
-<tr>
-<td>2</td>
-<td>downgrade from existing plan</td>
-<td>DowngradeFromExistingPlanTest</td>
-</tr>
-<tr>
-<td>3</td>
-<td>upgrade from existing plan</td>
-<td>UpgradeFromExistingPlanTest</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2>Rules</h2>
-<ul>
-<li>Each entry uses a leading <code>*</code> plus the <strong>Kotlin class name</strong> (no package, no quotes)</li>
-<li>Dedupe classes — if several tests map to the same class, one entry is enough</li>
-<li>If no match is found, Kiro will say so in the table and omit it from the copy-paste line</li>
-<li>The copy-paste line is always a <strong>single line</strong>, no line breaks</li>
-</ul>
-<hr />
-<h2>Steering file location</h2>
-<pre><code>~/.kiro/steering/on-demand-specific-test-run.md
-</code></pre>
-<p>This is a <strong>global</strong> steering file — available in all your Kiro projects.</p>
-<hr />
-<h2>See also</h2>
-<ul>
-<li><a href="https://llatin10.github.io/on-demand-tests.html">On-demand tests — GitHub Actions guide</a></li>
-<li><a href="https://llatin10.github.io/on-demand-tests-firebender-prompt.md">Firebender prompt (Android Studio)</a></li>
-</ul>
-        </div>
+Dashboard - balances list - open banking is not connected - navigation</code></pre>
+        <p>Kiro will look up each test name, resolve it to the correct Kotlin class, and output a ready-to-paste line + verification table.</p>
+
+        <hr>
+
+        <h2>See also</h2>
+        <ul>
+            <li><a href="https://llatin10.github.io/on-demand-tests.html">On-demand tests — GitHub Actions guide</a></li>
+            <li><a href="https://llatin10.github.io/on-demand-tests-firebender-prompt.html">Firebender prompt (Android Studio)</a></li>
+            <li><a href="https://llatin10.github.io/on-demand-tests-kiro-steering.md">Raw .md file (copy/paste source)</a></li>
+        </ul>
+
     </div>
 </body>
 </html>
