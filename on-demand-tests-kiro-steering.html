@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiro Steering File — OnDemand specific tests</title>
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, -apple-system, Arial, sans-serif;
+            background: #faf9f7;
+            padding: 24px;
+            line-height: 1.65;
+            color: #44403c;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+            padding: 28px 32px 40px;
+        }
+        h1 {
+            color: #1c1917;
+            border-bottom: 2px solid #e7e5e0;
+            font-weight: 700;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #0d9488;
+            border-bottom: 1px solid #e7e5e0;
+            margin-top: 36px;
+            padding-bottom: 10px;
+        }
+        h3 { color: #0f766e; margin-top: 24px; }
+        .section-block {
+            background: #fafaf9;
+            border: 1px solid #e7e5e0;
+            border-left: 4px solid #14b8a6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .intro-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border: 1px solid #99f6e4;
+            border-left: 4px solid #14b8a6;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: "Consolas", ui-monospace, monospace;
+            border-left: 4px solid #14b8a6;
+            line-height: 1.55;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f5f5f4;
+            color: #0f766e;
+            padding: 0.2em 0.45em;
+            border-radius: 4px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.9em;
+            border: 1px solid #e7e5e0;
+        }
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .highlight-card {
+            background: #fff;
+            border: 1px solid #e7e5e0;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 3px solid #14b8a6;
+        }
+        
+        @media print {
+            body {
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .container {
+                box-shadow: none !important;
+                padding: 40px;
+                margin: 0 auto;
+                max-width: 100%;
+                width: 100%;
+                border-radius: 0;
+                box-sizing: border-box;
+            }
+            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
+            .section-block, .intro-block, .highlight-card, pre,
+            .simple-explanation, .next-steps { page-break-inside: avoid; break-inside: avoid; }
+            pre { white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden; }
+            @page { size: 210mm 1800mm; margin: 0; }
+        }
+
+
+        .md-content { margin-top: 8px; }
+        .md-content table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.88rem; }
+        .md-content th, .md-content td { border: 1px solid #e7e5e0; padding: 8px 10px; text-align: left; vertical-align: top; }
+        .md-content th { background: #f5f5f4; font-weight: 600; }
+        .md-content tr:nth-child(even) { background: #fafaf9; }
+        .md-content hr { margin: 28px 0; border: none; border-top: 1px solid #e7e5e0; }
+        .md-content ul, .md-content ol { margin: 12px 0 12px 1.5em; }
+        .md-content li > ul { margin-top: 6px; margin-bottom: 6px; }
+        .md-content .md-rtl,
+        .md-content [dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+            unicode-bidi: isolate;
+        }
+        .md-content .md-rtl ul,
+        .md-content .md-rtl ol,
+        .md-content [dir="rtl"] ul,
+        .md-content [dir="rtl"] ol {
+            margin: 12px 0 12px 0;
+            padding-inline-start: 1.5em;
+        }
+        .md-content p { margin: 12px 0; }
+        .md-content pre { margin: 16px 0; }
+        .md-content pre code { background: transparent !important; border: none !important; padding: 0 !important; }
+    
+    </style>
+</head>
+<body class="doc-theme-warm">
+    <div class="container">
+        <div class="md-content">
+<h1>Kiro Steering File — OnDemand specific tests</h1>
+<p>Use this guide when working in <strong>Kiro</strong> to generate the exact string to paste into the GitHub Actions workflow field:</p>
+<blockquote>
+<p><strong>Run specific test class pattern(s), comma-separated. Takes precedence over testTag.</strong></p>
+</blockquote>
+<p>This is the Kiro equivalent of the Cursor <code>/on-demand-specific-test-run</code> command and the Firebender prompt.</p>
+<hr />
+<h2>How to use in Kiro</h2>
+<p>In the Kiro chat, type <code>#on-demand-specific-test-run</code> followed by your test names:</p>
+<pre><code>#on-demand-specific-test-run
+Mobility - mobility request - Joint Account
+downgrade from existing plan
+Dashboard - balances list - open banking is not connected - navigation
+</code></pre>
+<p>Kiro will automatically:<br />
+1. Look up each test name in the <code>mobile-tests</code> index<br />
+2. Resolve it to the correct Kotlin class name<br />
+3. Output a ready-to-paste copy-paste line + verification table</p>
+<hr />
+<h2>What Kiro does under the hood</h2>
+<p>Kiro runs the <code>extract_test_index.py</code> script against the <code>mobile-tests</code> repo:</p>
+<pre><code class="language-bash">python3 ~/.kiro/imports\ from\ cursor/version-prep/scripts/extract_test_index.py \
+  --repo /Users/llatin/mobile-tests \
+  --find &quot;partial test description&quot;
+</code></pre>
+<p>The script searches <code>src/test/kotlin</code> for:<br />
+- Backtick test titles: <code>fun `...`(</code><br />
+- Parameterized display templates: <code>@ParameterizedTest(name = "...")</code></p>
+<hr />
+<h2>Output format</h2>
+<p><strong>1. Copy-paste line</strong> (paste directly into GitHub Actions):</p>
+<pre><code>*MobilityFullFlowJointAccountTest,*DowngradeFromExistingPlanTest,*UpgradeFromExistingPlanTest
+</code></pre>
+<p><strong>2. Verification table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Description</th>
+<th>Test class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Mobility - mobility request - Joint Account</td>
+<td>MobilityFullFlowJointAccountTest</td>
+</tr>
+<tr>
+<td>2</td>
+<td>downgrade from existing plan</td>
+<td>DowngradeFromExistingPlanTest</td>
+</tr>
+<tr>
+<td>3</td>
+<td>upgrade from existing plan</td>
+<td>UpgradeFromExistingPlanTest</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Rules</h2>
+<ul>
+<li>Each entry uses a leading <code>*</code> plus the <strong>Kotlin class name</strong> (no package, no quotes)</li>
+<li>Dedupe classes — if several tests map to the same class, one entry is enough</li>
+<li>If no match is found, Kiro will say so in the table and omit it from the copy-paste line</li>
+<li>The copy-paste line is always a <strong>single line</strong>, no line breaks</li>
+</ul>
+<hr />
+<h2>Steering file location</h2>
+<pre><code>~/.kiro/steering/on-demand-specific-test-run.md
+</code></pre>
+<p>This is a <strong>global</strong> steering file — available in all your Kiro projects.</p>
+<hr />
+<h2>See also</h2>
+<ul>
+<li><a href="https://llatin10.github.io/on-demand-tests.html">On-demand tests — GitHub Actions guide</a></li>
+<li><a href="https://llatin10.github.io/on-demand-tests-firebender-prompt.md">Firebender prompt (Android Studio)</a></li>
+</ul>
+        </div>
+    </div>
+</body>
+</html>
