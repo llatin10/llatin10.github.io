@@ -298,7 +298,7 @@ def main() -> int:
         <h1>Pages</h1>
 {section_note}
 {body}
-        <p class="hint">Add <code>.html</code> files in this folder, run <strong>/html URL</strong> in Cursor to refresh this list (commits and pushes).</p>
+        <p class="hint">Add <code>.html</code> files in this folder, run <strong>/html URL</strong> in Cursor to refresh this list (commits and pushes). edited by kiro</p>
     </div>
 </body>
 </html>
