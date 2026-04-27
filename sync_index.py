@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Regenerate index.html: Deep links first; QA Features by version (newest first); other A–Z by title.
 
-After writing index.html, stages all *.html in this folder, commits if needed, and git push."""
+After writing index.html, stages all *.html and *.md in this folder, commits if needed, and git push."""
 from __future__ import annotations
 
 import argparse
@@ -13,7 +13,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parent
-SKIP = {"index.html"}
+SKIP = {"index.html", "readme.md"}
 SITE_BASE = "https://llatin10.github.io"
 CONFLUENCE_SYNC = ROOT / "sync_confluence_deeplinks.py"
 
@@ -72,6 +72,13 @@ def version_tuple_for_sort(title: str, filename: str) -> tuple[int, int, int]:
 
 
 def extract_title(path: Path) -> str:
+    if path.suffix.lower() == ".md":
+        # Use first H1 heading or fall back to stem
+        text = path.read_text(encoding="utf-8", errors="replace")
+        m = re.search(r"^#\s+(.+)", text, re.MULTILINE)
+        if m:
+            return m.group(1).strip()
+        return path.stem
     text = path.read_text(encoding="utf-8", errors="replace")
     m = re.search(r"<title[^>]*>(.*?)</title>", text, re.IGNORECASE | re.DOTALL)
     if m:
@@ -96,7 +103,7 @@ def git_push_site() -> int:
         print("Git: skip push (not a git repository).")
         return 0
 
-    paths: list[str] = [p.name for p in sorted(ROOT.glob("*.html"))]
+    paths: list[str] = [p.name for p in sorted(ROOT.glob("*.html"))] + [p.name for p in sorted(ROOT.glob("*.md")) if p.name.lower() != "readme.md"]
     # Include sync scripts + generated metadata.
     for extra in (
         "sync_index.py",
@@ -190,7 +197,7 @@ def main() -> int:
             print(f"Confluence: sync failed ({e}) — continuing.", file=sys.stderr)
 
     all_pages: list[tuple[str, str]] = []
-    for p in sorted(ROOT.glob("*.html")):
+    for p in sorted(list(ROOT.glob("*.html")) + list(ROOT.glob("*.md")), key=lambda x: x.name):
         if p.name.lower() in {s.lower() for s in SKIP}:
             continue
         title = extract_title(p)
@@ -260,12 +267,23 @@ def main() -> int:
         if guides:
             hints.append("Guides & documentation (on-demand, workflows, Kiro)")
             border = " section-guides" if (pinned or qa_features or production_issues) else ""
-            blocks.append(
-                f"""            <h2 class="section{border}">Guides & Documentation</h2>
-            <p class="section-hint">On-demand tests, workflows, and Kiro steering guides.</p>
+            on_demand = [(t, n) for t, n in guides if "on-demand" in n.casefold() or "firebender" in n.casefold() or "kiro-steering" in n.casefold()]
+            other_guides = [(t, n) for t, n in guides if (t, n) not in on_demand]
+            on_demand_html = ""
+            if on_demand:
+                on_demand_html = f'''            <p class="subsection-label">OnDemand</p>
             <ul class="page-list">
-{_list_items(guides)}
-            </ul>"""
+{_list_items(on_demand)}
+            </ul>'''
+            other_guides_html = ""
+            if other_guides:
+                other_guides_html = f'''            <ul class="page-list">
+{_list_items(other_guides)}
+            </ul>'''
+            blocks.append(
+                f"""            <h2 class="section{border}">Guides &amp; Documentation</h2>
+            <p class="section-hint">On-demand tests, workflows, and Kiro steering guides.</p>
+{on_demand_html}{other_guides_html}"""
             )
         if rest:
             hints.append("Other pages A–Z by title")
