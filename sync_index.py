@@ -73,12 +73,12 @@ def version_tuple_for_sort(title: str, filename: str) -> tuple[int, int, int]:
 
 def extract_title(path: Path) -> str:
     if path.suffix.lower() == ".md":
-        # Use first H1 heading or fall back to stem
+        # Use first H1 heading or fall back to stem, then append " — Markdown"
+        # so .md files are visually distinct from their .html counterparts
         text = path.read_text(encoding="utf-8", errors="replace")
         m = re.search(r"^#\s+(.+)", text, re.MULTILINE)
-        if m:
-            return m.group(1).strip()
-        return path.stem
+        base = m.group(1).strip() if m else path.stem
+        return base + " — Markdown"
     text = path.read_text(encoding="utf-8", errors="replace")
     m = re.search(r"<title[^>]*>(.*?)</title>", text, re.IGNORECASE | re.DOTALL)
     if m:
