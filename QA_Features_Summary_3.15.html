@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Features Summary - Version 3.15</title>
+    <style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #faf9f7;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Georgia', serif;
+            padding: 32px 18px;
+            min-height: 100vh;
+            color: #3d3d3a;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(45, 42, 38, 0.08), 0 1px 3px rgba(45, 42, 38, 0.06);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #0d9488 0%, #0ea5e9 55%, #0284c7 100%);
+            color: #fff;
+            padding: 32px 28px;
+            text-align: center;
+        }
+        .header-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.22);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            backdrop-filter: blur(4px);
+        }
+        .header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-top: 4px;
+            letter-spacing: -0.02em;
+        }
+        .header p { margin-top: 10px; font-size: 14px; opacity: 0.92; }
+        .content { padding: 28px 28px 36px; background: #faf9f7; }
+        .feature-card {
+            background: #fff;
+            border-radius: 14px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 12px rgba(45, 42, 38, 0.06);
+            overflow: hidden;
+            page-break-inside: avoid;
+            border: 1px solid #ebe8e4;
+        }
+        .feature-header {
+            background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 50%, #e0f2fe 100%);
+            color: #134e4a;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e7e5e0;
+        }
+        .feature-number {
+            background: linear-gradient(135deg, #14b8a6 0%, #0ea5e9 100%);
+            color: #fff;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(14, 165, 233, 0.25);
+        }
+        .feature-title {
+            flex: 1;
+            font-size: 19px;
+            font-weight: 700;
+            color: #1c1917;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .feature-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+        .badge {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .badge-platform-android { background: #d1fae5; color: #047857; }
+        .badge-platform-ios { background: #dbeafe; color: #1d4ed8; }
+        .badge-platform-both {
+            background: linear-gradient(135deg, #d1fae5 0%, #dbeafe 100%);
+            color: #0f766e;
+        }
+        .badge-type-migration { background: #fef3c7; color: #b45309; }
+        .badge-type-feature { background: #fce7f3; color: #be185d; }
+        .badge-type-bugfix { background: #fee2e2; color: #b91c1c; }
+        .badge-type-remoteconfig { background: #ede9fe; color: #6d28d9; }
+        .feature-body { padding: 22px 24px 26px; background: #fff; }
+        .feature-description {
+            font-size: 16px;
+            line-height: 1.65;
+            color: #57534e;
+            margin-bottom: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .feature-description p { margin: 10px 0; }
+        .feature-description ul { margin: 8px 0; padding-left: 22px; }
+        .feature-description li { margin: 6px 0; }
+        .feature-description code {
+            background: #f5f5f4;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: ui-monospace, monospace;
+            font-size: 13px;
+            color: #0d9488;
+            border: 1px solid #e7e5e0;
+        }
+        .feature-description strong { color: #0f766e; font-weight: 600; }
+        .feature-snippet-caption { font-size: 13px; font-weight: 600; margin: 14px 0 8px; color: #0f766e; }
+        .feature-description pre {
+            margin: 0 0 12px;
+            padding: 14px 16px;
+            background: #f5f5f4;
+            border: 1px solid #e7e5e0;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .feature-description pre code {
+            background: transparent;
+            border: none;
+            padding: 0;
+            color: #44403c;
+            font-size: 12px;
+            display: block;
+            white-space: pre;
+        }
+        .screenshot-container {
+            margin: 18px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 14px rgba(45, 42, 38, 0.08);
+            border: 1px solid #ebe8e4;
+            max-width: 100%;
+        }
+        .screenshot-header {
+            background: #44403c;
+            color: #fafaf9;
+            padding: 11px 16px;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .screenshot-header::before {
+            content: '';
+            width: 9px;
+            height: 9px;
+            background: #34d399;
+            border-radius: 50%;
+        }
+        .screenshot-img {
+            max-width: 100%;
+            max-height: 400px;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            background: #fafaf9;
+        }
+        .figma-link-container {
+            background: #fafaf9;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid #ebe8e4;
+        }
+        .figma-icon {
+            width: 28px;
+            height: 28px;
+            background: #F24E1E;
+            color: #fff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        .figma-link { color: #0d9488; text-decoration: none; font-weight: 600; font-size: 14px; }
+        .figma-link:hover { text-decoration: underline; color: #0f766e; }
+        .info-table {
+            width: 100%;
+            margin-top: 18px;
+            border-collapse: collapse;
+            font-size: 15px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #ebe8e4;
+        }
+        .info-table tr:nth-child(odd) { background: #fafaf9; }
+        .info-table tr:nth-child(even) { background: #fff; }
+        .info-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f5f5f4;
+            color: #44403c;
+        }
+        .info-table tr:last-child td { border-bottom: none; }
+        .info-table td:first-child {
+            font-weight: 600;
+            color: #0d9488;
+            width: 30%;
+        }
+        .status-section {
+            background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+            color: #fff;
+            padding: 24px 26px;
+            border-radius: 14px;
+            margin-top: 8px;
+            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.25);
+        }
+        .status-section h2 { font-size: 22px; margin-bottom: 10px; font-weight: 700; }
+        .footer {
+            background: #fff;
+            padding: 18px 28px;
+            text-align: center;
+            color: #78716c;
+            border-top: 1px solid #ebe8e4;
+            font-size: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        @media print {
+            body { background: #fff; }
+            .container { box-shadow: none; }
+            .screenshot-img { max-height: 300px !important; }
+            .screenshot-container { page-break-inside: avoid; }
+        }
+
+    </style>
+</head>
+<body class="features-theme-warm">
+    <div class="container">
+        <div class="header">
+            <span class="header-badge">Version 3.15</span>
+            <h1>QA Features Summary</h1>
+        </div>
+        
+        <div class="content">
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-number">1</div>
+                    <div class="feature-title">Allow Any Partner in &#x27;Add Partner&#x27;</div>
+                    <div class="feature-badges">
+                        <span class="badge badge-platform-ios + android">IOS + ANDROID</span>
+                        <span class="badge badge-type-feature">FEATURE</span>
+                    </div>
+                </div>
+                <div class="feature-body">
+                    <div class="feature-description">
+                        <p>The Add Partner flow now branches based on whether the inviter has any Securities or Savings activity in the current tax year. Users with no qualifying activity (CanAddAnyPartner = true) can add any of 7 partner types — not just a married spouse — and the ID Slip upload step is skipped. The existing married-only flow remains unchanged for users with tax-year activity.</p>
+                        <ul>
+                            <li>CanAddAnyPartner = true: ID Slip skipped, all 7 partner options shown in bottom sheet, updated screen copy (removes &quot;בן זוג נשוי בספח&quot;)</li>
+                            <li>CanAddAnyPartner = false: Married-only path unchanged, ID Slip remains mandatory</li>
+                            <li>New ID-expired state: front + back only (no slip) for eligible users</li>
+                            <li>Firebase analytics: add_partner_flow event with type = any_partner or married_only</li>
+                            <li>PRD edge cases (same-day buy+sell / open+close) treated as false</li>
+                        </ul>
+                    </div>
+
+                    <div class="screenshot-container">
+                        <div class="screenshot-header">Bottom sheet — all 7 partner options</div>
+                        <img src="" alt="Bottom sheet — all 7 partner options" class="screenshot-img">
+
+                        <div class="figma-link-container">
+                            <span class="figma-icon">F</span>
+                            <a href="https://www.figma.com/design/OAAaZnw3MbVdTpzZ0PqqpO/Onboarding?node-id=27511-57429&amp;m=dev" class="figma-link" target="_blank">
+                                View in Figma: Onboarding - Bottom Sheet
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <table class="info-table">
+                        <tr>
+                            <td>Platform</td>
+                            <td>IOS + ANDROID</td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>FEATURE</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>✅ Tested & Verified</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-number">2</div>
+                    <div class="feature-title">iOS - Digital Wallet Connection Navigation from Activation Engine</div>
+                    <div class="feature-badges">
+                        <span class="badge badge-platform-ios">IOS</span>
+                        <span class="badge badge-type-feature">FEATURE</span>
+                    </div>
+                </div>
+                <div class="feature-body">
+                    <div class="feature-description">
+                        <p>The &quot;Connect to Digital Wallet&quot; action in the Activation Engine previously routed users to the card lobby, requiring extra steps to reach the wallet connection option. Now it navigates directly to the relevant active card details page, reducing friction.</p>
+                        <ul>
+                            <li>Active credit card + active debit card → navigates directly to the credit card details page</li>
+                            <li>Joint accounts → navigates to the active customer&#x27;s card details page</li>
+                            <li>No active cards → falls back to the card lobby</li>
+                            <li>Known open bug: OZ-101137 — tapping &quot;חיבור כרטיס&quot; leads to the screen but with no nav bar</li>
+                        </ul>
+                    </div>
+
+                    <div class="screenshot-container">
+                        <div class="screenshot-header">Card details page with Add to Google Pay</div>
+                        <img src="" alt="Card details page with Add to Google Pay" class="screenshot-img">
+
+                        <div class="figma-link-container">
+                            <span class="figma-icon">F</span>
+                            <a href="https://www.figma.com/design/CBJKARRD0dQLA6a5VuKjfm/Dashboard?node-id=6479-93446&amp;m=dev" class="figma-link" target="_blank">
+                                View in Figma: Dashboard - Card Details
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <table class="info-table">
+                        <tr>
+                            <td>Platform</td>
+                            <td>IOS</td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>FEATURE</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>✅ Tested & Verified</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-number">3</div>
+                    <div class="feature-title">Expired ID vs Inactive ID Handling</div>
+                    <div class="feature-badges">
+                        <span class="badge badge-platform-ios + android">IOS + ANDROID</span>
+                        <span class="badge badge-type-feature">FEATURE</span>
+                    </div>
+                </div>
+                <div class="feature-body">
+                    <div class="feature-description">
+                        <p>During onboarding, users scanning an expired ID were getting stuck on the &quot;Name in English&quot; screen with no error shown. This fix adds a dedicated error message for the Expired ID scenario, distinct from the existing Inactive ID error, so users get clear feedback and aren&#x27;t left in a limbo state.</p>
+                        <ul>
+                            <li>New dedicated error message for Expired ID during onboarding ID scan</li>
+                            <li>Existing Inactive ID error message unchanged</li>
+                            <li>Prevents users from being stuck silently on the Name in English screen</li>
+                            <li>Backend error code for Expired ID required from Dragons team</li>
+                        </ul>
+                    </div>
+
+                    <table class="info-table">
+                        <tr>
+                            <td>Platform</td>
+                            <td>IOS + ANDROID</td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>FEATURE</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>✅ Tested & Verified</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-header">
+                    <div class="feature-number">4</div>
+                    <div class="feature-title">Activation Engine - Add Loading State</div>
+                    <div class="feature-badges">
+                        <span class="badge badge-platform-ios + android">IOS + ANDROID</span>
+                        <span class="badge badge-type-feature">FEATURE</span>
+                    </div>
+                </div>
+                <div class="feature-body">
+                    <div class="feature-description">
+                        <p>The Activation Engine widget on the Dashboard previously showed no loading state during Pull to Refresh, appearing static while other components showed refresh progress. This adds a proper loading state to the widget, displayed immediately when refresh starts and removed once data is fully loaded.</p>
+                        <ul>
+                            <li>Loading state shown on Pull to Refresh — starts immediately, clears on completion or failure</li>
+                            <li>Widget updates correctly with refreshed data after loading</li>
+                            <li>Consistent UX with other dashboard components during refresh</li>
+                        </ul>
+                    </div>
+
+                    <div class="screenshot-container">
+                        <div class="screenshot-header">Dashboard loading state with spinner</div>
+                        <img src="" alt="Dashboard loading state with spinner" class="screenshot-img">
+
+                    </div>
+
+                    <table class="info-table">
+                        <tr>
+                            <td>Platform</td>
+                            <td>IOS + ANDROID</td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>FEATURE</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>✅ Tested & Verified</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="status-section">
+                <h2>Definition of Done</h2>
+                <p>All features listed above have been tested and verified by the QA team.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <strong>Prepared by:</strong> QA Team &nbsp;|&nbsp; <strong>Date:</strong> 2026-04-28
+        </div>
+    </div>
+</body>
+</html>
