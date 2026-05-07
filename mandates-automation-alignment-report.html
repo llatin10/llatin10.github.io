@@ -249,7 +249,7 @@
         <div class="header">
             <h1>🔍 Mandates Automation Alignment Report</h1>
             <p>TTM vs Automation Code Verification</p>
-            <p style="margin-top: 10px; font-size: 0.9rem;">Generated: May 7, 2026 | Ticket: OZ-101898</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Generated: May 7, 2026 | Updated: Tests Found in Feature Branch! | Ticket: OZ-101898</p>
         </div>
 
         <div class="summary-cards">
@@ -264,9 +264,9 @@
                 <div class="card-label">Broken Tests<br>(30%)</div>
             </div>
             <div class="card missing">
-                <div class="card-icon">❌</div>
+                <div class="card-icon">🟡</div>
                 <div class="card-number">2</div>
-                <div class="card-label">Missing Tests<br>(20%)</div>
+                <div class="card-label">Pending Merge<br>(20%)</div>
             </div>
             <div class="card total">
                 <div class="card-icon">📊</div>
@@ -275,13 +275,15 @@
             </div>
         </div>
 
-        <div class="alert">
-            <h3>⚠️ Critical Finding</h3>
-            <p><strong>Confluence shows 10/10 tests automated for Android, but reality is 5/10 passing (50% coverage)</strong></p>
+        <div class="alert" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+            <h3>🎉 UPDATE: Missing Tests Found!</h3>
+            <p><strong>All 10 tests ARE automated! Tests OZ-85806 and OZ-85805 exist in feature branch.</strong></p>
             <ul style="margin-top: 10px; margin-left: 20px;">
-                <li>2 tests marked as automated but have NO code (OZ-85806, OZ-85805)</li>
-                <li>3 tests are broken and failing in CI</li>
-                <li>Only 5 tests are actually working</li>
+                <li>✅ Tests found in branch: <code style="background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 3px;">mandate/unit_testing_for_edit_create_mandate_zero_oz-85806-</code></li>
+                <li>✅ Both tests are well-implemented with proper validations</li>
+                <li>🟡 Tests need to be merged to mobile_dev branch</li>
+                <li>🔴 3 tests in mobile_dev are broken and need fixes</li>
+                <li>📊 Current status: 5/10 passing (50%), 3/10 broken (30%), 2/10 pending merge (20%)</li>
             </ul>
         </div>
 
@@ -428,11 +430,11 @@
                 </table>
             </div>
 
-            <!-- MISSING TESTS -->
+            <!-- TESTS IN FEATURE BRANCH -->
             <div class="section missing">
-                <h2 class="section-title">❌ Missing Tests (2/10)</h2>
+                <h2 class="section-title">🟡 Tests in Feature Branch (2/10) - Need Merge</h2>
                 <p style="margin-bottom: 20px; color: #666;">
-                    These tests are marked as automated in Confluence but have NO automation code.
+                    These tests ARE automated but exist in feature branch <code>mandate/unit_testing_for_edit_create_mandate_zero_oz-85806-</code> and need to be merged to mobile_dev.
                 </p>
                 
                 <table>
@@ -450,22 +452,25 @@
                             <td><span class="test-key">OZ-85806</span></td>
                             <td>Creation of mandate with 0</td>
                             <td>Done</td>
-                            <td><span class="status-badge status-pass">✅ Marked Automated</span></td>
-                            <td><span class="status-badge status-missing">❌ NO CODE</span></td>
+                            <td><span class="status-badge status-pass">✅ Automated</span></td>
+                            <td><span class="status-badge status-missing">🟡 IN FEATURE BRANCH</span></td>
                         </tr>
                         <tr>
                             <td colspan="5">
-                                <div class="issue-box">
-                                    <h4>Why This Matters:</h4>
-                                    <p>Tests critical edge case: amount "0" should be treated as "no limit" (9,999,999). This is important business logic.</p>
-                                    <p style="margin-top: 8px;"><strong>TTM Steps:</strong></p>
+                                <div class="issue-box" style="background: #d1ecf1; border-left-color: #17a2b8;">
+                                    <h4 style="color: #0c5460;">✅ Test Found!</h4>
+                                    <p><strong>File:</strong> <code>CreateZeroAmountMandateTest.kt</code></p>
+                                    <p><strong>Branch:</strong> <code>mandate/unit_testing_for_edit_create_mandate_zero_oz-85806-</code></p>
+                                    <p><strong>Last Updated:</strong> May 3, 2026 by ogoncharov</p>
+                                    <p style="margin-top: 8px;"><strong>What it tests:</strong></p>
                                     <ul>
-                                        <li>Try to set amount to 0</li>
-                                        <li>Verify flow works, no warnings/errors</li>
-                                        <li>Try to save</li>
-                                        <li>Verify new mandate appears with amount 9,999,999</li>
+                                        <li>Sets mandate amount to "0"</li>
+                                        <li>Verifies flow works without errors</li>
+                                        <li>Validates mandate is created successfully</li>
+                                        <li>Confirms amount becomes 9,999,999 (unlimited)</li>
                                     </ul>
-                                    <p style="margin-top: 10px;"><strong>Action:</strong> Remove ✅ from Confluence, create new test in CreateMandateTest.kt</p>
+                                    <p style="margin-top: 10px;"><strong>Test Quality:</strong> ✅ Well-implemented with proper validations</p>
+                                    <p style="margin-top: 10px;"><strong>Action Required:</strong> Merge feature branch to mobile_dev and verify test passes</p>
                                 </div>
                             </td>
                         </tr>
@@ -473,21 +478,25 @@
                             <td><span class="test-key">OZ-85805</span></td>
                             <td>Editing mandate amount to 0</td>
                             <td>Done</td>
-                            <td><span class="status-badge status-pass">✅ Marked Automated</span></td>
-                            <td><span class="status-badge status-missing">❌ NO CODE</span></td>
+                            <td><span class="status-badge status-pass">✅ Automated</span></td>
+                            <td><span class="status-badge status-missing">🟡 IN FEATURE BRANCH</span></td>
                         </tr>
                         <tr>
                             <td colspan="5">
-                                <div class="issue-box">
-                                    <h4>Why This Matters:</h4>
-                                    <p>Tests OPPOSITE behavior of OZ-85806: Creating with 0 → allowed, Editing to 0 → BLOCKED with validation error</p>
-                                    <p style="margin-top: 8px;"><strong>TTM Steps:</strong></p>
+                                <div class="issue-box" style="background: #d1ecf1; border-left-color: #17a2b8;">
+                                    <h4 style="color: #0c5460;">✅ Test Found!</h4>
+                                    <p><strong>File:</strong> <code>EditMandateWithZeroAmountTest.kt</code></p>
+                                    <p><strong>Branch:</strong> <code>mandate/unit_testing_for_edit_create_mandate_zero_oz-85806-</code></p>
+                                    <p><strong>Last Updated:</strong> May 3, 2026 by ogoncharov</p>
+                                    <p style="margin-top: 8px;"><strong>What it tests:</strong></p>
                                     <ul>
-                                        <li>Try to change amount to "0" or leave blank</li>
-                                        <li>Verify validation error: "Amount minimally is 1 ILS"</li>
-                                        <li>Verify "Save" button is blocked</li>
+                                        <li>Creates a mandate, then tries to edit amount to "0"</li>
+                                        <li>Validates error message: "Amount minimally is 1 ILS"</li>
+                                        <li>Confirms Save button is disabled</li>
+                                        <li>Tests OPPOSITE behavior of OZ-85806 (create allows 0, edit blocks 0)</li>
                                     </ul>
-                                    <p style="margin-top: 10px;"><strong>Action:</strong> Remove ✅ from Confluence, create new test in EditMandateTest.kt</p>
+                                    <p style="margin-top: 10px;"><strong>Test Quality:</strong> ✅ Well-implemented with proper negative validation</p>
+                                    <p style="margin-top: 10px;"><strong>Action Required:</strong> Merge feature branch to mobile_dev and verify test passes</p>
                                 </div>
                             </td>
                         </tr>
@@ -501,9 +510,9 @@
                 
                 <h3 style="margin-top: 20px; margin-bottom: 10px;">Immediate Actions <span class="priority-badge priority-p0">P0</span></h3>
                 <ul>
+                    <li><strong>Merge feature branch:</strong> <code>mandate/unit_testing_for_edit_create_mandate_zero_oz-85806-</code> to mobile_dev</li>
                     <li>Fix broken tests: OZ-74969 (date picker), OZ-95705 (test logic), OZ-74848 (element locator)</li>
-                    <li>Update Confluence: Remove ✅ from OZ-85806 and OZ-85805 Android columns</li>
-                    <li>Create missing tests: Implement OZ-85806 (zero amount creation) and OZ-85805 (zero amount editing validation)</li>
+                    <li>Verify merged tests: Run OZ-85806 and OZ-85805 after merge to confirm they pass</li>
                 </ul>
 
                 <h3 style="margin-top: 20px; margin-bottom: 10px;">Short-term Actions <span class="priority-badge priority-p1">P1</span></h3>
@@ -560,21 +569,21 @@
                             <td>⚠️ Incomplete</td>
                             <td>🔴 TTM + Flow: Incomplete TTM, wrong logic, driver failure</td>
                         </tr>
-                        <tr style="background: #fff3cd;">
+                        <tr style="background: #d1ecf1;">
                             <td><span class="test-key">OZ-85806</span></td>
                             <td>Creation with 0</td>
                             <td>Done</td>
-                            <td>❌</td>
+                            <td>✅ (feature branch)</td>
                             <td>✅ Available</td>
-                            <td>🔴 Flow: No automation (marked as automated in Confluence)</td>
+                            <td>🟡 In feature branch - needs merge to mobile_dev</td>
                         </tr>
-                        <tr style="background: #fff3cd;">
+                        <tr style="background: #d1ecf1;">
                             <td><span class="test-key">OZ-85805</span></td>
                             <td>Editing to 0</td>
                             <td>Done</td>
-                            <td>❌</td>
+                            <td>✅ (feature branch)</td>
                             <td>✅ Available</td>
-                            <td>🔴 Flow: No automation (marked as automated in Confluence)</td>
+                            <td>🟡 In feature branch - needs merge to mobile_dev</td>
                         </tr>
                         <tr style="background: #f8d7da;">
                             <td><span class="test-key">OZ-74969</span></td>
