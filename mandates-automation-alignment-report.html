@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandates Automation Alignment Report - DigiBank</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .card-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .card-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .card.passing .card-number { color: #28a745; }
+        .card.broken .card-number { color: #dc3545; }
+        .card.missing .card-number { color: #ff6b6b; }
+        .card.total .card-number { color: #667eea; }
+
+        .content {
+            padding: 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .passing .section-title { border-color: #28a745; color: #28a745; }
+        .broken .section-title { border-color: #dc3545; color: #dc3545; }
+        .missing .section-title { border-color: #ff6b6b; color: #ff6b6b; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .test-key {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #667eea;
+            background: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-pass {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-broken {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status-missing {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .issue-box {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        .issue-box.critical {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+        .issue-box h4 {
+            margin-bottom: 8px;
+            color: #721c24;
+        }
+        .issue-box ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+        .automation-file {
+            font-family: 'Courier New', monospace;
+            background: #e7f3ff;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            color: #004085;
+        }
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 30px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: width 0.5s ease;
+            background: #28a745;
+        }
+        .alert {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .alert h3 {
+            margin-bottom: 10px;
+        }
+        .recommendations {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        .recommendations h2 {
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+        .recommendations ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .recommendations li {
+            padding: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        .recommendations li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .priority-p0 { background: #dc3545; color: white; }
+        .priority-p1 { background: #ffc107; color: #333; }
+        .priority-p2 { background: #17a2b8; color: white; }
+
+        @media (max-width: 768px) {
+            .summary-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Mandates Automation Alignment Report</h1>
+            <p>TTM vs Automation Code Verification</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">Generated: May 7, 2026 | Ticket: OZ-101898</p>
+        </div>
+
+        <div class="summary-cards">
+            <div class="card passing">
+                <div class="card-icon">✅</div>
+                <div class="card-number">5</div>
+                <div class="card-label">Passing Tests<br>(50%)</div>
+            </div>
+            <div class="card broken">
+                <div class="card-icon">🔴</div>
+                <div class="card-number">3</div>
+                <div class="card-label">Broken Tests<br>(30%)</div>
+            </div>
+            <div class="card missing">
+                <div class="card-icon">❌</div>
+                <div class="card-number">2</div>
+                <div class="card-label">Missing Tests<br>(20%)</div>
+            </div>
+            <div class="card total">
+                <div class="card-icon">📊</div>
+                <div class="card-number">10</div>
+                <div class="card-label">Total TTM Tests<br>(Sanity)</div>
+            </div>
+        </div>
+
+        <div class="alert">
+            <h3>⚠️ Critical Finding</h3>
+            <p><strong>Confluence shows 10/10 tests automated for Android, but reality is 5/10 passing (50% coverage)</strong></p>
+            <ul style="margin-top: 10px; margin-left: 20px;">
+                <li>2 tests marked as automated but have NO code (OZ-85806, OZ-85805)</li>
+                <li>3 tests are broken and failing in CI</li>
+                <li>Only 5 tests are actually working</li>
+            </ul>
+        </div>
+
+        <!-- Progress Bar -->
+        <div style="padding: 0 30px;">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 50%;">5/10 Passing (50%)</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- PASSING TESTS -->
+            <div class="section passing">
+                <h2 class="section-title">✅ Passing Tests (5/10)</h2>
+                <p style="margin-bottom: 20px; color: #666;">
+                    These tests are running successfully and match their TTM specifications.
+                </p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Test Key</th>
+                            <th>TTM Summary</th>
+                            <th>Automation Test Name</th>
+                            <th>File</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="test-key">OZ-95706</span></td>
+                            <td>Default Empty State for Mandates</td>
+                            <td>Mandates - Lobby Empty State</td>
+                            <td><span class="automation-file">CreateMandateTest.kt</span></td>
+                            <td><span class="status-badge status-pass">✅ PASS</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="test-key">OZ-74948</span></td>
+                            <td>Cancellation of mandate</td>
+                            <td>Mandates - Cancel Mandate</td>
+                            <td><span class="automation-file">CancelReactivateMandateTest.kt</span></td>
+                            <td><span class="status-badge status-pass">✅ PASS</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="test-key">OZ-74894</span></td>
+                            <td>View Mandate Details</td>
+                            <td>Mandate- Mandate details - UI</td>
+                            <td><span class="automation-file">CreateMandateTest.kt</span></td>
+                            <td><span class="status-badge status-pass">✅ PASS</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="test-key">OZ-74903</span></td>
+                            <td>Freezing/unfreezing mandate</td>
+                            <td>Mandates - Existing - Freeze Mandate</td>
+                            <td><span class="automation-file">FreezeUnfreezeMandateTest.kt</span></td>
+                            <td><span class="status-badge status-pass">✅ PASS</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="test-key">OZ-95733</span></td>
+                            <td>Unfreezing mandate</td>
+                            <td>Mandates - Existing - Unfreeze Mandate</td>
+                            <td><span class="automation-file">FreezeUnfreezeMandateTest.kt</span></td>
+                            <td><span class="status-badge status-pass">✅ PASS</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- BROKEN TESTS -->
+            <div class="section broken">
+                <h2 class="section-title">🔴 Broken Tests (3/10)</h2>
+                <p style="margin-bottom: 20px; color: #666;">
+                    These tests exist but are failing in CI. They need immediate fixes.
+                </p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Test Key</th>
+                            <th>Test Name</th>
+                            <th>Error</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="test-key">OZ-74969</span></td>
+                            <td>Edit mandate</td>
+                            <td>StaleElementReferenceException on date picker</td>
+                            <td><span class="status-badge status-broken">🔴 BROKEN</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="issue-box critical">
+                                    <h4>🔴 Critical Issues:</h4>
+                                    <ul>
+                                        <li><strong>TTM + Flow:</strong> Test fails on date picker interaction - element becomes stale when clicking day "24"</li>
+                                        <li><strong>Description:</strong> Missing validation for "can't edit amount to 0" (TTM step 15)</li>
+                                        <li><strong>Description:</strong> Missing "?" button interactions for help tooltips (TTM steps 11-14)</li>
+                                        <li><strong>Description:</strong> Missing back/cancel navigation flows (TTM steps 5-10)</li>
+                                    </ul>
+                                    <p style="margin-top: 10px;"><strong>Fix:</strong> Add wait/retry logic for date picker, implement zero amount validation, add help tooltip tests</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="test-key">OZ-95705</span></td>
+                            <td>Reactivate cancelled mandate</td>
+                            <td>Unknown error during getPageSource</td>
+                            <td><span class="status-badge status-broken">🔴 BROKEN</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="issue-box critical">
+                                    <h4>🔴 Critical Issues:</h4>
+                                    <ul>
+                                        <li><strong>TTM + Flow:</strong> Test fails when validating reactivation status - driver communication failure</li>
+                                        <li><strong>TTM:</strong> TTM has only 1 empty step - TTM is incomplete/invalid</li>
+                                        <li><strong>Flow:</strong> Test logic is wrong - creates NEW mandate instead of reactivating cancelled one</li>
+                                    </ul>
+                                    <p style="margin-top: 10px;"><strong>Fix:</strong> Fix TTM documentation first, then fix test to click "reactivate" button instead of creating new mandate</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="test-key">OZ-74848</span></td>
+                            <td>Create New Mandate</td>
+                            <td>NoSuchElementException - amount field not found</td>
+                            <td><span class="status-badge status-broken">🔴 BROKEN</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div class="issue-box critical">
+                                    <h4>🔴 Critical Issues:</h4>
+                                    <ul>
+                                        <li><strong>Flow:</strong> Element locator fails for amount text field (possibly changed resource ID or timing issue)</li>
+                                        <li><strong>Description:</strong> Missing extensive validation from TTM (33 steps total, only ~10 implemented)</li>
+                                        <li><strong>Missing:</strong> Invalid/valid institution search, help tooltips, category selection, amount restrictions, date picker validation, terms of use, exit flows</li>
+                                    </ul>
+                                    <p style="margin-top: 10px;"><strong>Fix:</strong> Update element locator, add explicit waits, implement missing validation steps from TTM</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- MISSING TESTS -->
+            <div class="section missing">
+                <h2 class="section-title">❌ Missing Tests (2/10)</h2>
+                <p style="margin-bottom: 20px; color: #666;">
+                    These tests are marked as automated in Confluence but have NO automation code.
+                </p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Test Key</th>
+                            <th>TTM Summary</th>
+                            <th>Jira Status</th>
+                            <th>Confluence</th>
+                            <th>Reality</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="test-key">OZ-85806</span></td>
+                            <td>Creation of mandate with 0</td>
+                            <td>Done</td>
+                            <td><span class="status-badge status-pass">✅ Marked Automated</span></td>
+                            <td><span class="status-badge status-missing">❌ NO CODE</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <div class="issue-box">
+                                    <h4>Why This Matters:</h4>
+                                    <p>Tests critical edge case: amount "0" should be treated as "no limit" (9,999,999). This is important business logic.</p>
+                                    <p style="margin-top: 8px;"><strong>TTM Steps:</strong></p>
+                                    <ul>
+                                        <li>Try to set amount to 0</li>
+                                        <li>Verify flow works, no warnings/errors</li>
+                                        <li>Try to save</li>
+                                        <li>Verify new mandate appears with amount 9,999,999</li>
+                                    </ul>
+                                    <p style="margin-top: 10px;"><strong>Action:</strong> Remove ✅ from Confluence, create new test in CreateMandateTest.kt</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="test-key">OZ-85805</span></td>
+                            <td>Editing mandate amount to 0</td>
+                            <td>Done</td>
+                            <td><span class="status-badge status-pass">✅ Marked Automated</span></td>
+                            <td><span class="status-badge status-missing">❌ NO CODE</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <div class="issue-box">
+                                    <h4>Why This Matters:</h4>
+                                    <p>Tests OPPOSITE behavior of OZ-85806: Creating with 0 → allowed, Editing to 0 → BLOCKED with validation error</p>
+                                    <p style="margin-top: 8px;"><strong>TTM Steps:</strong></p>
+                                    <ul>
+                                        <li>Try to change amount to "0" or leave blank</li>
+                                        <li>Verify validation error: "Amount minimally is 1 ILS"</li>
+                                        <li>Verify "Save" button is blocked</li>
+                                    </ul>
+                                    <p style="margin-top: 10px;"><strong>Action:</strong> Remove ✅ from Confluence, create new test in EditMandateTest.kt</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- RECOMMENDATIONS -->
+            <div class="recommendations">
+                <h2>📋 Recommendations</h2>
+                
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">Immediate Actions <span class="priority-badge priority-p0">P0</span></h3>
+                <ul>
+                    <li>Fix broken tests: OZ-74969 (date picker), OZ-95705 (test logic), OZ-74848 (element locator)</li>
+                    <li>Update Confluence: Remove ✅ from OZ-85806 and OZ-85805 Android columns</li>
+                    <li>Create missing tests: Implement OZ-85806 (zero amount creation) and OZ-85805 (zero amount editing validation)</li>
+                </ul>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">Short-term Actions <span class="priority-badge priority-p1">P1</span></h3>
+                <ul>
+                    <li>Enhance OZ-74848: Add missing validation steps from TTM (33 steps total)</li>
+                    <li>Enhance OZ-74969: Add help tooltip interactions and navigation flow validations</li>
+                    <li>Improve test stability: Add explicit waits, retry logic, better error handling</li>
+                </ul>
+
+                <h3 style="margin-top: 20px; margin-bottom: 10px;">Long-term Actions <span class="priority-badge priority-p2">P2</span></h3>
+                <ul>
+                    <li>Consider splitting OZ-74848 into multiple focused tests</li>
+                    <li>Create reusable validation methods for common mandate flows</li>
+                    <li>Add data-driven tests for mandate variations (different amounts, dates, categories)</li>
+                </ul>
+            </div>
+
+            <!-- COVERAGE SUMMARY -->
+            <div class="section" style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                <h2 style="font-size: 1.3rem; margin-bottom: 15px;">📊 Coverage Summary</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ticket</th>
+                            <th>Test Name</th>
+                            <th>Jira Status</th>
+                            <th>Test Enabled</th>
+                            <th>TTM Steps</th>
+                            <th>Key Issue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: #d4edda;">
+                            <td><span class="test-key">OZ-95733</span></td>
+                            <td>Unfreeze Mandate</td>
+                            <td>Pending PRD</td>
+                            <td>✅</td>
+                            <td>✅ Available</td>
+                            <td>✅ All good</td>
+                        </tr>
+                        <tr style="background: #d4edda;">
+                            <td><span class="test-key">OZ-95706</span></td>
+                            <td>Empty State</td>
+                            <td>Pending PRD</td>
+                            <td>✅</td>
+                            <td>✅ Available</td>
+                            <td>✅ All good</td>
+                        </tr>
+                        <tr style="background: #f8d7da;">
+                            <td><span class="test-key">OZ-95705</span></td>
+                            <td>Reactivate cancelled</td>
+                            <td>Pending PRD</td>
+                            <td>✅</td>
+                            <td>⚠️ Incomplete</td>
+                            <td>🔴 TTM + Flow: Incomplete TTM, wrong logic, driver failure</td>
+                        </tr>
+                        <tr style="background: #fff3cd;">
+                            <td><span class="test-key">OZ-85806</span></td>
+                            <td>Creation with 0</td>
+                            <td>Done</td>
+                            <td>❌</td>
+                            <td>✅ Available</td>
+                            <td>🔴 Flow: No automation (marked as automated in Confluence)</td>
+                        </tr>
+                        <tr style="background: #fff3cd;">
+                            <td><span class="test-key">OZ-85805</span></td>
+                            <td>Editing to 0</td>
+                            <td>Done</td>
+                            <td>❌</td>
+                            <td>✅ Available</td>
+                            <td>🔴 Flow: No automation (marked as automated in Confluence)</td>
+                        </tr>
+                        <tr style="background: #f8d7da;">
+                            <td><span class="test-key">OZ-74969</span></td>
+                            <td>Edit mandate</td>
+                            <td>Pending PRD</td>
+                            <td>✅</td>
+                            <td>✅ Available</td>
+                            <td>🔴 TTM + Flow: Date picker fails, missing validations</td>
+                        </tr>
+                        <tr style="background: #d4edda;">
+                            <td><span class="test-key">OZ-74948</span></td>
+                            <td>Cancel mandate</td>
+                            <td>Pending PRD</td>
+                            <td>✅</td>
+                            <td>✅ Available</td>
+                            <td>✅ All good</td>
+                        </tr>
+                        <tr style="background: #d4edda;">
+                            <td><span class="test-key">OZ-74903</span></td>
+                            <td>Freeze mandate</td>
+                            <td>Pending PRD</td>
+                            <td>✅</td>
+                            <td>✅ Available</td>
+                            <td>✅ All good</td>
+                        </tr>
+                        <tr style="background: #d4edda;">
+                            <td><span class="test-key">OZ-74894</span></td>
+                            <td>View Details</td>
+                            <td>Pending PRD</td>
+                            <td>✅</td>
+                            <td>✅ Available</td>
+                            <td>✅ All good</td>
+                        </tr>
+                        <tr style="background: #f8d7da;">
+                            <td><span class="test-key">OZ-74848</span></td>
+                            <td>Create New</td>
+                            <td>Pending PRD</td>
+                            <td>✅</td>
+                            <td>✅ Available</td>
+                            <td>🔴 Flow: Element locator fails, missing extensive validation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- LINKS -->
+            <div style="background: #667eea; color: white; padding: 20px; border-radius: 10px; margin-top: 30px;">
+                <h3 style="margin-bottom: 15px;">🔗 Related Links</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 8px;">📋 <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-101898" style="color: white; text-decoration: underline;">Jira Ticket: OZ-101898</a></li>
+                    <li style="margin-bottom: 8px;">📖 <a href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RnD/pages/3377233926/Automation+Verification+Guideline" style="color: white; text-decoration: underline;">Automation Verification Guideline</a></li>
+                    <li style="margin-bottom: 8px;">📊 <a href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RnD/pages/3206217730/Automation+by+Domain+Progress#Mandates" style="color: white; text-decoration: underline;">Mandates Progress (Confluence)</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="text-align: center; padding: 20px; color: #666; font-size: 0.9rem;">
+            <p>Report Generated: May 7, 2026 | Prepared By: Automation Analysis | For: Liran Latin</p>
+        </div>
+    </div>
+</body>
+</html>
