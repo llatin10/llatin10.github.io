@@ -48,6 +48,17 @@ def is_production_issues_page(title: str, filename: str) -> bool:
     return False
 
 
+def is_automation_alignment_page(title: str, filename: str) -> bool:
+    """Automation domain alignment / verification reports."""
+    fn = filename.casefold()
+    if "automation-verification-report" in fn or "automation-alignment-report" in fn:
+        return True
+    tl = title.casefold()
+    if "automation verification report" in tl or "automation alignment report" in tl:
+        return True
+    return False
+
+
 def is_guides_page(title: str, filename: str) -> bool:
     """Guides and documentation pages (on-demand tests, workflows, etc.)."""
     fn = filename.casefold()
@@ -206,6 +217,7 @@ def main() -> int:
     pinned: list[tuple[str, str]] = []
     qa_features: list[tuple[str, str]] = []
     production_issues: list[tuple[str, str]] = []
+    automation_alignment: list[tuple[str, str]] = []
     guides: list[tuple[str, str]] = []
     rest: list[tuple[str, str]] = []
     for title, name in all_pages:
@@ -215,6 +227,8 @@ def main() -> int:
             qa_features.append((title, name))
         elif is_production_issues_page(title, name):
             production_issues.append((title, name))
+        elif is_automation_alignment_page(title, name):
+            automation_alignment.append((title, name))
         elif is_guides_page(title, name):
             guides.append((title, name))
         else:
@@ -226,10 +240,11 @@ def main() -> int:
         reverse=True,
     )
     production_issues.sort(key=lambda x: x[1].casefold())
+    automation_alignment.sort(key=lambda x: x[0].casefold())
     guides.sort(key=lambda x: x[0].casefold())
     rest.sort(key=lambda x: x[0].casefold())
 
-    pages: list[tuple[str, str]] = pinned + qa_features + production_issues + guides + rest
+    pages: list[tuple[str, str]] = pinned + qa_features + production_issues + automation_alignment + guides + rest
 
     if not all_pages:
         body = "            <li><em>No pages yet</em></li>"
@@ -262,6 +277,16 @@ def main() -> int:
             <p class="section-hint">Stable link for sharing; date in title.</p>
             <ul class="page-list">
 {_list_items(production_issues)}
+            </ul>"""
+            )
+        if automation_alignment:
+            hints.append("Automation domain alignment reports")
+            border = " section-automation" if (pinned or qa_features or production_issues) else ""
+            blocks.append(
+                f"""            <h2 class="section{border}">Automation Domain Alignment</h2>
+            <p class="section-hint">Per-domain verification: Confluence vs code vs TTM.</p>
+            <ul class="page-list">
+{_list_items(automation_alignment)}
             </ul>"""
             )
         if guides:
@@ -329,6 +354,7 @@ def main() -> int:
         h2.section-prod {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         h2.section-other {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         h2.section-guides {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
+        h2.section-automation {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         .section-hint {{ font-size: 0.75rem; color: #a8a29e; margin: -4px 0 10px 0; }}
         ul.page-list {{ list-style: none; }}
         ul.page-list li {{ margin-bottom: 10px; }}
@@ -368,6 +394,12 @@ def main() -> int:
         print()
         print("  Production issues:")
         for title, filename in production_issues:
+            url = f"{SITE_BASE}/{quote(filename, safe='/')}"
+            print(f"  - {title} — {url}")
+    if automation_alignment:
+        print()
+        print("  Automation Domain Alignment:")
+        for title, filename in automation_alignment:
             url = f"{SITE_BASE}/{quote(filename, safe='/')}"
             print(f"  - {title} — {url}")
     if guides:
