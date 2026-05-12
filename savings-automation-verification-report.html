@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Automation Verification Report</title>
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, -apple-system, Arial, sans-serif;
+            background: #faf9f7;
+            padding: 24px;
+            line-height: 1.65;
+            color: #44403c;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+            padding: 28px 32px 40px;
+        }
+        h1 {
+            color: #1c1917;
+            border-bottom: 2px solid #e7e5e0;
+            font-weight: 700;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #0d9488;
+            border-bottom: 1px solid #e7e5e0;
+            margin-top: 36px;
+            padding-bottom: 10px;
+        }
+        h3 { color: #0f766e; margin-top: 24px; }
+        .section-block {
+            background: #fafaf9;
+            border: 1px solid #e7e5e0;
+            border-left: 4px solid #14b8a6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .intro-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border: 1px solid #99f6e4;
+            border-left: 4px solid #14b8a6;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: "Consolas", ui-monospace, monospace;
+            border-left: 4px solid #14b8a6;
+            line-height: 1.55;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f5f5f4;
+            color: #0f766e;
+            padding: 0.2em 0.45em;
+            border-radius: 4px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.9em;
+            border: 1px solid #e7e5e0;
+        }
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .highlight-card {
+            background: #fff;
+            border: 1px solid #e7e5e0;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 3px solid #14b8a6;
+        }
+        
+        @media print {
+            body {
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .container {
+                box-shadow: none !important;
+                padding: 40px;
+                margin: 0 auto;
+                max-width: 100%;
+                width: 100%;
+                border-radius: 0;
+                box-sizing: border-box;
+            }
+            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
+            .section-block, .intro-block, .highlight-card, pre,
+            .simple-explanation, .next-steps { page-break-inside: avoid; break-inside: avoid; }
+            pre { white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden; }
+            @page { size: 210mm 1800mm; margin: 0; }
+        }
+
+
+        .md-content { margin-top: 8px; }
+        .md-content table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.88rem; }
+        .md-content th, .md-content td { border: 1px solid #e7e5e0; padding: 8px 10px; text-align: left; vertical-align: top; }
+        .md-content th { background: #f5f5f4; font-weight: 600; }
+        .md-content tr:nth-child(even) { background: #fafaf9; }
+        .md-content hr { margin: 28px 0; border: none; border-top: 1px solid #e7e5e0; }
+        .md-content ul, .md-content ol { margin: 12px 0 12px 1.5em; }
+        .md-content li > ul { margin-top: 6px; margin-bottom: 6px; }
+        .md-content .md-rtl,
+        .md-content [dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+            unicode-bidi: isolate;
+        }
+        .md-content .md-rtl ul,
+        .md-content .md-rtl ol,
+        .md-content [dir="rtl"] ul,
+        .md-content [dir="rtl"] ol {
+            margin: 12px 0 12px 0;
+            padding-inline-start: 1.5em;
+        }
+        .md-content p { margin: 12px 0; }
+        .md-content pre { margin: 16px 0; }
+        .md-content pre code { background: transparent !important; border: none !important; padding: 0 !important; }
+    
+    </style>
+</head>
+<body class="doc-theme-warm">
+    <div class="container">
+        <div class="md-content">
+<h1>Savings Automation Verification Report</h1>
+<p><strong>Date:</strong> May 12, 2026<br />
+<strong>Confluence:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RnD/pages/3206217730/Automation+by+Domain+Progress#Savings">Savings Section — Automation by Domain Progress</a></p>
+<hr />
+<h2>Executive Summary</h2>
+<p><strong>Total TTM Test Cases (Excel):</strong> 25<br />
+<strong>Marked Automated in Confluence:</strong> 17 ✅<br />
+<strong>Tests with <code>@Test</code> enabled in code:</strong> 13 ✅<br />
+<strong>Tests disabled (<code>// @Test</code>):</strong> 4 ⚠️<br />
+<strong>Tests with NO code at all:</strong> 8 ❌<br />
+<strong>Extra test in code NOT in Excel or Confluence:</strong> 1 🆕</p>
+<hr />
+<h2>Critical Findings</h2>
+<ol>
+<li><strong>4 tests are marked ✅ in Confluence but are disabled in code</strong> — they will never run.</li>
+<li><strong>8 tests are marked ✅ in Confluence but have zero automation code</strong> — they don't exist.</li>
+<li><strong>1 test exists in code (OZ-74442) that is NOT in the Excel or Confluence</strong> — needs to be added.</li>
+<li><strong>OZ-79557</strong> (monthly saving after business hours) — not marked automated in Confluence, and no code found. Consistent.</li>
+</ol>
+<hr />
+<h2>Detailed Test Analysis</h2>
+<h3>✅ Enabled &amp; Running (13 tests)</h3>
+<table>
+<thead>
+<tr>
+<th>Test Key</th>
+<th>TTM Summary</th>
+<th>Class</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-87836</td>
+<td>Yearly fixed interest — after business hours</td>
+<td><code>YearlySavingsFixedInterestAfterBusinessHoursTest</code></td>
+<td>✅ <code>@Test</code> enabled</td>
+</tr>
+<tr>
+<td>OZ-85653</td>
+<td>Monthly — Future Full Withdrawal on non-exit day</td>
+<td><code>MonthlySavingFutureFullWithdrawalFlowOnNonExitDayTest</code></td>
+<td>✅ <code>@Test</code> enabled</td>
+</tr>
+<tr>
+<td>OZ-79539</td>
+<td>Daily — open after business hours</td>
+<td><code>DailySavingsCreateNewDailySavingWithoutRulesAfterBusinessHoursTest</code></td>
+<td>✅ <code>@Test</code> enabled</td>
+</tr>
+<tr>
+<td>OZ-79520</td>
+<td>Daily — create without rules</td>
+<td><code>DailySavingsCreateNewDailySavingWithoutRules</code></td>
+<td>✅ <code>@Test</code> enabled</td>
+</tr>
+<tr>
+<td>OZ-76216</td>
+<td>Flexi yearly — open after business hours</td>
+<td><code>YearlySavingsFlexInterestAfterBusinessHoursTest</code></td>
+<td>✅ <code>@Test</code> enabled</td>
+</tr>
+<tr>
+<td>OZ-75161</td>
+<td>Monthly — create new full flow</td>
+<td><code>MonthlySavingsTests</code></td>
+<td>✅ <code>@Test</code> enabled</td>
+</tr>
+<tr>
+<td>OZ-74925</td>
+<td>Daily — create with 2 rules on</td>
+<td><code>DailySavingsCreateNewDailySavingWithAll2RulesTurnedOn</code></td>
+<td>✅ <code>@Test</code> enabled</td>
+</tr>
+<tr>
+<td>OZ-70540</td>
+<td>Yearly flex interest — full flow</td>
+<td><code>YearlySavingsFlexInterestTest</code></td>
+<td>✅ <code>@Test</code> enabled</td>
+</tr>
+<tr>
+<td>OZ-70302</td>
+<td>Yearly fixed interest — full flow</td>
+<td><code>YearlySavingsFixedInterestTest</code></td>
+<td>✅ <code>@Test</code> enabled</td>
+</tr>
+<tr>
+<td>OZ-65881</td>
+<td>Cannot open second daily saving</td>
+<td><code>DailySavingsCannotOpenSecondDailySavingTest</code></td>
+<td>✅ <code>@Test</code> enabled</td>
+</tr>
+<tr>
+<td>OZ-60769</td>
+<td>Monthly — Immediate Full Withdrawal on non-exit day</td>
+<td><code>MonthlySavingImmediateFullWithdrawalFlowOnNonExitDayTest</code></td>
+<td>✅ <code>@Test</code> enabled</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> Confluence marks OZ-85572, OZ-75134, OZ-72829, OZ-70218, OZ-70216 as automated — but they are all disabled. See section below.</p>
+<hr />
+<h3>⚠️ Disabled Tests — Code Exists but <code>@Test</code> is Commented Out (4 tests)</h3>
+<p>These are marked ✅ in Confluence but will <strong>never run</strong> until re-enabled.</p>
+<h4>1. OZ-85572 — Monthly saving - Partial Future withdrawal on non-exit day</h4>
+<p><strong>Class:</strong> <code>MonthlySavingFuturePartialWithdrawalFlowOnNonExitDayTest</code><br />
+<strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
+<strong>Code:</strong> <code>// @Test</code> — disabled<br />
+<strong>Comment in code:</strong> <code>"need to create job for users - single with monthly savings"</code><br />
+<strong>Issue:</strong> <code>Flow:</code> Test is disabled — requires a RESERVED user with an existing monthly saving. User job not set up.</p>
+<h4>2. OZ-75134 — Monthly saving - Immediate Partial Withdrawal on non exit date</h4>
+<p><strong>Class:</strong> <code>MonthlySavingImmediatePartialWithdrawalOnNonExitDateTest</code><br />
+<strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
+<strong>Code:</strong> <code>// @Test</code> — disabled<br />
+<strong>Issue:</strong> <code>Flow:</code> Test is disabled — uses <code>UserType.CUSTOM</code>, likely requires a pre-existing monthly saving.</p>
+<h4>3. OZ-72829 — Monthly saving - Partial withdrawal on exit date</h4>
+<p><strong>Class:</strong> <code>MonthlySavingPartialWithdrawalOnExitDateTest</code><br />
+<strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
+<strong>Code:</strong> <code>// @Test</code> — disabled<br />
+<strong>Issue:</strong> <code>Flow:</code> Test is disabled — requires exit date timing (date-dependent test).</p>
+<h4>4. OZ-70218 — Monthly saving - Full withdrawal on exit date</h4>
+<p><strong>Class:</strong> <code>MonthlySavingFullWithdrawalOnExitDateTest</code><br />
+<strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
+<strong>Code:</strong> <code>// @Test</code> — disabled<br />
+<strong>Issue:</strong> <code>Flow:</code> Test is disabled — requires exit date timing (date-dependent test).</p>
+<h4>5. OZ-70216 — Daily saving - Partial withdrawal flow</h4>
+<p><strong>Class:</strong> <code>DailySavingsWithdrawalTest</code><br />
+<strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
+<strong>Code:</strong> <code>// @Test</code> — disabled<br />
+<strong>Comment in code:</strong> <code>@DisabledIfEnvironmentVariable(named = "env", matches = DEV)</code><br />
+<strong>Issue:</strong> <code>Flow:</code> Test is disabled — uses <code>UserType.CUSTOM</code>, requires a pre-existing daily saving.</p>
+<hr />
+<h3>❌ No Automation Code Found (8 tests)</h3>
+<p>These tests are either marked ✅ in Confluence or listed in the Excel but have <strong>zero Kotlin implementation</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Test Key</th>
+<th>TTM Summary</th>
+<th>Confluence</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-86692</td>
+<td>FLEXI Yearly — partial withdrawal (toggle ON)</td>
+<td>❌ Not automated</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-86691</td>
+<td>FLEXI Yearly — partial withdrawal (toggle OFF)</td>
+<td>❌ Not automated</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-76423</td>
+<td>Yearly flex — Full withdrawal</td>
+<td>❌ Not automated</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-76215</td>
+<td>Turning on auto renewal</td>
+<td>❌ Not automated</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-76214</td>
+<td>Turning off auto renewal</td>
+<td>❌ Not automated</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-76046</td>
+<td>Downgrade to ZERO club with open fixed yearly saving</td>
+<td>❌ Not automated</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-75146</td>
+<td>Monthly — Unfreeze deposit</td>
+<td>❌ Not automated</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-75139</td>
+<td>Monthly — Partial withdrawal after business hours</td>
+<td>❌ Not automated</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-75124</td>
+<td>Daily — closure flow at end of day</td>
+<td>❌ Not automated</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-79557</td>
+<td>Monthly — create after business hours</td>
+<td>❌ Not automated</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-70222</td>
+<td>Monthly — Update deposit day</td>
+<td>❌ Not automated</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-70220</td>
+<td>Monthly — Update deposit amount</td>
+<td>❌ Not automated</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-70217</td>
+<td>Monthly — Freeze deposit</td>
+<td>❌ Not automated</td>
+<td>No code (not in Excel either)</td>
+</tr>
+<tr>
+<td>OZ-65843</td>
+<td>Savings plans catalog includes all types</td>
+<td>❌ Not automated</td>
+<td>No code (not in Excel either)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>🆕 Test in Code NOT in Excel or Confluence (1 test)</h3>
+<h4>OZ-74442 — Yearly saving with flex interest - Partial withdrawal flow</h4>
+<p><strong>Class:</strong> <code>YearlySavingsPartialWithdrawalTest</code><br />
+<strong>Code:</strong> <code>// @Test</code> — disabled<br />
+<strong>Excel:</strong> ❌ Not listed<br />
+<strong>Confluence:</strong> ❌ Not listed<br />
+<strong>Action required:</strong> Add to Excel and Confluence. Since it's disabled, mark as "not automated" for now.</p>
+<hr />
+<h2>Confluence Accuracy Check</h2>
+<p>Current Confluence marks the following as ✅ Automated — here's the reality:</p>
+<table>
+<thead>
+<tr>
+<th>Test Key</th>
+<th>Confluence Says</th>
+<th>Reality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-87836</td>
+<td>✅ Android</td>
+<td>✅ Correct — enabled</td>
+</tr>
+<tr>
+<td>OZ-85653</td>
+<td>✅ (no platform)</td>
+<td>✅ Correct — enabled. <strong>Missing Android/iOS checkmark</strong></td>
+</tr>
+<tr>
+<td>OZ-85572</td>
+<td>✅ (no platform)</td>
+<td>⚠️ Code exists but <strong>disabled</strong></td>
+</tr>
+<tr>
+<td>OZ-79539</td>
+<td>✅ Android</td>
+<td>✅ Correct — enabled</td>
+</tr>
+<tr>
+<td>OZ-79520</td>
+<td>✅ Android</td>
+<td>✅ Correct — enabled</td>
+</tr>
+<tr>
+<td>OZ-76216</td>
+<td>✅ Android</td>
+<td>✅ Correct — enabled</td>
+</tr>
+<tr>
+<td>OZ-75161</td>
+<td>✅ Android</td>
+<td>✅ Correct — enabled</td>
+</tr>
+<tr>
+<td>OZ-75134</td>
+<td>✅ (no platform)</td>
+<td>⚠️ Code exists but <strong>disabled</strong></td>
+</tr>
+<tr>
+<td>OZ-74925</td>
+<td>✅ Android</td>
+<td>✅ Correct — enabled</td>
+</tr>
+<tr>
+<td>OZ-72829</td>
+<td>✅ (no platform)</td>
+<td>⚠️ Code exists but <strong>disabled</strong></td>
+</tr>
+<tr>
+<td>OZ-70540</td>
+<td>✅ Android + iOS</td>
+<td>✅ Correct — enabled</td>
+</tr>
+<tr>
+<td>OZ-70302</td>
+<td>✅ Android</td>
+<td>✅ Correct — enabled</td>
+</tr>
+<tr>
+<td>OZ-70218</td>
+<td>✅ (no platform)</td>
+<td>⚠️ Code exists but <strong>disabled</strong></td>
+</tr>
+<tr>
+<td>OZ-70216</td>
+<td>✅ (no platform)</td>
+<td>⚠️ Code exists but <strong>disabled</strong></td>
+</tr>
+<tr>
+<td>OZ-65881</td>
+<td>✅ Android</td>
+<td>✅ Correct — enabled</td>
+</tr>
+<tr>
+<td>OZ-60769</td>
+<td>✅ Android</td>
+<td>✅ Correct — enabled</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Confluence Updates Needed</h2>
+<h3>1. Fix "Automated" column for disabled tests</h3>
+<p>These are marked ✅ but won't run — suggest changing to a different marker or adding a note:<br />
+- OZ-85572 — disabled (needs RESERVED user job)<br />
+- OZ-75134 — disabled (needs CUSTOM user with monthly saving)<br />
+- OZ-72829 — disabled (date-dependent)<br />
+- OZ-70218 — disabled (date-dependent)<br />
+- OZ-70216 — disabled (needs CUSTOM user with daily saving)</p>
+<h3>2. Add Android checkmark for OZ-85653</h3>
+<p>Currently marked ✅ Automated but no Android/iOS column checkmark. Should be ✅ Android.</p>
+<h3>3. Add missing test OZ-74442</h3>
+<p>Add row for <code>OZ-74442 — Yearly saving with flex interest - Partial withdrawal flow</code> (currently disabled, no platform checkmark).</p>
+<h3>4. Two rows in Confluence not in Excel</h3>
+<ul>
+<li><strong>OZ-70217</strong> — Monthly saving - Freeze deposit (no code, not in Excel)</li>
+<li><strong>OZ-65843</strong> — Savings plans catalog (no code, not in Excel)<br />
+Let me know if these should be added to the Excel export.</li>
+</ul>
+<hr />
+<h2>Summary Table</h2>
+<table>
+<thead>
+<tr>
+<th>Ticket</th>
+<th>Test Name</th>
+<th>Confluence</th>
+<th>Test Enabled</th>
+<th>Key Issue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-87836</td>
+<td>Yearly fixed — after business hours</td>
+<td>✅ Android</td>
+<td>✅</td>
+<td>✅ All good</td>
+</tr>
+<tr>
+<td>OZ-86692</td>
+<td>FLEXI Yearly — partial (toggle ON)</td>
+<td>❌</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
+</tr>
+<tr>
+<td>OZ-86691</td>
+<td>FLEXI Yearly — partial (toggle OFF)</td>
+<td>❌</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
+</tr>
+<tr>
+<td>OZ-85653</td>
+<td>Monthly — Future Full Withdrawal non-exit</td>
+<td>✅ (no platform)</td>
+<td>✅</td>
+<td>⚠️ Description: Missing Android checkmark in Confluence</td>
+</tr>
+<tr>
+<td>OZ-85572</td>
+<td>Monthly — Future Partial Withdrawal non-exit</td>
+<td>✅ (no platform)</td>
+<td>⚠️ Disabled</td>
+<td>⚠️ Flow: Disabled — needs RESERVED user job</td>
+</tr>
+<tr>
+<td>OZ-79557</td>
+<td>Monthly — create after business hours</td>
+<td>❌</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
+</tr>
+<tr>
+<td>OZ-79539</td>
+<td>Daily — open after business hours</td>
+<td>✅ Android</td>
+<td>✅</td>
+<td>✅ All good</td>
+</tr>
+<tr>
+<td>OZ-79520</td>
+<td>Daily — create without rules</td>
+<td>✅ Android</td>
+<td>✅</td>
+<td>✅ All good</td>
+</tr>
+<tr>
+<td>OZ-76423</td>
+<td>Yearly flex — Full withdrawal</td>
+<td>❌</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
+</tr>
+<tr>
+<td>OZ-76216</td>
+<td>Flexi yearly — after business hours</td>
+<td>✅ Android</td>
+<td>✅</td>
+<td>✅ All good</td>
+</tr>
+<tr>
+<td>OZ-76215</td>
+<td>Turning on auto renewal</td>
+<td>❌</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
+</tr>
+<tr>
+<td>OZ-76214</td>
+<td>Turning off auto renewal</td>
+<td>❌</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
+</tr>
+<tr>
+<td>OZ-76046</td>
+<td>Downgrade to ZERO with fixed yearly saving</td>
+<td>❌</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
+</tr>
+<tr>
+<td>OZ-75161</td>
+<td>Monthly — create full flow</td>
+<td>✅ Android</td>
+<td>✅</td>
+<td>✅ All good</td>
+</tr>
+<tr>
+<td>OZ-75146</td>
+<td>Monthly — Unfreeze deposit</td>
+<td>❌</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
+</tr>
+<tr>
+<td>OZ-75139</td>
+<td>Monthly — Partial withdrawal after business hours</td>
+<td>❌</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
+</tr>
+<tr>
+<td>OZ-75134</td>
+<td>Monthly — Immediate Partial Withdrawal non-exit</td>
+<td>✅ (no platform)</td>
+<td>⚠️ Disabled</td>
+<td>⚠️ Flow: Disabled — needs CUSTOM user with monthly saving</td>
+</tr>
+<tr>
+<td>OZ-75124</td>
+<td>Daily — closure flow end of day</td>
+<td>❌</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
+</tr>
+<tr>
+<td>OZ-74925</td>
+<td>Daily — create with 2 rules on</td>
+<td>✅ Android</td>
+<td>✅</td>
+<td>✅ All good</td>
+</tr>
+<tr>
+<td>OZ-74442</td>
+<td>Yearly flex — Partial withdrawal</td>
+<td>❌ Not in Confluence</td>
+<td>⚠️ Disabled</td>
+<td>🆕 Not in Excel/Confluence — add it</td>
+</tr>
+<tr>
+<td>OZ-72829</td>
+<td>Monthly — Partial withdrawal on exit date</td>
+<td>✅ (no platform)</td>
+<td>⚠️ Disabled</td>
+<td>⚠️ Flow: Disabled — date-dependent</td>
+</tr>
+<tr>
+<td>OZ-70540</td>
+<td>Yearly flex — full flow</td>
+<td>✅ Android + iOS</td>
+<td>✅</td>
+<td>✅ All good</td>
+</tr>
+<tr>
+<td>OZ-70302</td>
+<td>Yearly fixed — full flow</td>
+<td>✅ Android</td>
+<td>✅</td>
+<td>✅ All good</td>
+</tr>
+<tr>
+<td>OZ-70222</td>
+<td>Monthly — Update deposit day</td>
+<td>❌</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
+</tr>
+<tr>
+<td>OZ-70220</td>
+<td>Monthly — Update deposit amount</td>
+<td>❌</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
+</tr>
+<tr>
+<td>OZ-70218</td>
+<td>Monthly — Full withdrawal on exit date</td>
+<td>✅ (no platform)</td>
+<td>⚠️ Disabled</td>
+<td>⚠️ Flow: Disabled — date-dependent</td>
+</tr>
+<tr>
+<td>OZ-70217</td>
+<td>Monthly — Freeze deposit</td>
+<td>❌ (not in Excel)</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation. Not in Excel</td>
+</tr>
+<tr>
+<td>OZ-70216</td>
+<td>Daily — Partial withdrawal flow</td>
+<td>✅ (no platform)</td>
+<td>⚠️ Disabled</td>
+<td>⚠️ Flow: Disabled — needs CUSTOM user with daily saving</td>
+</tr>
+<tr>
+<td>OZ-65881</td>
+<td>Cannot open second daily saving</td>
+<td>✅ Android</td>
+<td>✅</td>
+<td>✅ All good</td>
+</tr>
+<tr>
+<td>OZ-65843</td>
+<td>Savings plans catalog</td>
+<td>❌ (not in Excel)</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation. Not in Excel</td>
+</tr>
+<tr>
+<td>OZ-60769</td>
+<td>Monthly — Immediate Full Withdrawal non-exit</td>
+<td>✅ Android</td>
+<td>✅</td>
+<td>✅ All good</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Recommendations</h2>
+<h3>Immediate (P0)</h3>
+<ol>
+<li><strong>Fix Confluence</strong> — mark OZ-85572, OZ-75134, OZ-72829, OZ-70218, OZ-70216 as disabled (not fully automated)</li>
+<li><strong>Add Android checkmark</strong> for OZ-85653</li>
+<li><strong>Add OZ-74442</strong> to Confluence (and Excel if needed)</li>
+</ol>
+<h3>Short-term (P1)</h3>
+<ol>
+<li><strong>Re-enable disabled tests</strong> — set up RESERVED user jobs for OZ-85572, OZ-60769, OZ-85653</li>
+<li><strong>Implement missing tests</strong> — prioritize OZ-76423, OZ-76215, OZ-76214 (yearly flex withdrawal + auto-renewal)</li>
+<li><strong>Investigate date-dependent tests</strong> — OZ-72829, OZ-70218 need a strategy (dedicated test environment with controlled date, or mock)</li>
+</ol>
+<h3>Long-term (P2)</h3>
+<ol>
+<li><strong>Implement remaining 8 no-code tests</strong> — OZ-86692, OZ-86691, OZ-76046, OZ-75146, OZ-75139, OZ-75124, OZ-70222, OZ-70220</li>
+<li><strong>Decide on OZ-70217 and OZ-65843</strong> — add to Excel or remove from Confluence</li>
+</ol>
+<hr />
+<p><strong>Report Generated:</strong> May 12, 2026<br />
+<strong>Prepared By:</strong> Automation Analysis</p>
+        </div>
+    </div>
+</body>
+</html>
