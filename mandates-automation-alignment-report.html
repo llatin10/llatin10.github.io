@@ -453,14 +453,14 @@
 <tr>
 <td>OZ-85806</td>
 <td>Done</td>
-<td>Candidate</td>
-<td>⚠️ Platform type should be <code>Done both platforms</code> — code exists in branch</td>
+<td>Done both platforms ✅</td>
+<td>✅ Updated — was <code>Candidate</code>, now correct</td>
 </tr>
 <tr>
 <td>OZ-85805</td>
 <td>Done</td>
-<td>Candidate</td>
-<td>⚠️ Platform type should be <code>Done both platforms</code> — code exists in branch</td>
+<td>Done both platforms ✅</td>
+<td>✅ Updated — was <code>Candidate</code>, now correct</td>
 </tr>
 <tr>
 <td>OZ-74969</td>
@@ -494,6 +494,16 @@
 </tr>
 </tbody>
 </table>
+<hr />
+<h2>Code Notes (for future reference — no action required now)</h2>
+<p>These mismatches were identified during the TTM alignment review. No code changes are planned at this time.</p>
+<h4>OZ-74969 — Edit mandate</h4>
+<p><strong><code>@Description</code> issue:</strong> The annotation says "Perform Full Login... Navigate to Mandates Lobby... Click on 'Add New Mandate'... Fill in required fields... Verify new mandate is created" — this is the <strong>Create</strong> mandate description, copy-pasted by mistake. The test actually edits an existing mandate.<br />
+<strong>TTM coverage gap:</strong> Code is missing the navigation flows from TTM (Back button, X cancel → יציאה exit flow, all 3 "?" tooltip buttons, zero-amount validation in edit mode).</p>
+<h4>OZ-95705 — Reactivate cancelled mandate</h4>
+<p><strong>Logic note:</strong> TTM expects the test to reactivate the previously cancelled mandate using the same code. The code instead calls <code>createNewMandate()</code> again in the test body, effectively creating a second mandate rather than reactivating the cancelled one. The test validates lobby count = 1 and status, which passes because the new mandate is active — but the reactivation action itself is not tested.</p>
+<h4>OZ-74848 — Create New Mandate</h4>
+<p><strong>Coverage note:</strong> Code covers the happy path only (search by code → validate fields → create → validate lobby). TTM has 33 steps covering: invalid institution search, back navigation, all 3 "?" tooltips, category selection, paste restriction in amount field, max amount (9,999,999), zero amount, empty field, date picker restrictions, terms of use link, exit/cancel flows (X button → יציאה and המשך התהליך), and multiple mandate variations. These 27 additional steps are not automated.</p>
 <hr />
 <p><strong>Report Generated:</strong> May 13, 2026<br />
 <strong>Prepared By:</strong> Automation Analysis</p>
