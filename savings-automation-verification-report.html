@@ -716,6 +716,146 @@
 <hr />
 <p><strong>Report Generated:</strong> May 13, 2026<br />
 <strong>Prepared By:</strong> Automation Analysis</p>
+<hr />
+<h2>TTM vs Code Alignment (Running Tests Only)</h2>
+<p>Checked all 11 actively running tests against the TTM Excel steps.</p>
+<h3>✅ Well aligned</h3>
+<table>
+<thead>
+<tr>
+<th>Test Key</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-87836</td>
+<td>Code matches TTM — creates saving, validates after-hours bottom sheet, navigates to <code>PendingSavingErrorPage</code> ✅</td>
+</tr>
+<tr>
+<td>OZ-79539</td>
+<td>Code matches TTM — daily saving after business hours, validates <code>PendingSavingErrorPage</code> ✅</td>
+</tr>
+<tr>
+<td>OZ-79520</td>
+<td>Code matches TTM — creates daily saving without rules, validates summary + lobby ✅</td>
+</tr>
+<tr>
+<td>OZ-76216</td>
+<td>Code matches TTM — flexi yearly after business hours, validates <code>PendingSavingErrorPage</code> ✅</td>
+</tr>
+<tr>
+<td>OZ-70302</td>
+<td>Code matches TTM — full fixed yearly creation, validates movements page ✅</td>
+</tr>
+<tr>
+<td>OZ-70540</td>
+<td>Code matches TTM — full flex yearly creation, validates lobby + auto-renewal toggle ✅</td>
+</tr>
+<tr>
+<td>OZ-75161</td>
+<td>Code matches TTM — full monthly creation, validates summary + lobby ✅</td>
+</tr>
+<tr>
+<td>OZ-85653</td>
+<td>Code matches TTM — future full withdrawal, validates total balance unchanged ✅</td>
+</tr>
+</tbody>
+</table>
+<h3>⚠️ Partial mismatches</h3>
+<h4>OZ-74925 — Daily saving with 2 rules on</h4>
+<p><strong>TTM steps 5–12:</strong> Enter limit rule (5000₪) → enter salary rule (10%) → verify both on → pick purpose/name → verify summary → confirm T&amp;C → confirm.<br />
+<strong>Code does:</strong> <code>enterDailySavingRules()</code> + <code>validateDailySavingsRules()</code> — rules are entered and validated.<br />
+<strong><code>@Description</code> says:</strong> "Validate the fields on the summary page / Click on Submit" — too vague, doesn't mention the rules setup.<br />
+<strong>Issue:</strong> <code>Description:</code> annotation is missing the rules configuration steps. Code and TTM are aligned, description is not.</p>
+<h4>OZ-65881 — Cannot open second daily saving</h4>
+<p><strong>TTM steps 5–6:</strong> After popup appears → click CLOSE → popup closes → click again → click "OPEN EXISTING DEPOSIT" → existing deposit screen is displayed.<br />
+<strong>Code does:</strong> Creates saving → tries to create again → validates <code>DailySavingAlreadyExistsPopupPage</code> appears → stops.<br />
+<strong>Issue:</strong> <code>Flow:</code> Code is missing the second branch — clicking "OPEN EXISTING DEPOSIT" and verifying the existing deposit screen. TTM tests both buttons (CLOSE and OPEN EXISTING DEPOSIT), code only tests CLOSE.</p>
+<h4>OZ-60769 — Monthly Immediate Full Withdrawal non-exit day</h4>
+<p><strong>TTM steps 10–11:</strong> After success bottom sheet → tap "To the saving page" → verify "Saving withdrawal" action displayed under "Future movement" title.<br />
+<strong>Code does:</strong> Validates success bottom sheet fields → stops.<br />
+<strong>Issue:</strong> <code>Flow:</code> Code is missing the post-withdrawal navigation and future movement verification (TTM steps 10–11).</p>
+<hr />
+<h2>Platform Type (customfield_11640) Review</h2>
+<table>
+<thead>
+<tr>
+<th>Ticket</th>
+<th>Jira Status</th>
+<th>Platform Type</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-87836</td>
+<td>Done</td>
+<td>Done Android ✅</td>
+<td>✅ Correct</td>
+</tr>
+<tr>
+<td>OZ-85653</td>
+<td>Pending PRD</td>
+<td>Done iOS</td>
+<td>⚠️ Jira status should be <code>Done</code> — test is running</td>
+</tr>
+<tr>
+<td>OZ-79539</td>
+<td>Done</td>
+<td>Done Android ✅</td>
+<td>✅ Correct</td>
+</tr>
+<tr>
+<td>OZ-79520</td>
+<td>Done</td>
+<td>Mobile (no child)</td>
+<td>🔴 Missing platform child — should be <code>Done Android</code></td>
+</tr>
+<tr>
+<td>OZ-76216</td>
+<td>Done</td>
+<td>Done Android ✅</td>
+<td>✅ Correct</td>
+</tr>
+<tr>
+<td>OZ-75161</td>
+<td>Pending PRD</td>
+<td>Done Android</td>
+<td>⚠️ Jira status should be <code>Done</code> — test is running</td>
+</tr>
+<tr>
+<td>OZ-74925</td>
+<td>Pending PRD</td>
+<td>Done Android</td>
+<td>⚠️ Jira status should be <code>Done</code> — test is running</td>
+</tr>
+<tr>
+<td>OZ-70540</td>
+<td>Pending PRD</td>
+<td>Done both platforms</td>
+<td>⚠️ Jira status should be <code>Done</code> — test is running</td>
+</tr>
+<tr>
+<td>OZ-70302</td>
+<td>Done</td>
+<td>Done Android ✅</td>
+<td>✅ Correct</td>
+</tr>
+<tr>
+<td>OZ-65881</td>
+<td>Done</td>
+<td>Done Android ✅</td>
+<td>✅ Correct</td>
+</tr>
+<tr>
+<td>OZ-60769</td>
+<td>Pending PRD</td>
+<td>Done Android</td>
+<td>⚠️ Jira status should be <code>Done</code> — test is running</td>
+</tr>
+</tbody>
+</table>
         </div>
     </div>
 </body>
