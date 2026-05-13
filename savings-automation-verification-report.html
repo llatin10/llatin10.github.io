@@ -140,27 +140,27 @@
     <div class="container">
         <div class="md-content">
 <h1>Savings Automation Verification Report</h1>
-<p><strong>Date:</strong> May 12, 2026<br />
+<p><strong>Date:</strong> May 13, 2026<br />
 <strong>Confluence:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RnD/pages/3206217730/Automation+by+Domain+Progress#Savings">Savings Section — Automation by Domain Progress</a></p>
 <hr />
 <h2>Executive Summary</h2>
-<p><strong>Total TTM Test Cases (Excel):</strong> 25<br />
+<p><strong>Total TTM Test Cases (Excel):</strong> 33<br />
 <strong>Marked Automated in Confluence:</strong> 17 ✅<br />
-<strong>Tests with <code>@Test</code> enabled in code:</strong> 13 ✅<br />
-<strong>Tests disabled (<code>// @Test</code>):</strong> 4 ⚠️<br />
-<strong>Tests with NO code at all:</strong> 8 ❌<br />
-<strong>Extra test in code NOT in Excel or Confluence:</strong> 1 🆕</p>
+<strong>Tests with <code>@Test</code> enabled in code:</strong> 11 ✅<br />
+<strong>Tests disabled (<code>// @Test</code>):</strong> 5 ⚠️<br />
+<strong>Tests with NO code at all:</strong> 17 ❌</p>
 <hr />
 <h2>Critical Findings</h2>
 <ol>
-<li><strong>4 tests are marked ✅ in Confluence but are disabled in code</strong> — they will never run.</li>
-<li><strong>8 tests are marked ✅ in Confluence but have zero automation code</strong> — they don't exist.</li>
-<li><strong>1 test exists in code (OZ-74442) that is NOT in the Excel or Confluence</strong> — needs to be added.</li>
-<li><strong>OZ-79557</strong> (monthly saving after business hours) — not marked automated in Confluence, and no code found. Consistent.</li>
+<li><strong>5 tests are marked ✅ in Confluence but are disabled in code</strong> — they will never run.</li>
+<li><strong>OZ-79557</strong> (monthly saving after business hours) — marked ✅ Automated in Confluence but no code exists.</li>
+<li><strong>OZ-102226</strong> (GetDetails API Rewritten) — new iOS-only ticket, no automation code yet.</li>
+<li><strong>OZ-70214</strong> (Daily saving Full withdrawal) — in Excel, no automation code.</li>
+<li><strong>OZ-74442</strong> is now confirmed in Excel — code exists but is disabled.</li>
 </ol>
 <hr />
 <h2>Detailed Test Analysis</h2>
-<h3>✅ Enabled &amp; Running (13 tests)</h3>
+<h3>✅ Enabled &amp; Running (11 tests)</h3>
 <table>
 <thead>
 <tr>
@@ -239,9 +239,9 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Note:</strong> Confluence marks OZ-85572, OZ-75134, OZ-72829, OZ-70218, OZ-70216 as automated — but they are all disabled. See section below.</p>
+<p><strong>Note:</strong> Confluence marks OZ-85572, OZ-75134, OZ-72829, OZ-70218, OZ-70216 as automated — but all are disabled in code.</p>
 <hr />
-<h3>⚠️ Disabled Tests — Code Exists but <code>@Test</code> is Commented Out (4 tests)</h3>
+<h3>⚠️ Disabled Tests — Code Exists but <code>@Test</code> is Commented Out (5 tests)</h3>
 <p>These are marked ✅ in Confluence but will <strong>never run</strong> until re-enabled.</p>
 <h4>1. OZ-85572 — Monthly saving - Partial Future withdrawal on non-exit day</h4>
 <p><strong>Class:</strong> <code>MonthlySavingFuturePartialWithdrawalFlowOnNonExitDayTest</code><br />
@@ -253,26 +253,31 @@
 <p><strong>Class:</strong> <code>MonthlySavingImmediatePartialWithdrawalOnNonExitDateTest</code><br />
 <strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
 <strong>Code:</strong> <code>// @Test</code> — disabled<br />
-<strong>Issue:</strong> <code>Flow:</code> Test is disabled — uses <code>UserType.CUSTOM</code>, likely requires a pre-existing monthly saving.</p>
-<h4>3. OZ-72829 — Monthly saving - Partial withdrawal on exit date</h4>
+<strong>Issue:</strong> <code>Flow:</code> Test is disabled — uses <code>UserType.CUSTOM</code>, requires a pre-existing monthly saving.</p>
+<h4>3. OZ-74442 — Yearly saving with flex interest - Partial withdrawal flow</h4>
+<p><strong>Class:</strong> <code>YearlySavingsPartialWithdrawalTest</code><br />
+<strong>Confluence:</strong> ❌ Not listed (needs to be added)<br />
+<strong>Code:</strong> <code>// @Test</code> — disabled<br />
+<strong>TTM Status:</strong> Pending PRD<br />
+<strong>Issue:</strong> <code>Flow:</code> Test is disabled. Now confirmed in Excel — add to Confluence as not automated.</p>
+<h4>4. OZ-72829 — Monthly saving - Partial withdrawal on exit date</h4>
 <p><strong>Class:</strong> <code>MonthlySavingPartialWithdrawalOnExitDateTest</code><br />
 <strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
 <strong>Code:</strong> <code>// @Test</code> — disabled<br />
 <strong>Issue:</strong> <code>Flow:</code> Test is disabled — requires exit date timing (date-dependent test).</p>
-<h4>4. OZ-70218 — Monthly saving - Full withdrawal on exit date</h4>
+<h4>5. OZ-70218 — Monthly saving - Full withdrawal on exit date</h4>
 <p><strong>Class:</strong> <code>MonthlySavingFullWithdrawalOnExitDateTest</code><br />
 <strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
 <strong>Code:</strong> <code>// @Test</code> — disabled<br />
 <strong>Issue:</strong> <code>Flow:</code> Test is disabled — requires exit date timing (date-dependent test).</p>
-<h4>5. OZ-70216 — Daily saving - Partial withdrawal flow</h4>
+<h4>6. OZ-70216 — Daily saving - Partial withdrawal flow</h4>
 <p><strong>Class:</strong> <code>DailySavingsWithdrawalTest</code><br />
 <strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
 <strong>Code:</strong> <code>// @Test</code> — disabled<br />
-<strong>Comment in code:</strong> <code>@DisabledIfEnvironmentVariable(named = "env", matches = DEV)</code><br />
 <strong>Issue:</strong> <code>Flow:</code> Test is disabled — uses <code>UserType.CUSTOM</code>, requires a pre-existing daily saving.</p>
 <hr />
-<h3>❌ No Automation Code Found (8 tests)</h3>
-<p>These tests are either marked ✅ in Confluence or listed in the Excel but have <strong>zero Kotlin implementation</strong>.</p>
+<h3>❌ No Automation Code Found (17 tests)</h3>
+<p>These tests are in the Excel but have <strong>zero Kotlin implementation</strong>.</p>
 <table>
 <thead>
 <tr>
@@ -283,6 +288,12 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>OZ-102226</td>
+<td>Savings - GetDetails - API Rewritten</td>
+<td>❌ Not in Confluence</td>
+<td>New iOS-only ticket, 15 manual test scenarios</td>
+</tr>
 <tr>
 <td>OZ-86692</td>
 <td>FLEXI Yearly — partial withdrawal (toggle ON)</td>
@@ -340,8 +351,8 @@
 <tr>
 <td>OZ-79557</td>
 <td>Monthly — create after business hours</td>
-<td>❌ Not automated</td>
-<td>No code</td>
+<td>✅ Marked automated in Confluence</td>
+<td><strong>No code — Confluence is wrong</strong></td>
 </tr>
 <tr>
 <td>OZ-70222</td>
@@ -359,27 +370,24 @@
 <td>OZ-70217</td>
 <td>Monthly — Freeze deposit</td>
 <td>❌ Not automated</td>
-<td>No code (not in Excel either)</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-70214</td>
+<td>Daily — Full withdrawal flow</td>
+<td>❌ Not in Confluence</td>
+<td>No code</td>
 </tr>
 <tr>
 <td>OZ-65843</td>
 <td>Savings plans catalog includes all types</td>
 <td>❌ Not automated</td>
-<td>No code (not in Excel either)</td>
+<td>No code</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h3>🆕 Test in Code NOT in Excel or Confluence (1 test)</h3>
-<h4>OZ-74442 — Yearly saving with flex interest - Partial withdrawal flow</h4>
-<p><strong>Class:</strong> <code>YearlySavingsPartialWithdrawalTest</code><br />
-<strong>Code:</strong> <code>// @Test</code> — disabled<br />
-<strong>Excel:</strong> ❌ Not listed<br />
-<strong>Confluence:</strong> ❌ Not listed<br />
-<strong>Action required:</strong> Add to Excel and Confluence. Since it's disabled, mark as "not automated" for now.</p>
-<hr />
 <h2>Confluence Accuracy Check</h2>
-<p>Current Confluence marks the following as ✅ Automated — here's the reality:</p>
 <table>
 <thead>
 <tr>
@@ -397,12 +405,17 @@
 <tr>
 <td>OZ-85653</td>
 <td>✅ (no platform)</td>
-<td>✅ Correct — enabled. <strong>Missing Android/iOS checkmark</strong></td>
+<td>✅ Correct — enabled. <strong>Missing Android checkmark</strong></td>
 </tr>
 <tr>
 <td>OZ-85572</td>
 <td>✅ (no platform)</td>
 <td>⚠️ Code exists but <strong>disabled</strong></td>
+</tr>
+<tr>
+<td>OZ-79557</td>
+<td>✅ Automated</td>
+<td>❌ <strong>No code at all — Confluence is wrong</strong></td>
 </tr>
 <tr>
 <td>OZ-79539</td>
@@ -473,22 +486,22 @@
 </table>
 <hr />
 <h2>Confluence Updates Needed</h2>
-<h3>1. Fix "Automated" column for disabled tests</h3>
-<p>These are marked ✅ but won't run — suggest changing to a different marker or adding a note:<br />
+<h3>1. Fix OZ-79557 — remove ✅ Automated</h3>
+<p>No code exists. Confluence incorrectly marks this as automated.</p>
+<h3>2. Fix disabled tests — mark as not running</h3>
+<p>These are marked ✅ but won't run:<br />
 - OZ-85572 — disabled (needs RESERVED user job)<br />
 - OZ-75134 — disabled (needs CUSTOM user with monthly saving)<br />
 - OZ-72829 — disabled (date-dependent)<br />
 - OZ-70218 — disabled (date-dependent)<br />
 - OZ-70216 — disabled (needs CUSTOM user with daily saving)</p>
-<h3>2. Add Android checkmark for OZ-85653</h3>
+<h3>3. Add Android checkmark for OZ-85653</h3>
 <p>Currently marked ✅ Automated but no Android/iOS column checkmark. Should be ✅ Android.</p>
-<h3>3. Add missing test OZ-74442</h3>
-<p>Add row for <code>OZ-74442 — Yearly saving with flex interest - Partial withdrawal flow</code> (currently disabled, no platform checkmark).</p>
-<h3>4. Two rows in Confluence not in Excel</h3>
+<h3>4. Add missing rows to Confluence</h3>
 <ul>
-<li><strong>OZ-70217</strong> — Monthly saving - Freeze deposit (no code, not in Excel)</li>
-<li><strong>OZ-65843</strong> — Savings plans catalog (no code, not in Excel)<br />
-Let me know if these should be added to the Excel export.</li>
+<li><strong>OZ-74442</strong> — Yearly saving with flex interest - Partial withdrawal flow (disabled, no platform checkmark)</li>
+<li><strong>OZ-102226</strong> — Savings GetDetails API Rewritten (iOS only, not automated yet)</li>
+<li><strong>OZ-70214</strong> — Daily saving Full withdrawal flow (not automated)</li>
 </ul>
 <hr />
 <h2>Summary Table</h2>
@@ -503,6 +516,13 @@ Let me know if these should be added to the Excel export.</li>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>OZ-102226</td>
+<td>GetDetails API Rewritten</td>
+<td>❌ Not listed</td>
+<td>❌ No code</td>
+<td>❌ Flow: New iOS ticket, no automation</td>
+</tr>
 <tr>
 <td>OZ-87836</td>
 <td>Yearly fixed — after business hours</td>
@@ -541,9 +561,9 @@ Let me know if these should be added to the Excel export.</li>
 <tr>
 <td>OZ-79557</td>
 <td>Monthly — create after business hours</td>
-<td>❌</td>
+<td>✅ (wrong)</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
+<td>❌ Flow: No code — Confluence incorrectly marks as automated</td>
 </tr>
 <tr>
 <td>OZ-79539</td>
@@ -641,7 +661,7 @@ Let me know if these should be added to the Excel export.</li>
 <td>Yearly flex — Partial withdrawal</td>
 <td>❌ Not in Confluence</td>
 <td>⚠️ Disabled</td>
-<td>🆕 Not in Excel/Confluence — add it</td>
+<td>⚠️ Flow: Disabled — add to Confluence</td>
 </tr>
 <tr>
 <td>OZ-72829</td>
@@ -688,9 +708,9 @@ Let me know if these should be added to the Excel export.</li>
 <tr>
 <td>OZ-70217</td>
 <td>Monthly — Freeze deposit</td>
-<td>❌ (not in Excel)</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation. Not in Excel</td>
+<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-70216</td>
@@ -698,6 +718,13 @@ Let me know if these should be added to the Excel export.</li>
 <td>✅ (no platform)</td>
 <td>⚠️ Disabled</td>
 <td>⚠️ Flow: Disabled — needs CUSTOM user with daily saving</td>
+</tr>
+<tr>
+<td>OZ-70214</td>
+<td>Daily — Full withdrawal flow</td>
+<td>❌ Not in Confluence</td>
+<td>❌ No code</td>
+<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-65881</td>
@@ -709,9 +736,9 @@ Let me know if these should be added to the Excel export.</li>
 <tr>
 <td>OZ-65843</td>
 <td>Savings plans catalog</td>
-<td>❌ (not in Excel)</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation. Not in Excel</td>
+<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-60769</td>
@@ -726,23 +753,25 @@ Let me know if these should be added to the Excel export.</li>
 <h2>Recommendations</h2>
 <h3>Immediate (P0)</h3>
 <ol>
-<li><strong>Fix Confluence</strong> — mark OZ-85572, OZ-75134, OZ-72829, OZ-70218, OZ-70216 as disabled (not fully automated)</li>
+<li><strong>Fix Confluence</strong> — remove ✅ from OZ-79557 (no code exists)</li>
+<li><strong>Fix Confluence</strong> — mark OZ-85572, OZ-75134, OZ-72829, OZ-70218, OZ-70216 as disabled</li>
 <li><strong>Add Android checkmark</strong> for OZ-85653</li>
-<li><strong>Add OZ-74442</strong> to Confluence (and Excel if needed)</li>
+<li><strong>Add missing rows</strong> — OZ-74442, OZ-102226, OZ-70214</li>
 </ol>
 <h3>Short-term (P1)</h3>
 <ol>
-<li><strong>Re-enable disabled tests</strong> — set up RESERVED user jobs for OZ-85572, OZ-60769, OZ-85653</li>
-<li><strong>Implement missing tests</strong> — prioritize OZ-76423, OZ-76215, OZ-76214 (yearly flex withdrawal + auto-renewal)</li>
-<li><strong>Investigate date-dependent tests</strong> — OZ-72829, OZ-70218 need a strategy (dedicated test environment with controlled date, or mock)</li>
+<li><strong>Re-enable disabled tests</strong> — set up RESERVED user jobs for OZ-85572, OZ-85653</li>
+<li><strong>Implement OZ-79557</strong> — monthly saving after business hours (code + <code>PendingSavingErrorPage</code> pattern, same as daily/yearly)</li>
+<li><strong>Implement OZ-76423, OZ-76215, OZ-76214</strong> — yearly flex withdrawal + auto-renewal</li>
+<li><strong>Investigate date-dependent tests</strong> — OZ-72829, OZ-70218 need a strategy (controlled date environment or mock)</li>
 </ol>
 <h3>Long-term (P2)</h3>
 <ol>
-<li><strong>Implement remaining 8 no-code tests</strong> — OZ-86692, OZ-86691, OZ-76046, OZ-75146, OZ-75139, OZ-75124, OZ-70222, OZ-70220</li>
-<li><strong>Decide on OZ-70217 and OZ-65843</strong> — add to Excel or remove from Confluence</li>
+<li><strong>Implement remaining no-code tests</strong> — OZ-86692, OZ-86691, OZ-76046, OZ-75146, OZ-75139, OZ-75124, OZ-70222, OZ-70220, OZ-70217, OZ-70214</li>
+<li><strong>OZ-102226</strong> — plan Android automation once iOS manual tests are validated</li>
 </ol>
 <hr />
-<p><strong>Report Generated:</strong> May 12, 2026<br />
+<p><strong>Report Generated:</strong> May 13, 2026<br />
 <strong>Prepared By:</strong> Automation Analysis</p>
         </div>
     </div>
