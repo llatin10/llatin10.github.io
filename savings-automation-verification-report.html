@@ -143,233 +143,280 @@
 <p><strong>Date:</strong> May 13, 2026<br />
 <strong>Confluence:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RnD/pages/3206217730/Automation+by+Domain+Progress#Savings">Savings Section — Automation by Domain Progress</a></p>
 <hr />
+<h2>Column Legend</h2>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Automated ✅</strong></td>
+<td>Code exists in the repo</td>
+</tr>
+<tr>
+<td><strong>Android ✅</strong></td>
+<td>Test is actively running on Android</td>
+</tr>
+<tr>
+<td><strong>iOS ✅</strong></td>
+<td>Test is actively running on iOS</td>
+</tr>
+</tbody>
+</table>
+<p>A test with ✅ Automated but no platform checkmark = code written, not yet enabled for runs.</p>
+<hr />
 <h2>Executive Summary</h2>
 <p><strong>Total TTM Test Cases (Excel):</strong> 33<br />
-<strong>Marked Automated in Confluence:</strong> 17 ✅<br />
-<strong>Tests with <code>@Test</code> enabled in code:</strong> 11 ✅<br />
-<strong>Tests disabled (<code>// @Test</code>):</strong> 5 ⚠️<br />
-<strong>Tests with NO code at all:</strong> 17 ❌</p>
+<strong>Code exists (Automated ✅):</strong> 16<br />
+<strong>Actively running on Android:</strong> 11<br />
+<strong>Actively running on iOS:</strong> 1 (OZ-70540)<br />
+<strong>Code exists but not running on any platform:</strong> 5 ⚠️<br />
+<strong>No code at all:</strong> 17 ❌<br />
+<strong>Confluence errors (marked Automated but no code):</strong> 1 🔴</p>
 <hr />
-<h2>Critical Findings</h2>
-<ol>
-<li><strong>5 tests are marked ✅ in Confluence but are disabled in code</strong> — they will never run.</li>
-<li><strong>OZ-79557</strong> (monthly saving after business hours) — marked ✅ Automated in Confluence but no code exists.</li>
-<li><strong>OZ-102226</strong> (GetDetails API Rewritten) — new iOS-only ticket, no automation code yet.</li>
-<li><strong>OZ-70214</strong> (Daily saving Full withdrawal) — in Excel, no automation code.</li>
-<li><strong>OZ-74442</strong> is now confirmed in Excel — code exists but is disabled.</li>
-</ol>
+<h2>Critical Finding</h2>
+<p><strong>OZ-79557</strong> — marked ✅ Automated in Confluence but <strong>no Kotlin file exists</strong>. This is a Confluence error — the ✅ must be removed.</p>
 <hr />
-<h2>Detailed Test Analysis</h2>
-<h3>✅ Enabled &amp; Running (11 tests)</h3>
+<h2>Actively Running Tests (Android ✅ or iOS ✅)</h2>
 <table>
 <thead>
 <tr>
 <th>Test Key</th>
 <th>TTM Summary</th>
 <th>Class</th>
-<th>Status</th>
+<th>Android</th>
+<th>iOS</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>OZ-87836</td>
-<td>Yearly fixed interest — after business hours</td>
+<td>Yearly fixed — after business hours</td>
 <td><code>YearlySavingsFixedInterestAfterBusinessHoursTest</code></td>
-<td>✅ <code>@Test</code> enabled</td>
+<td>✅</td>
+<td></td>
 </tr>
 <tr>
 <td>OZ-85653</td>
-<td>Monthly — Future Full Withdrawal on non-exit day</td>
+<td>Monthly — Future Full Withdrawal non-exit</td>
 <td><code>MonthlySavingFutureFullWithdrawalFlowOnNonExitDayTest</code></td>
-<td>✅ <code>@Test</code> enabled</td>
+<td>✅</td>
+<td></td>
 </tr>
 <tr>
 <td>OZ-79539</td>
 <td>Daily — open after business hours</td>
 <td><code>DailySavingsCreateNewDailySavingWithoutRulesAfterBusinessHoursTest</code></td>
-<td>✅ <code>@Test</code> enabled</td>
+<td>✅</td>
+<td></td>
 </tr>
 <tr>
 <td>OZ-79520</td>
 <td>Daily — create without rules</td>
 <td><code>DailySavingsCreateNewDailySavingWithoutRules</code></td>
-<td>✅ <code>@Test</code> enabled</td>
+<td>✅</td>
+<td></td>
 </tr>
 <tr>
 <td>OZ-76216</td>
 <td>Flexi yearly — open after business hours</td>
 <td><code>YearlySavingsFlexInterestAfterBusinessHoursTest</code></td>
-<td>✅ <code>@Test</code> enabled</td>
+<td>✅</td>
+<td></td>
 </tr>
 <tr>
 <td>OZ-75161</td>
 <td>Monthly — create new full flow</td>
 <td><code>MonthlySavingsTests</code></td>
-<td>✅ <code>@Test</code> enabled</td>
+<td>✅</td>
+<td></td>
 </tr>
 <tr>
 <td>OZ-74925</td>
 <td>Daily — create with 2 rules on</td>
 <td><code>DailySavingsCreateNewDailySavingWithAll2RulesTurnedOn</code></td>
-<td>✅ <code>@Test</code> enabled</td>
+<td>✅</td>
+<td></td>
 </tr>
 <tr>
 <td>OZ-70540</td>
 <td>Yearly flex interest — full flow</td>
 <td><code>YearlySavingsFlexInterestTest</code></td>
-<td>✅ <code>@Test</code> enabled</td>
+<td>✅</td>
+<td>✅</td>
 </tr>
 <tr>
 <td>OZ-70302</td>
 <td>Yearly fixed interest — full flow</td>
 <td><code>YearlySavingsFixedInterestTest</code></td>
-<td>✅ <code>@Test</code> enabled</td>
+<td>✅</td>
+<td></td>
 </tr>
 <tr>
 <td>OZ-65881</td>
 <td>Cannot open second daily saving</td>
 <td><code>DailySavingsCannotOpenSecondDailySavingTest</code></td>
-<td>✅ <code>@Test</code> enabled</td>
+<td>✅</td>
+<td></td>
 </tr>
 <tr>
 <td>OZ-60769</td>
-<td>Monthly — Immediate Full Withdrawal on non-exit day</td>
+<td>Monthly — Immediate Full Withdrawal non-exit</td>
 <td><code>MonthlySavingImmediateFullWithdrawalFlowOnNonExitDayTest</code></td>
-<td>✅ <code>@Test</code> enabled</td>
+<td>✅</td>
+<td></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Note:</strong> Confluence marks OZ-85572, OZ-75134, OZ-72829, OZ-70218, OZ-70216 as automated — but all are disabled in code.</p>
 <hr />
-<h3>⚠️ Disabled Tests — Code Exists but <code>@Test</code> is Commented Out (5 tests)</h3>
-<p>These are marked ✅ in Confluence but will <strong>never run</strong> until re-enabled.</p>
-<h4>1. OZ-85572 — Monthly saving - Partial Future withdrawal on non-exit day</h4>
-<p><strong>Class:</strong> <code>MonthlySavingFuturePartialWithdrawalFlowOnNonExitDayTest</code><br />
-<strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
-<strong>Code:</strong> <code>// @Test</code> — disabled<br />
-<strong>Comment in code:</strong> <code>"need to create job for users - single with monthly savings"</code><br />
-<strong>Issue:</strong> <code>Flow:</code> Test is disabled — requires a RESERVED user with an existing monthly saving. User job not set up.</p>
-<h4>2. OZ-75134 — Monthly saving - Immediate Partial Withdrawal on non exit date</h4>
-<p><strong>Class:</strong> <code>MonthlySavingImmediatePartialWithdrawalOnNonExitDateTest</code><br />
-<strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
-<strong>Code:</strong> <code>// @Test</code> — disabled<br />
-<strong>Issue:</strong> <code>Flow:</code> Test is disabled — uses <code>UserType.CUSTOM</code>, requires a pre-existing monthly saving.</p>
-<h4>3. OZ-74442 — Yearly saving with flex interest - Partial withdrawal flow</h4>
-<p><strong>Class:</strong> <code>YearlySavingsPartialWithdrawalTest</code><br />
-<strong>Confluence:</strong> ❌ Not listed (needs to be added)<br />
-<strong>Code:</strong> <code>// @Test</code> — disabled<br />
-<strong>TTM Status:</strong> Pending PRD<br />
-<strong>Issue:</strong> <code>Flow:</code> Test is disabled. Now confirmed in Excel — add to Confluence as not automated.</p>
-<h4>4. OZ-72829 — Monthly saving - Partial withdrawal on exit date</h4>
-<p><strong>Class:</strong> <code>MonthlySavingPartialWithdrawalOnExitDateTest</code><br />
-<strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
-<strong>Code:</strong> <code>// @Test</code> — disabled<br />
-<strong>Issue:</strong> <code>Flow:</code> Test is disabled — requires exit date timing (date-dependent test).</p>
-<h4>5. OZ-70218 — Monthly saving - Full withdrawal on exit date</h4>
-<p><strong>Class:</strong> <code>MonthlySavingFullWithdrawalOnExitDateTest</code><br />
-<strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
-<strong>Code:</strong> <code>// @Test</code> — disabled<br />
-<strong>Issue:</strong> <code>Flow:</code> Test is disabled — requires exit date timing (date-dependent test).</p>
-<h4>6. OZ-70216 — Daily saving - Partial withdrawal flow</h4>
-<p><strong>Class:</strong> <code>DailySavingsWithdrawalTest</code><br />
-<strong>Confluence:</strong> ✅ Automated (no Android/iOS checkmark)<br />
-<strong>Code:</strong> <code>// @Test</code> — disabled<br />
-<strong>Issue:</strong> <code>Flow:</code> Test is disabled — uses <code>UserType.CUSTOM</code>, requires a pre-existing daily saving.</p>
-<hr />
-<h3>❌ No Automation Code Found (17 tests)</h3>
-<p>These tests are in the Excel but have <strong>zero Kotlin implementation</strong>.</p>
+<h2>Code Exists — Not Running on Any Platform Yet (5 tests)</h2>
+<p>These have ✅ Automated in Confluence (correctly), but no Android/iOS checkmark yet. The developer needs to enable them.</p>
 <table>
 <thead>
 <tr>
 <th>Test Key</th>
 <th>TTM Summary</th>
-<th>Confluence</th>
+<th>Class</th>
+<th>Blocker</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-85572</td>
+<td>Monthly — Future Partial Withdrawal non-exit</td>
+<td><code>MonthlySavingFuturePartialWithdrawalFlowOnNonExitDayTest</code></td>
+<td>Needs RESERVED user with existing monthly saving</td>
+</tr>
+<tr>
+<td>OZ-75134</td>
+<td>Monthly — Immediate Partial Withdrawal non-exit</td>
+<td><code>MonthlySavingImmediatePartialWithdrawalOnNonExitDateTest</code></td>
+<td>Needs CUSTOM user with existing monthly saving</td>
+</tr>
+<tr>
+<td>OZ-74442</td>
+<td>Yearly flex — Partial withdrawal</td>
+<td><code>YearlySavingsPartialWithdrawalTest</code></td>
+<td>Not in Confluence yet — add row with ✅ Automated</td>
+</tr>
+<tr>
+<td>OZ-72829</td>
+<td>Monthly — Partial withdrawal on exit date</td>
+<td><code>MonthlySavingPartialWithdrawalOnExitDateTest</code></td>
+<td>Date-dependent — needs exit date user</td>
+</tr>
+<tr>
+<td>OZ-70218</td>
+<td>Monthly — Full withdrawal on exit date</td>
+<td><code>MonthlySavingFullWithdrawalOnExitDateTest</code></td>
+<td>Date-dependent — needs exit date user</td>
+</tr>
+<tr>
+<td>OZ-70216</td>
+<td>Daily — Partial withdrawal flow</td>
+<td><code>DailySavingsWithdrawalTest</code></td>
+<td>Needs CUSTOM user with existing daily saving</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>No Code At All (17 tests)</h2>
+<p>These have no Kotlin implementation. Confluence should show no ✅ in any column.</p>
+<table>
+<thead>
+<tr>
+<th>Test Key</th>
+<th>TTM Summary</th>
+<th>Confluence Status</th>
 <th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>OZ-102226</td>
-<td>Savings - GetDetails - API Rewritten</td>
+<td>GetDetails API Rewritten</td>
 <td>❌ Not in Confluence</td>
-<td>New iOS-only ticket, 15 manual test scenarios</td>
+<td>New iOS-only ticket, 15 manual scenarios</td>
 </tr>
 <tr>
 <td>OZ-86692</td>
 <td>FLEXI Yearly — partial withdrawal (toggle ON)</td>
-<td>❌ Not automated</td>
+<td>❌ Correct</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-86691</td>
 <td>FLEXI Yearly — partial withdrawal (toggle OFF)</td>
-<td>❌ Not automated</td>
-<td>No code</td>
-</tr>
-<tr>
-<td>OZ-76423</td>
-<td>Yearly flex — Full withdrawal</td>
-<td>❌ Not automated</td>
-<td>No code</td>
-</tr>
-<tr>
-<td>OZ-76215</td>
-<td>Turning on auto renewal</td>
-<td>❌ Not automated</td>
-<td>No code</td>
-</tr>
-<tr>
-<td>OZ-76214</td>
-<td>Turning off auto renewal</td>
-<td>❌ Not automated</td>
-<td>No code</td>
-</tr>
-<tr>
-<td>OZ-76046</td>
-<td>Downgrade to ZERO club with open fixed yearly saving</td>
-<td>❌ Not automated</td>
-<td>No code</td>
-</tr>
-<tr>
-<td>OZ-75146</td>
-<td>Monthly — Unfreeze deposit</td>
-<td>❌ Not automated</td>
-<td>No code</td>
-</tr>
-<tr>
-<td>OZ-75139</td>
-<td>Monthly — Partial withdrawal after business hours</td>
-<td>❌ Not automated</td>
-<td>No code</td>
-</tr>
-<tr>
-<td>OZ-75124</td>
-<td>Daily — closure flow at end of day</td>
-<td>❌ Not automated</td>
+<td>❌ Correct</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-79557</td>
 <td>Monthly — create after business hours</td>
-<td>✅ Marked automated in Confluence</td>
-<td><strong>No code — Confluence is wrong</strong></td>
+<td>🔴 <strong>Wrong — has ✅ Automated</strong></td>
+<td>No code — must remove ✅</td>
+</tr>
+<tr>
+<td>OZ-76423</td>
+<td>Yearly flex — Full withdrawal</td>
+<td>❌ Correct</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-76215</td>
+<td>Turning on auto renewal</td>
+<td>❌ Correct</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-76214</td>
+<td>Turning off auto renewal</td>
+<td>❌ Correct</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-76046</td>
+<td>Downgrade to ZERO with fixed yearly saving</td>
+<td>❌ Correct</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-75146</td>
+<td>Monthly — Unfreeze deposit</td>
+<td>❌ Correct</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-75139</td>
+<td>Monthly — Partial withdrawal after business hours</td>
+<td>❌ Correct</td>
+<td>No code</td>
+</tr>
+<tr>
+<td>OZ-75124</td>
+<td>Daily — closure flow end of day</td>
+<td>❌ Correct</td>
+<td>No code</td>
 </tr>
 <tr>
 <td>OZ-70222</td>
 <td>Monthly — Update deposit day</td>
-<td>❌ Not automated</td>
+<td>❌ Correct</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-70220</td>
 <td>Monthly — Update deposit amount</td>
-<td>❌ Not automated</td>
+<td>❌ Correct</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-70217</td>
 <td>Monthly — Freeze deposit</td>
-<td>❌ Not automated</td>
+<td>❌ Correct</td>
 <td>No code</td>
 </tr>
 <tr>
@@ -380,128 +427,28 @@
 </tr>
 <tr>
 <td>OZ-65843</td>
-<td>Savings plans catalog includes all types</td>
-<td>❌ Not automated</td>
+<td>Savings plans catalog</td>
+<td>❌ Correct</td>
 <td>No code</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2>Confluence Accuracy Check</h2>
-<table>
-<thead>
-<tr>
-<th>Test Key</th>
-<th>Confluence Says</th>
-<th>Reality</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>OZ-87836</td>
-<td>✅ Android</td>
-<td>✅ Correct — enabled</td>
-</tr>
-<tr>
-<td>OZ-85653</td>
-<td>✅ (no platform)</td>
-<td>✅ Correct — enabled. <strong>Missing Android checkmark</strong></td>
-</tr>
-<tr>
-<td>OZ-85572</td>
-<td>✅ (no platform)</td>
-<td>⚠️ Code exists but <strong>disabled</strong></td>
-</tr>
-<tr>
-<td>OZ-79557</td>
-<td>✅ Automated</td>
-<td>❌ <strong>No code at all — Confluence is wrong</strong></td>
-</tr>
-<tr>
-<td>OZ-79539</td>
-<td>✅ Android</td>
-<td>✅ Correct — enabled</td>
-</tr>
-<tr>
-<td>OZ-79520</td>
-<td>✅ Android</td>
-<td>✅ Correct — enabled</td>
-</tr>
-<tr>
-<td>OZ-76216</td>
-<td>✅ Android</td>
-<td>✅ Correct — enabled</td>
-</tr>
-<tr>
-<td>OZ-75161</td>
-<td>✅ Android</td>
-<td>✅ Correct — enabled</td>
-</tr>
-<tr>
-<td>OZ-75134</td>
-<td>✅ (no platform)</td>
-<td>⚠️ Code exists but <strong>disabled</strong></td>
-</tr>
-<tr>
-<td>OZ-74925</td>
-<td>✅ Android</td>
-<td>✅ Correct — enabled</td>
-</tr>
-<tr>
-<td>OZ-72829</td>
-<td>✅ (no platform)</td>
-<td>⚠️ Code exists but <strong>disabled</strong></td>
-</tr>
-<tr>
-<td>OZ-70540</td>
-<td>✅ Android + iOS</td>
-<td>✅ Correct — enabled</td>
-</tr>
-<tr>
-<td>OZ-70302</td>
-<td>✅ Android</td>
-<td>✅ Correct — enabled</td>
-</tr>
-<tr>
-<td>OZ-70218</td>
-<td>✅ (no platform)</td>
-<td>⚠️ Code exists but <strong>disabled</strong></td>
-</tr>
-<tr>
-<td>OZ-70216</td>
-<td>✅ (no platform)</td>
-<td>⚠️ Code exists but <strong>disabled</strong></td>
-</tr>
-<tr>
-<td>OZ-65881</td>
-<td>✅ Android</td>
-<td>✅ Correct — enabled</td>
-</tr>
-<tr>
-<td>OZ-60769</td>
-<td>✅ Android</td>
-<td>✅ Correct — enabled</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2>Confluence Updates Needed</h2>
-<h3>1. Fix OZ-79557 — remove ✅ Automated</h3>
-<p>No code exists. Confluence incorrectly marks this as automated.</p>
-<h3>2. Fix disabled tests — mark as not running</h3>
-<p>These are marked ✅ but won't run:<br />
-- OZ-85572 — disabled (needs RESERVED user job)<br />
-- OZ-75134 — disabled (needs CUSTOM user with monthly saving)<br />
-- OZ-72829 — disabled (date-dependent)<br />
-- OZ-70218 — disabled (date-dependent)<br />
-- OZ-70216 — disabled (needs CUSTOM user with daily saving)</p>
-<h3>3. Add Android checkmark for OZ-85653</h3>
-<p>Currently marked ✅ Automated but no Android/iOS column checkmark. Should be ✅ Android.</p>
-<h3>4. Add missing rows to Confluence</h3>
+<h2>Confluence Changes Needed</h2>
+<h3>🔴 Must fix (data is wrong)</h3>
+<ol>
+<li><strong>OZ-79557</strong> — remove ✅ from Automated column (no code exists)</li>
+</ol>
+<h3>➕ Must add (missing rows)</h3>
+<ol>
+<li><strong>OZ-74442</strong> — add row with ✅ Automated, no platform checkmarks (code exists, not running)</li>
+<li><strong>OZ-102226</strong> — add row, no checkmarks (no code yet)</li>
+<li><strong>OZ-70214</strong> — add row, no checkmarks (no code yet)</li>
+</ol>
+<h3>✅ Correct as-is (no changes needed)</h3>
 <ul>
-<li><strong>OZ-74442</strong> — Yearly saving with flex interest - Partial withdrawal flow (disabled, no platform checkmark)</li>
-<li><strong>OZ-102226</strong> — Savings GetDetails API Rewritten (iOS only, not automated yet)</li>
-<li><strong>OZ-70214</strong> — Daily saving Full withdrawal flow (not automated)</li>
+<li>OZ-85572, OZ-75134, OZ-72829, OZ-70218, OZ-70216 — ✅ Automated is accurate, no platform checkmarks is accurate</li>
+<li>OZ-85653 — ✅ Automated is correct. Android checkmark is missing but that's a platform tracking decision for the developer</li>
 </ul>
 <hr />
 <h2>Summary Table</h2>
@@ -510,266 +457,279 @@
 <tr>
 <th>Ticket</th>
 <th>Test Name</th>
-<th>Confluence</th>
-<th>Test Enabled</th>
-<th>Key Issue</th>
+<th>Automated</th>
+<th>Android</th>
+<th>iOS</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>OZ-102226</td>
 <td>GetDetails API Rewritten</td>
-<td>❌ Not listed</td>
-<td>❌ No code</td>
-<td>❌ Flow: New iOS ticket, no automation</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌ No code. Add row to Confluence</td>
 </tr>
 <tr>
 <td>OZ-87836</td>
 <td>Yearly fixed — after business hours</td>
-<td>✅ Android</td>
 <td>✅</td>
-<td>✅ All good</td>
+<td>✅</td>
+<td></td>
+<td>✅ Running</td>
 </tr>
 <tr>
 <td>OZ-86692</td>
 <td>FLEXI Yearly — partial (toggle ON)</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-86691</td>
 <td>FLEXI Yearly — partial (toggle OFF)</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-85653</td>
 <td>Monthly — Future Full Withdrawal non-exit</td>
-<td>✅ (no platform)</td>
 <td>✅</td>
-<td>⚠️ Description: Missing Android checkmark in Confluence</td>
+<td>✅</td>
+<td></td>
+<td>✅ Running</td>
 </tr>
 <tr>
 <td>OZ-85572</td>
 <td>Monthly — Future Partial Withdrawal non-exit</td>
-<td>✅ (no platform)</td>
-<td>⚠️ Disabled</td>
-<td>⚠️ Flow: Disabled — needs RESERVED user job</td>
+<td>✅</td>
+<td></td>
+<td></td>
+<td>⚠️ Code exists, not running</td>
 </tr>
 <tr>
 <td>OZ-79557</td>
 <td>Monthly — create after business hours</td>
-<td>✅ (wrong)</td>
-<td>❌ No code</td>
-<td>❌ Flow: No code — Confluence incorrectly marks as automated</td>
+<td>🔴 Wrong ✅</td>
+<td></td>
+<td></td>
+<td>🔴 No code — fix Confluence</td>
 </tr>
 <tr>
 <td>OZ-79539</td>
 <td>Daily — open after business hours</td>
-<td>✅ Android</td>
 <td>✅</td>
-<td>✅ All good</td>
+<td>✅</td>
+<td></td>
+<td>✅ Running</td>
 </tr>
 <tr>
 <td>OZ-79520</td>
 <td>Daily — create without rules</td>
-<td>✅ Android</td>
 <td>✅</td>
-<td>✅ All good</td>
+<td>✅</td>
+<td></td>
+<td>✅ Running</td>
 </tr>
 <tr>
 <td>OZ-76423</td>
 <td>Yearly flex — Full withdrawal</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-76216</td>
 <td>Flexi yearly — after business hours</td>
-<td>✅ Android</td>
 <td>✅</td>
-<td>✅ All good</td>
+<td>✅</td>
+<td></td>
+<td>✅ Running</td>
 </tr>
 <tr>
 <td>OZ-76215</td>
 <td>Turning on auto renewal</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-76214</td>
 <td>Turning off auto renewal</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-76046</td>
 <td>Downgrade to ZERO with fixed yearly saving</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-75161</td>
 <td>Monthly — create full flow</td>
-<td>✅ Android</td>
 <td>✅</td>
-<td>✅ All good</td>
+<td>✅</td>
+<td></td>
+<td>✅ Running</td>
 </tr>
 <tr>
 <td>OZ-75146</td>
 <td>Monthly — Unfreeze deposit</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-75139</td>
 <td>Monthly — Partial withdrawal after business hours</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-75134</td>
 <td>Monthly — Immediate Partial Withdrawal non-exit</td>
-<td>✅ (no platform)</td>
-<td>⚠️ Disabled</td>
-<td>⚠️ Flow: Disabled — needs CUSTOM user with monthly saving</td>
+<td>✅</td>
+<td></td>
+<td></td>
+<td>⚠️ Code exists, not running</td>
 </tr>
 <tr>
 <td>OZ-75124</td>
 <td>Daily — closure flow end of day</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-74925</td>
 <td>Daily — create with 2 rules on</td>
-<td>✅ Android</td>
 <td>✅</td>
-<td>✅ All good</td>
+<td>✅</td>
+<td></td>
+<td>✅ Running</td>
 </tr>
 <tr>
 <td>OZ-74442</td>
 <td>Yearly flex — Partial withdrawal</td>
-<td>❌ Not in Confluence</td>
-<td>⚠️ Disabled</td>
-<td>⚠️ Flow: Disabled — add to Confluence</td>
+<td>➕ Missing row</td>
+<td></td>
+<td></td>
+<td>⚠️ Code exists — add to Confluence</td>
 </tr>
 <tr>
 <td>OZ-72829</td>
 <td>Monthly — Partial withdrawal on exit date</td>
-<td>✅ (no platform)</td>
-<td>⚠️ Disabled</td>
-<td>⚠️ Flow: Disabled — date-dependent</td>
+<td>✅</td>
+<td></td>
+<td></td>
+<td>⚠️ Code exists, not running</td>
 </tr>
 <tr>
 <td>OZ-70540</td>
 <td>Yearly flex — full flow</td>
-<td>✅ Android + iOS</td>
 <td>✅</td>
-<td>✅ All good</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅ Running</td>
 </tr>
 <tr>
 <td>OZ-70302</td>
 <td>Yearly fixed — full flow</td>
-<td>✅ Android</td>
 <td>✅</td>
-<td>✅ All good</td>
+<td>✅</td>
+<td></td>
+<td>✅ Running</td>
 </tr>
 <tr>
 <td>OZ-70222</td>
 <td>Monthly — Update deposit day</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-70220</td>
 <td>Monthly — Update deposit amount</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-70218</td>
 <td>Monthly — Full withdrawal on exit date</td>
-<td>✅ (no platform)</td>
-<td>⚠️ Disabled</td>
-<td>⚠️ Flow: Disabled — date-dependent</td>
+<td>✅</td>
+<td></td>
+<td></td>
+<td>⚠️ Code exists, not running</td>
 </tr>
 <tr>
 <td>OZ-70217</td>
 <td>Monthly — Freeze deposit</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-70216</td>
 <td>Daily — Partial withdrawal flow</td>
-<td>✅ (no platform)</td>
-<td>⚠️ Disabled</td>
-<td>⚠️ Flow: Disabled — needs CUSTOM user with daily saving</td>
+<td>✅</td>
+<td></td>
+<td></td>
+<td>⚠️ Code exists, not running</td>
 </tr>
 <tr>
 <td>OZ-70214</td>
 <td>Daily — Full withdrawal flow</td>
-<td>❌ Not in Confluence</td>
-<td>❌ No code</td>
-<td>❌ Flow: No automation</td>
+<td>➕ Missing row</td>
+<td></td>
+<td></td>
+<td>❌ No code — add to Confluence</td>
 </tr>
 <tr>
 <td>OZ-65881</td>
 <td>Cannot open second daily saving</td>
-<td>✅ Android</td>
 <td>✅</td>
-<td>✅ All good</td>
+<td>✅</td>
+<td></td>
+<td>✅ Running</td>
 </tr>
 <tr>
 <td>OZ-65843</td>
 <td>Savings plans catalog</td>
 <td>❌</td>
+<td>❌</td>
+<td>❌</td>
 <td>❌ No code</td>
-<td>❌ Flow: No automation</td>
 </tr>
 <tr>
 <td>OZ-60769</td>
 <td>Monthly — Immediate Full Withdrawal non-exit</td>
-<td>✅ Android</td>
 <td>✅</td>
-<td>✅ All good</td>
+<td>✅</td>
+<td></td>
+<td>✅ Running</td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2>Recommendations</h2>
-<h3>Immediate (P0)</h3>
-<ol>
-<li><strong>Fix Confluence</strong> — remove ✅ from OZ-79557 (no code exists)</li>
-<li><strong>Fix Confluence</strong> — mark OZ-85572, OZ-75134, OZ-72829, OZ-70218, OZ-70216 as disabled</li>
-<li><strong>Add Android checkmark</strong> for OZ-85653</li>
-<li><strong>Add missing rows</strong> — OZ-74442, OZ-102226, OZ-70214</li>
-</ol>
-<h3>Short-term (P1)</h3>
-<ol>
-<li><strong>Re-enable disabled tests</strong> — set up RESERVED user jobs for OZ-85572, OZ-85653</li>
-<li><strong>Implement OZ-79557</strong> — monthly saving after business hours (code + <code>PendingSavingErrorPage</code> pattern, same as daily/yearly)</li>
-<li><strong>Implement OZ-76423, OZ-76215, OZ-76214</strong> — yearly flex withdrawal + auto-renewal</li>
-<li><strong>Investigate date-dependent tests</strong> — OZ-72829, OZ-70218 need a strategy (controlled date environment or mock)</li>
-</ol>
-<h3>Long-term (P2)</h3>
-<ol>
-<li><strong>Implement remaining no-code tests</strong> — OZ-86692, OZ-86691, OZ-76046, OZ-75146, OZ-75139, OZ-75124, OZ-70222, OZ-70220, OZ-70217, OZ-70214</li>
-<li><strong>OZ-102226</strong> — plan Android automation once iOS manual tests are validated</li>
-</ol>
 <hr />
 <p><strong>Report Generated:</strong> May 13, 2026<br />
 <strong>Prepared By:</strong> Automation Analysis</p>
