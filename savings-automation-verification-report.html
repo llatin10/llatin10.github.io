@@ -172,15 +172,12 @@
 <p><strong>Total TTM Test Cases (Excel):</strong> 33<br />
 <strong>Code exists (Automated ✅):</strong> 16<br />
 <strong>Actively running on Android:</strong> 11<br />
-<strong>Actively running on iOS:</strong> 1 (OZ-70540)<br />
+<strong>Actively running on iOS:</strong> 2 (OZ-70540, OZ-85653)<br />
 <strong>Code exists but not running on any platform:</strong> 5 ⚠️<br />
 <strong>No code at all:</strong> 17 ❌<br />
-<strong>Confluence errors (marked Automated but no code):</strong> 1 🔴</p>
+<strong>Confluence errors:</strong> 0 🟢</p>
 <hr />
-<h2>Critical Finding</h2>
-<p><strong>OZ-79557</strong> — marked ✅ Automated in Confluence but <strong>no Kotlin file exists</strong>. This is a Confluence error — the ✅ must be removed.</p>
-<hr />
-<h2>Actively Running Tests (Android ✅ or iOS ✅)</h2>
+<h2>Actively Running Tests</h2>
 <table>
 <thead>
 <tr>
@@ -203,8 +200,8 @@
 <td>OZ-85653</td>
 <td>Monthly — Future Full Withdrawal non-exit</td>
 <td><code>MonthlySavingFutureFullWithdrawalFlowOnNonExitDayTest</code></td>
-<td>✅</td>
 <td></td>
+<td>✅</td>
 </tr>
 <tr>
 <td>OZ-79539</td>
@@ -272,8 +269,8 @@
 </tbody>
 </table>
 <hr />
-<h2>Code Exists — Not Running on Any Platform Yet (5 tests)</h2>
-<p>These have ✅ Automated in Confluence (correctly), but no Android/iOS checkmark yet. The developer needs to enable them.</p>
+<h2>Code Exists — Not Running on Any Platform Yet</h2>
+<p>These have ✅ Automated in Confluence (correctly). No platform checkmark yet — developer needs to enable them.</p>
 <table>
 <thead>
 <tr>
@@ -300,7 +297,7 @@
 <td>OZ-74442</td>
 <td>Yearly flex — Partial withdrawal</td>
 <td><code>YearlySavingsPartialWithdrawalTest</code></td>
-<td>Not in Confluence yet — add row with ✅ Automated</td>
+<td><strong>Not in Confluence yet</strong> — add row with ✅ Automated</td>
 </tr>
 <tr>
 <td>OZ-72829</td>
@@ -323,14 +320,13 @@
 </tbody>
 </table>
 <hr />
-<h2>No Code At All (17 tests)</h2>
-<p>These have no Kotlin implementation. Confluence should show no ✅ in any column.</p>
+<h2>No Code At All</h2>
 <table>
 <thead>
 <tr>
 <th>Test Key</th>
 <th>TTM Summary</th>
-<th>Confluence Status</th>
+<th>In Confluence</th>
 <th>Notes</th>
 </tr>
 </thead>
@@ -338,120 +334,137 @@
 <tr>
 <td>OZ-102226</td>
 <td>GetDetails API Rewritten</td>
-<td>❌ Not in Confluence</td>
-<td>New iOS-only ticket, 15 manual scenarios</td>
+<td>❌ Missing</td>
+<td>New iOS-only ticket, 15 manual scenarios — add row, no checkmarks</td>
 </tr>
 <tr>
 <td>OZ-86692</td>
 <td>FLEXI Yearly — partial withdrawal (toggle ON)</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-86691</td>
 <td>FLEXI Yearly — partial withdrawal (toggle OFF)</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-79557</td>
 <td>Monthly — create after business hours</td>
-<td>🔴 <strong>Wrong — has ✅ Automated</strong></td>
-<td>No code — must remove ✅</td>
+<td>✅ Correct (no checkmarks)</td>
+<td>No code</td>
 </tr>
 <tr>
 <td>OZ-76423</td>
 <td>Yearly flex — Full withdrawal</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-76215</td>
 <td>Turning on auto renewal</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-76214</td>
 <td>Turning off auto renewal</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-76046</td>
 <td>Downgrade to ZERO with fixed yearly saving</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-75146</td>
 <td>Monthly — Unfreeze deposit</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-75139</td>
 <td>Monthly — Partial withdrawal after business hours</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-75124</td>
 <td>Daily — closure flow end of day</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-70222</td>
 <td>Monthly — Update deposit day</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-70220</td>
 <td>Monthly — Update deposit amount</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-70217</td>
 <td>Monthly — Freeze deposit</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 <tr>
 <td>OZ-70214</td>
 <td>Daily — Full withdrawal flow</td>
-<td>❌ Not in Confluence</td>
-<td>No code</td>
+<td>❌ Missing</td>
+<td>In Excel — add row, no checkmarks</td>
 </tr>
 <tr>
 <td>OZ-65843</td>
 <td>Savings plans catalog</td>
-<td>❌ Correct</td>
+<td>✅ Correct (no checkmarks)</td>
 <td>No code</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2>Confluence Changes Needed</h2>
-<h3>🔴 Must fix (data is wrong)</h3>
-<ol>
-<li><strong>OZ-79557</strong> — remove ✅ from Automated column (no code exists)</li>
-</ol>
-<h3>➕ Must add (missing rows)</h3>
-<ol>
-<li><strong>OZ-74442</strong> — add row with ✅ Automated, no platform checkmarks (code exists, not running)</li>
-<li><strong>OZ-102226</strong> — add row, no checkmarks (no code yet)</li>
-<li><strong>OZ-70214</strong> — add row, no checkmarks (no code yet)</li>
-</ol>
-<h3>✅ Correct as-is (no changes needed)</h3>
-<ul>
-<li>OZ-85572, OZ-75134, OZ-72829, OZ-70218, OZ-70216 — ✅ Automated is accurate, no platform checkmarks is accurate</li>
-<li>OZ-85653 — ✅ Automated is correct. Android checkmark is missing but that's a platform tracking decision for the developer</li>
-</ul>
+<p>Only <strong>3 changes</strong> required:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Action</th>
+<th>Ticket</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>➕ Add row</td>
+<td>OZ-74442</td>
+<td>Yearly saving with flex interest - Partial withdrawal flow — ✅ Automated, no platform checkmarks</td>
+</tr>
+<tr>
+<td>2</td>
+<td>➕ Add row</td>
+<td>OZ-102226</td>
+<td>Savings - GetDetails - API Rewritten — no checkmarks at all</td>
+</tr>
+<tr>
+<td>3</td>
+<td>➕ Add row</td>
+<td>OZ-70214</td>
+<td>Savings - Daily saving - Full withdrawal flow — no checkmarks at all</td>
+</tr>
+</tbody>
+</table>
+<p>Everything else in the Savings table is <strong>accurate as-is</strong>.</p>
 <hr />
-<h2>Summary Table</h2>
+<h2>Full Summary Table</h2>
 <table>
 <thead>
 <tr>
@@ -467,10 +480,10 @@
 <tr>
 <td>OZ-102226</td>
 <td>GetDetails API Rewritten</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌ No code. Add row to Confluence</td>
+<td></td>
+<td></td>
+<td></td>
+<td>❌ No code — <strong>add row to Confluence</strong></td>
 </tr>
 <tr>
 <td>OZ-87836</td>
@@ -483,25 +496,25 @@
 <tr>
 <td>OZ-86692</td>
 <td>FLEXI Yearly — partial (toggle ON)</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
 <td>OZ-86691</td>
 <td>FLEXI Yearly — partial (toggle OFF)</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
 <td>OZ-85653</td>
 <td>Monthly — Future Full Withdrawal non-exit</td>
 <td>✅</td>
-<td>✅</td>
 <td></td>
+<td>✅</td>
 <td>✅ Running</td>
 </tr>
 <tr>
@@ -515,10 +528,10 @@
 <tr>
 <td>OZ-79557</td>
 <td>Monthly — create after business hours</td>
-<td>🔴 Wrong ✅</td>
 <td></td>
 <td></td>
-<td>🔴 No code — fix Confluence</td>
+<td></td>
+<td>❌ No code</td>
 </tr>
 <tr>
 <td>OZ-79539</td>
@@ -539,9 +552,9 @@
 <tr>
 <td>OZ-76423</td>
 <td>Yearly flex — Full withdrawal</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
@@ -555,25 +568,25 @@
 <tr>
 <td>OZ-76215</td>
 <td>Turning on auto renewal</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
 <td>OZ-76214</td>
 <td>Turning off auto renewal</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
 <td>OZ-76046</td>
 <td>Downgrade to ZERO with fixed yearly saving</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
@@ -587,17 +600,17 @@
 <tr>
 <td>OZ-75146</td>
 <td>Monthly — Unfreeze deposit</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
 <td>OZ-75139</td>
 <td>Monthly — Partial withdrawal after business hours</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
@@ -611,9 +624,9 @@
 <tr>
 <td>OZ-75124</td>
 <td>Daily — closure flow end of day</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
@@ -627,10 +640,10 @@
 <tr>
 <td>OZ-74442</td>
 <td>Yearly flex — Partial withdrawal</td>
-<td>➕ Missing row</td>
+<td>✅</td>
 <td></td>
 <td></td>
-<td>⚠️ Code exists — add to Confluence</td>
+<td>⚠️ Code exists — <strong>add row to Confluence</strong></td>
 </tr>
 <tr>
 <td>OZ-72829</td>
@@ -659,17 +672,17 @@
 <tr>
 <td>OZ-70222</td>
 <td>Monthly — Update deposit day</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
 <td>OZ-70220</td>
 <td>Monthly — Update deposit amount</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
@@ -683,9 +696,9 @@
 <tr>
 <td>OZ-70217</td>
 <td>Monthly — Freeze deposit</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
@@ -699,10 +712,10 @@
 <tr>
 <td>OZ-70214</td>
 <td>Daily — Full withdrawal flow</td>
-<td>➕ Missing row</td>
 <td></td>
 <td></td>
-<td>❌ No code — add to Confluence</td>
+<td></td>
+<td>❌ No code — <strong>add row to Confluence</strong></td>
 </tr>
 <tr>
 <td>OZ-65881</td>
@@ -715,9 +728,9 @@
 <tr>
 <td>OZ-65843</td>
 <td>Savings plans catalog</td>
-<td>❌</td>
-<td>❌</td>
-<td>❌</td>
+<td></td>
+<td></td>
+<td></td>
 <td>❌ No code</td>
 </tr>
 <tr>
