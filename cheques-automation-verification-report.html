@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheques Automation Verification Report</title>
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, -apple-system, Arial, sans-serif;
+            background: #faf9f7;
+            padding: 24px;
+            line-height: 1.65;
+            color: #44403c;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+            padding: 28px 32px 40px;
+        }
+        h1 {
+            color: #1c1917;
+            border-bottom: 2px solid #e7e5e0;
+            font-weight: 700;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #0d9488;
+            border-bottom: 1px solid #e7e5e0;
+            margin-top: 36px;
+            padding-bottom: 10px;
+        }
+        h3 { color: #0f766e; margin-top: 24px; }
+        .section-block {
+            background: #fafaf9;
+            border: 1px solid #e7e5e0;
+            border-left: 4px solid #14b8a6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .intro-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border: 1px solid #99f6e4;
+            border-left: 4px solid #14b8a6;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: "Consolas", ui-monospace, monospace;
+            border-left: 4px solid #14b8a6;
+            line-height: 1.55;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f5f5f4;
+            color: #0f766e;
+            padding: 0.2em 0.45em;
+            border-radius: 4px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.9em;
+            border: 1px solid #e7e5e0;
+        }
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .highlight-card {
+            background: #fff;
+            border: 1px solid #e7e5e0;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 3px solid #14b8a6;
+        }
+        
+        @media print {
+            body {
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .container {
+                box-shadow: none !important;
+                padding: 40px;
+                margin: 0 auto;
+                max-width: 100%;
+                width: 100%;
+                border-radius: 0;
+                box-sizing: border-box;
+            }
+            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
+            .section-block, .intro-block, .highlight-card, pre,
+            .simple-explanation, .next-steps { page-break-inside: avoid; break-inside: avoid; }
+            pre { white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden; }
+            @page { size: 210mm 1800mm; margin: 0; }
+        }
+
+
+        .md-content { margin-top: 8px; }
+        .md-content table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.88rem; }
+        .md-content th, .md-content td { border: 1px solid #e7e5e0; padding: 8px 10px; text-align: left; vertical-align: top; }
+        .md-content th { background: #f5f5f4; font-weight: 600; }
+        .md-content tr:nth-child(even) { background: #fafaf9; }
+        .md-content hr { margin: 28px 0; border: none; border-top: 1px solid #e7e5e0; }
+        .md-content ul, .md-content ol { margin: 12px 0 12px 1.5em; }
+        .md-content li > ul { margin-top: 6px; margin-bottom: 6px; }
+        .md-content .md-rtl,
+        .md-content [dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+            unicode-bidi: isolate;
+        }
+        .md-content .md-rtl ul,
+        .md-content .md-rtl ol,
+        .md-content [dir="rtl"] ul,
+        .md-content [dir="rtl"] ol {
+            margin: 12px 0 12px 0;
+            padding-inline-start: 1.5em;
+        }
+        .md-content p { margin: 12px 0; }
+        .md-content pre { margin: 16px 0; }
+        .md-content pre code { background: transparent !important; border: none !important; padding: 0 !important; }
+    
+    </style>
+</head>
+<body class="doc-theme-warm">
+    <div class="container">
+        <div class="md-content">
+<h1>Cheques Automation Verification Report</h1>
+<p><strong>Date:</strong> May 14, 2026<br />
+<strong>Confluence:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RnD/pages/3206217730/Automation+by+Domain+Progress#Cheques">Automation by Domain Progress — Cheques</a></p>
+<hr />
+<h2>Column Legend</h2>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Automated ✅</strong></td>
+<td>Code exists in the repo</td>
+</tr>
+<tr>
+<td><strong>Android ✅</strong></td>
+<td>Test is actively running on Android CI</td>
+</tr>
+<tr>
+<td><strong>iOS ✅</strong></td>
+<td>Test is actively running on iOS CI</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Executive Summary</h2>
+<p><strong>Total TTM Test Cases (all):</strong> 24<br />
+<strong>In Confluence Sanity Table:</strong> 8<br />
+<strong>Code exists (in repo):</strong> 5<br />
+<strong>Actively running on Android:</strong> 4 (OZ-95707, OZ-87592, OZ-78937, OZ-78919)<br />
+<strong>Actively running on iOS:</strong> 0<br />
+<strong>Code exists but not running on any platform:</strong> 1 (OZ-78941)<br />
+<strong>No code at all (in Confluence table):</strong> 3 (OZ-87594, OZ-79047, OZ-78939)<br />
+<strong>Confluence errors:</strong> 1 🔴</p>
+<hr />
+<h2>🔴 Discrepancies Found</h2>
+<h3>1. OZ-87592 — Missing "Automated ✅" in Confluence</h3>
+<ul>
+<li><strong>Confluence shows:</strong> Android ✅ but NO "Automated ✅"</li>
+<li><strong>Reality:</strong> Code exists in <code>OrderChequebookWhileInTransitTest.kt</code>, test is enabled</li>
+<li><strong>Fix needed:</strong> Add ✅ to the "Automated" column in Confluence</li>
+</ul>
+<h3>2. OZ-78941 — Code exists but not running</h3>
+<ul>
+<li><strong>Confluence shows:</strong> Automated ✅, no platform checkmark</li>
+<li><strong>Reality:</strong> Code exists in <code>DepositChequeTest.kt</code>, test is enabled with <code>@Test</code></li>
+<li><strong>Question:</strong> Why isn't it running on Android? It has <code>Tag(CAMERA_IMAGE_INJECTION)</code> — may require special device setup</li>
+<li><strong>Assessment:</strong> ⚠️ Valid state if camera injection isn't supported in CI, but should be clarified</li>
+</ul>
+<h3>3. TTM has 24 tests, Confluence only lists 8</h3>
+<ul>
+<li><strong>16 tests in TTM are NOT in the Confluence sanity table</strong></li>
+<li>Most are backend tests (OZ-90136 through OZ-90141) or address validation edge cases (OZ-82825 through OZ-82843)</li>
+<li><strong>Question:</strong> Are these intentionally excluded from sanity? Or should some be added?</li>
+</ul>
+<hr />
+<h2>Actively Running Tests (Android ✅)</h2>
+<table>
+<thead>
+<tr>
+<th>Test Key</th>
+<th>TTM Summary</th>
+<th>Class</th>
+<th>Android</th>
+<th>iOS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-95707</td>
+<td>Activation Of New ChequeBook</td>
+<td><code>ChequeBookActivationTest.kt</code></td>
+<td>✅</td>
+<td>—</td>
+</tr>
+<tr>
+<td>OZ-87592</td>
+<td>Ordering checkbook while previous in transit</td>
+<td><code>OrderChequebookWhileInTransitTest.kt</code></td>
+<td>✅</td>
+<td>—</td>
+</tr>
+<tr>
+<td>OZ-78937</td>
+<td>Order a bank check</td>
+<td><code>ChequesLobbyNavigateToChatTest.kt</code></td>
+<td>✅</td>
+<td>—</td>
+</tr>
+<tr>
+<td>OZ-78919</td>
+<td>Order a new checkbook</td>
+<td><code>CreateChequeBookOrderRequestTest.kt</code></td>
+<td>✅</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Code Exists — Not Running on Any Platform</h2>
+<table>
+<thead>
+<tr>
+<th>Test Key</th>
+<th>TTM Summary</th>
+<th>Class</th>
+<th>Blocker/Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-78941</td>
+<td>Depositing a new check</td>
+<td><code>DepositChequeTest.kt</code></td>
+<td>Has <code>CAMERA_IMAGE_INJECTION</code> tag — may need special CI setup</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>No Code At All (in Confluence table)</h2>
+<table>
+<thead>
+<tr>
+<th>Test Key</th>
+<th>TTM Summary</th>
+<th>In Confluence?</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-87594</td>
+<td>Deposit check &gt; 100K shekels</td>
+<td>No checkmarks</td>
+<td>Correct — no code exists</td>
+</tr>
+<tr>
+<td>OZ-79047</td>
+<td>Deposit previously cashed check</td>
+<td>No checkmarks</td>
+<td>Correct — no code exists</td>
+</tr>
+<tr>
+<td>OZ-78939</td>
+<td>Cancel order a new checkbook</td>
+<td>No checkmarks</td>
+<td>Correct — no code exists</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>TTM Tests NOT in Confluence Sanity Table (16 tests)</h2>
+<p>These tests exist in TTM but are NOT listed in the Confluence sanity table:</p>
+<h3>Backend Tests (6)</h3>
+<table>
+<thead>
+<tr>
+<th>Test Key</th>
+<th>Summary</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-90141</td>
+<td>Logging validation</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>OZ-90140</td>
+<td>Boundary date (exactly 12 months ago)</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>OZ-90139</td>
+<td>Missing or null portfolioId</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>OZ-90138</td>
+<td>Invalid or non-existing portfolioId</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>OZ-90137</td>
+<td>No returned checks in last 12 months</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>OZ-90136</td>
+<td>Happy Path: Valid portfolioId with existing data</td>
+<td>Done</td>
+</tr>
+</tbody>
+</table>
+<h3>Address Validation Tests (9)</h3>
+<table>
+<thead>
+<tr>
+<th>Test Key</th>
+<th>Summary</th>
+<th>Status</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-82843</td>
+<td>Long text into Entrance (&gt;20 chars)</td>
+<td>Pending PRD</td>
+<td>NEGATIVE</td>
+</tr>
+<tr>
+<td>OZ-82842</td>
+<td>Long text into Apartment (&gt;20 chars)</td>
+<td>Pending PRD</td>
+<td>NEGATIVE</td>
+</tr>
+<tr>
+<td>OZ-82841</td>
+<td>Entrance = 8 characters</td>
+<td>Pending PRD</td>
+<td>NEGATIVE</td>
+</tr>
+<tr>
+<td>OZ-82838</td>
+<td>Apartment = 5 characters</td>
+<td>Pending PRD</td>
+<td>NEGATIVE</td>
+</tr>
+<tr>
+<td>OZ-82837</td>
+<td>Entrance = 6 chars, Apartment empty</td>
+<td>Pending PRD</td>
+<td>POSITIVE</td>
+</tr>
+<tr>
+<td>OZ-82836</td>
+<td>Apartment = 3 chars, Entrance empty</td>
+<td>Done</td>
+<td>POSITIVE</td>
+</tr>
+<tr>
+<td>OZ-82835</td>
+<td>Both fields empty</td>
+<td>Done</td>
+<td>POSITIVE</td>
+</tr>
+<tr>
+<td>OZ-82834</td>
+<td>Entrance = 7 characters</td>
+<td>Done</td>
+<td>POSITIVE</td>
+</tr>
+<tr>
+<td>OZ-82825</td>
+<td>Apartment = 4 characters</td>
+<td>Done</td>
+<td>POSITIVE</td>
+</tr>
+</tbody>
+</table>
+<h3>Other (1)</h3>
+<table>
+<thead>
+<tr>
+<th>Test Key</th>
+<th>Summary</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-80589</td>
+<td>Deposit Cheque That REQUIRES Banker Approval</td>
+<td>Pending PRD</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Confluence Changes Needed</h2>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Ticket</th>
+<th>What to Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🔴 <strong>Add Automated ✅</strong></td>
+<td>OZ-87592</td>
+<td>Code exists and is running — missing "Automated" checkmark</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Summary Table</h2>
+<table>
+<thead>
+<tr>
+<th>Ticket</th>
+<th>Test Name</th>
+<th>Automated</th>
+<th>Android</th>
+<th>iOS</th>
+<th>Code Exists</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-95707</td>
+<td>Activation Of New ChequeBook</td>
+<td>✅</td>
+<td>✅</td>
+<td>—</td>
+<td>✅ <code>ChequeBookActivationTest.kt</code></td>
+<td>✅ Correct</td>
+</tr>
+<tr>
+<td>OZ-87594</td>
+<td>Deposit &gt; 100K</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>❌ No code</td>
+<td>✅ Correct (no checkmarks)</td>
+</tr>
+<tr>
+<td>OZ-87592</td>
+<td>Ordering while in transit</td>
+<td>—</td>
+<td>✅</td>
+<td>—</td>
+<td>✅ <code>OrderChequebookWhileInTransitTest.kt</code></td>
+<td>🔴 Missing "Automated ✅"</td>
+</tr>
+<tr>
+<td>OZ-79047</td>
+<td>Previously cashed check</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>❌ No code</td>
+<td>✅ Correct</td>
+</tr>
+<tr>
+<td>OZ-78941</td>
+<td>Depositing a new check</td>
+<td>✅</td>
+<td>—</td>
+<td>—</td>
+<td>✅ <code>DepositChequeTest.kt</code></td>
+<td>⚠️ Code exists, not running (camera?)</td>
+</tr>
+<tr>
+<td>OZ-78939</td>
+<td>Cancel order checkbook</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>❌ No code</td>
+<td>✅ Correct</td>
+</tr>
+<tr>
+<td>OZ-78937</td>
+<td>Order a bank check</td>
+<td>✅</td>
+<td>✅</td>
+<td>—</td>
+<td>✅ <code>ChequesLobbyNavigateToChatTest.kt</code></td>
+<td>✅ Correct</td>
+</tr>
+<tr>
+<td>OZ-78919</td>
+<td>Order a new checkbook</td>
+<td>✅</td>
+<td>✅</td>
+<td>—</td>
+<td>✅ <code>CreateChequeBookOrderRequestTest.kt</code></td>
+<td>✅ Correct</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Key Questions for Discussion</h2>
+<ol>
+<li><strong>OZ-87592:</strong> Should we add the "Automated ✅" checkmark in Confluence? (Code exists and runs)</li>
+<li><strong>OZ-78941:</strong> Why isn't the deposit cheque test running on Android? Is it the camera injection requirement?</li>
+<li><strong>Backend tests (6):</strong> Should any of these be in the sanity table? They're all "Done" status.</li>
+<li><strong>Address validation tests (9):</strong> Are these edge cases that belong in regression only, not sanity?</li>
+<li><strong>Missing tests (3):</strong> OZ-87594, OZ-79047, OZ-78939 — are these candidates for automation?</li>
+</ol>
+<hr />
+<h2>Next Steps</h2>
+<ol>
+<li>Fix Confluence: Add "Automated ✅" to OZ-87592</li>
+<li>Decide: Should OZ-78941 (deposit cheque) be enabled for Android CI?</li>
+<li>Decide: Which of the 16 non-sanity tests should be added to the Confluence table?</li>
+<li>Decide: Which of the 3 no-code tests should be automated next?</li>
+</ol>
+<hr />
+<p><strong>Report Generated:</strong> May 14, 2026<br />
+<strong>Prepared By:</strong> Automation Analysis<br />
+<strong>For:</strong> Liran Latin</p>
+        </div>
+    </div>
+</body>
+</html>
