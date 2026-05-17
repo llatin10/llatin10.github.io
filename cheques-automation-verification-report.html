@@ -171,103 +171,114 @@
 <p><strong>Total TTM Test Cases (all):</strong> 24<br />
 <strong>In Confluence Sanity Table:</strong> 8<br />
 <strong>Code exists (in repo):</strong> 5<br />
-<strong>Actively running on Android:</strong> 4 (OZ-95707, OZ-87592, OZ-78937, OZ-78919)<br />
+<strong>Actively running on Android:</strong> 5 (all 5 tests with code are running and passing)<br />
 <strong>Actively running on iOS:</strong> 0<br />
-<strong>Code exists but not running on any platform:</strong> 1 (OZ-78941)<br />
 <strong>No code at all (in Confluence table):</strong> 3 (OZ-87594, OZ-79047, OZ-78939)<br />
-<strong>Confluence errors:</strong> 1 🔴</p>
+<strong>Confluence errors fixed:</strong> 1 ✅ (OZ-87592 — added "Automated ✅")</p>
 <hr />
-<h2>🔴 Discrepancies Found</h2>
-<h3>1. OZ-87592 — Missing "Automated ✅" in Confluence</h3>
-<ul>
-<li><strong>Confluence shows:</strong> Android ✅ but NO "Automated ✅"</li>
-<li><strong>Reality:</strong> Code exists in <code>OrderChequebookWhileInTransitTest.kt</code>, test is enabled</li>
-<li><strong>Fix needed:</strong> Add ✅ to the "Automated" column in Confluence</li>
-</ul>
-<h3>2. OZ-78941 — Code exists but not running</h3>
+<h2>✅ Actions Already Taken</h2>
+<ol>
+<li>✅ <strong>Fixed Confluence for OZ-87592</strong> — Added "Automated ✅" checkmark (was missing, code exists and runs)</li>
+<li>✅ <strong>Confirmed OZ-78941 is running</strong> — Deposit cheque test passes on Android CI (4m 48s)</li>
+<li>✅ <strong>Decided:</strong> Keep the 8 existing TTM tests as the full sanity suite — no additions needed</li>
+<li>✅ <strong>Decided:</strong> 16 non-sanity tests (backend API + address validation + banker approval) stay out of scope</li>
+</ol>
+<hr />
+<h2>⚠️ Remaining Discrepancy</h2>
+<h3>OZ-78941 — Missing Android ✅ in Confluence</h3>
 <ul>
 <li><strong>Confluence shows:</strong> Automated ✅, no platform checkmark</li>
-<li><strong>Reality:</strong> Code exists in <code>DepositChequeTest.kt</code>, test is enabled with <code>@Test</code></li>
-<li><strong>Question:</strong> Why isn't it running on Android? It has <code>Tag(CAMERA_IMAGE_INJECTION)</code> — may require special device setup</li>
-<li><strong>Assessment:</strong> ⚠️ Valid state if camera injection isn't supported in CI, but should be clarified</li>
-</ul>
-<h3>3. TTM has 24 tests, Confluence only lists 8</h3>
-<ul>
-<li><strong>16 tests in TTM are NOT in the Confluence sanity table</strong></li>
-<li>Most are backend tests (OZ-90136 through OZ-90141) or address validation edge cases (OZ-82825 through OZ-82843)</li>
-<li><strong>Question:</strong> Are these intentionally excluded from sanity? Or should some be added?</li>
+<li><strong>Reality:</strong> Test IS running and passing on Android (confirmed: <code>Deposit cheque test</code> — 4m 48s)</li>
+<li><strong>Fix needed:</strong> Add Android ✅ checkmark in Confluence</li>
 </ul>
 <hr />
-<h2>Actively Running Tests (Android ✅)</h2>
+<h2>All 5 Running Tests (Confirmed Passing)</h2>
 <table>
 <thead>
 <tr>
+<th>#</th>
 <th>Test Key</th>
 <th>TTM Summary</th>
 <th>Class</th>
-<th>Android</th>
-<th>iOS</th>
+<th>Duration</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>OZ-95707</td>
-<td>Activation Of New ChequeBook</td>
-<td><code>ChequeBookActivationTest.kt</code></td>
-<td>✅</td>
-<td>—</td>
-</tr>
-<tr>
-<td>OZ-87592</td>
-<td>Ordering checkbook while previous in transit</td>
-<td><code>OrderChequebookWhileInTransitTest.kt</code></td>
-<td>✅</td>
-<td>—</td>
-</tr>
-<tr>
+<td>1</td>
 <td>OZ-78937</td>
 <td>Order a bank check</td>
 <td><code>ChequesLobbyNavigateToChatTest.kt</code></td>
-<td>✅</td>
-<td>—</td>
+<td>2m 50s</td>
 </tr>
 <tr>
+<td>2</td>
+<td>OZ-95707</td>
+<td>Activation Of New ChequeBook</td>
+<td><code>ChequeBookActivationTest.kt</code></td>
+<td>7m 00s</td>
+</tr>
+<tr>
+<td>3</td>
 <td>OZ-78919</td>
 <td>Order a new checkbook</td>
 <td><code>CreateChequeBookOrderRequestTest.kt</code></td>
-<td>✅</td>
-<td>—</td>
+<td>2s 549ms</td>
 </tr>
-</tbody>
-</table>
-<hr />
-<h2>Code Exists — Not Running on Any Platform</h2>
-<table>
-<thead>
 <tr>
-<th>Test Key</th>
-<th>TTM Summary</th>
-<th>Class</th>
-<th>Blocker/Notes</th>
+<td>4</td>
+<td>OZ-87592</td>
+<td>Ordering while in transit</td>
+<td><code>OrderChequebookWhileInTransitTest.kt</code></td>
+<td>2s 533ms</td>
 </tr>
-</thead>
-<tbody>
 <tr>
+<td>5</td>
 <td>OZ-78941</td>
 <td>Depositing a new check</td>
 <td><code>DepositChequeTest.kt</code></td>
-<td>Has <code>CAMERA_IMAGE_INJECTION</code> tag — may need special CI setup</td>
+<td>4m 48s</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2>No Code At All (in Confluence table)</h2>
+<h2>TTM vs Code Alignment</h2>
+<h3>✅ OZ-78937 — Order a bank check</h3>
+<p><strong>TTM (3 steps):</strong> Login → Navigate to Cheques → Click "ציק בנקאי" → redirects to chat<br />
+<strong>Code does:</strong> Exactly the same — navigates and verifies ChatInnerPage opens<br />
+<strong>Status:</strong> ✅ Perfect alignment</p>
+<hr />
+<h3>✅ OZ-87592 — Ordering checkbook while previous in transit</h3>
+<p><strong>TTM (1 step):</strong> Repeat ordering flow → popup appears saying checkbook already in delivery → close returns to lobby<br />
+<strong>Code does:</strong> Places first order (full flow) → places second order → verifies error popup title &amp; subtitle → dismisses → verifies lobby status<br />
+<strong>Status:</strong> ✅ Good alignment — code does MORE than TTM (includes setup)</p>
+<hr />
+<h3>✅ OZ-78919 — Order a new checkbook</h3>
+<p><strong>TTM (14 steps):</strong> Login → Navigate → Order → Back → Order again → Legal terms → Share → Back → Verify address → Verify shipping → Validate fields → Confirm → Close → Verify in lobby<br />
+<strong>Code does:</strong> Login → Navigate → Order → Legal terms → PDF verification → Back → Set apartment &amp; entrance → Set address → Confirm → Verify bottom sheet → Confirm order → Also tests "order again" error<br />
+<strong>Status:</strong> ✅ Good sanity coverage — covers core happy path (steps 1-3, 6, 8, 11-14). Skips edge cases (back nav, share, shipping address) which are fine for sanity.</p>
+<hr />
+<h3>⚠️ OZ-95707 — Activation Of New ChequeBook</h3>
+<p><strong>TTM:</strong> ⚠️ Empty (1 step, no description)<br />
+<strong>Code does:</strong> Login → Navigate → Verify chequebook status = "activation ready" → Click activation → Verify popup title &amp; subtitle → Click cancel → Verify status unchanged<br />
+<strong>Status:</strong> ⚠️ TTM needs steps written. Code is well-implemented.<br />
+<strong>Issue:</strong> <code>TTM:</code> TTM has no steps — needs to be documented to match what the code tests.</p>
+<hr />
+<h3>🟡 OZ-78941 — Depositing a new check</h3>
+<p><strong>TTM (13 steps):</strong> Login → Navigate → Deposit → Back → Deposit again → Legal terms → Share → Back → Enter amount → Scan front → Scan back → Confirm → Success screen<br />
+<strong>Code does:</strong> Login → Navigate → Click deposit → Set amount → Submit → Add permission (camera injection)<br />
+<strong>Status:</strong> 🟡 Partial coverage for sanity  </p>
+<p><strong>What's covered:</strong> Steps 1-3, 9-12 (core deposit flow)<br />
+<strong>What's skipped (OK for sanity):</strong> Back navigation (4-5), Legal terms (6-8)<br />
+<strong>What's missing (notable):</strong> Step 13 — no verification of success confirmation screen after deposit  </p>
+<p><strong>Issue:</strong> <code>Description:</code> Code doesn't verify the final success/confirmation screen. The test deposits but doesn't assert the outcome is successful beyond camera permission.</p>
+<hr />
+<h2>No Code — Not Automated (3 tests)</h2>
 <table>
 <thead>
 <tr>
 <th>Test Key</th>
 <th>TTM Summary</th>
-<th>In Confluence?</th>
 <th>Notes</th>
 </tr>
 </thead>
@@ -275,167 +286,46 @@
 <tr>
 <td>OZ-87594</td>
 <td>Deposit check &gt; 100K shekels</td>
-<td>No checkmarks</td>
-<td>Correct — no code exists</td>
+<td>Redirects to chat — similar to OZ-78937 pattern</td>
 </tr>
 <tr>
 <td>OZ-79047</td>
 <td>Deposit previously cashed check</td>
-<td>No checkmarks</td>
-<td>Correct — no code exists</td>
+<td>Requires pre-cashed cheque setup — complex</td>
 </tr>
 <tr>
 <td>OZ-78939</td>
 <td>Cancel order a new checkbook</td>
-<td>No checkmarks</td>
-<td>Correct — no code exists</td>
+<td>Navigate to ordered chequebook → cancel via chat</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2>TTM Tests NOT in Confluence Sanity Table (16 tests)</h2>
-<p>These tests exist in TTM but are NOT listed in the Confluence sanity table:</p>
-<h3>Backend Tests (6)</h3>
+<h2>TTM Tests NOT in Sanity (16 tests — Excluded by Decision)</h2>
+<p><strong>Decision:</strong> These stay out of the sanity automation scope.</p>
 <table>
 <thead>
 <tr>
-<th>Test Key</th>
-<th>Summary</th>
-<th>Status</th>
+<th>Group</th>
+<th>Count</th>
+<th>Reason for Exclusion</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>OZ-90141</td>
-<td>Logging validation</td>
-<td>Done</td>
+<td>Backend API tests (GraphQL)</td>
+<td>6</td>
+<td>Not mobile UI — backend only</td>
 </tr>
 <tr>
-<td>OZ-90140</td>
-<td>Boundary date (exactly 12 months ago)</td>
-<td>Done</td>
+<td>Address field validation</td>
+<td>9</td>
+<td>Edge cases — OZ-78919 already covers happy path</td>
 </tr>
 <tr>
-<td>OZ-90139</td>
-<td>Missing or null portfolioId</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>OZ-90138</td>
-<td>Invalid or non-existing portfolioId</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>OZ-90137</td>
-<td>No returned checks in last 12 months</td>
-<td>Done</td>
-</tr>
-<tr>
-<td>OZ-90136</td>
-<td>Happy Path: Valid portfolioId with existing data</td>
-<td>Done</td>
-</tr>
-</tbody>
-</table>
-<h3>Address Validation Tests (9)</h3>
-<table>
-<thead>
-<tr>
-<th>Test Key</th>
-<th>Summary</th>
-<th>Status</th>
-<th>Type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>OZ-82843</td>
-<td>Long text into Entrance (&gt;20 chars)</td>
-<td>Pending PRD</td>
-<td>NEGATIVE</td>
-</tr>
-<tr>
-<td>OZ-82842</td>
-<td>Long text into Apartment (&gt;20 chars)</td>
-<td>Pending PRD</td>
-<td>NEGATIVE</td>
-</tr>
-<tr>
-<td>OZ-82841</td>
-<td>Entrance = 8 characters</td>
-<td>Pending PRD</td>
-<td>NEGATIVE</td>
-</tr>
-<tr>
-<td>OZ-82838</td>
-<td>Apartment = 5 characters</td>
-<td>Pending PRD</td>
-<td>NEGATIVE</td>
-</tr>
-<tr>
-<td>OZ-82837</td>
-<td>Entrance = 6 chars, Apartment empty</td>
-<td>Pending PRD</td>
-<td>POSITIVE</td>
-</tr>
-<tr>
-<td>OZ-82836</td>
-<td>Apartment = 3 chars, Entrance empty</td>
-<td>Done</td>
-<td>POSITIVE</td>
-</tr>
-<tr>
-<td>OZ-82835</td>
-<td>Both fields empty</td>
-<td>Done</td>
-<td>POSITIVE</td>
-</tr>
-<tr>
-<td>OZ-82834</td>
-<td>Entrance = 7 characters</td>
-<td>Done</td>
-<td>POSITIVE</td>
-</tr>
-<tr>
-<td>OZ-82825</td>
-<td>Apartment = 4 characters</td>
-<td>Done</td>
-<td>POSITIVE</td>
-</tr>
-</tbody>
-</table>
-<h3>Other (1)</h3>
-<table>
-<thead>
-<tr>
-<th>Test Key</th>
-<th>Summary</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>OZ-80589</td>
-<td>Deposit Cheque That REQUIRES Banker Approval</td>
-<td>Pending PRD</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2>Confluence Changes Needed</h2>
-<table>
-<thead>
-<tr>
-<th>Action</th>
-<th>Ticket</th>
-<th>What to Fix</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>🔴 <strong>Add Automated ✅</strong></td>
-<td>OZ-87592</td>
-<td>Code exists and is running — missing "Automated" checkmark</td>
+<td>Banker approval flow</td>
+<td>1</td>
+<td>Cross-system (mobile + BANCS + BO)</td>
 </tr>
 </tbody>
 </table>
@@ -449,8 +339,8 @@
 <th>Automated</th>
 <th>Android</th>
 <th>iOS</th>
-<th>Code Exists</th>
-<th>Status</th>
+<th>TTM Alignment</th>
+<th>Key Issue</th>
 </tr>
 </thead>
 <tbody>
@@ -460,53 +350,26 @@
 <td>✅</td>
 <td>✅</td>
 <td>—</td>
-<td>✅ <code>ChequeBookActivationTest.kt</code></td>
-<td>✅ Correct</td>
-</tr>
-<tr>
-<td>OZ-87594</td>
-<td>Deposit &gt; 100K</td>
-<td>—</td>
-<td>—</td>
-<td>—</td>
-<td>❌ No code</td>
-<td>✅ Correct (no checkmarks)</td>
+<td>⚠️</td>
+<td>TTM: Empty steps — needs documentation</td>
 </tr>
 <tr>
 <td>OZ-87592</td>
 <td>Ordering while in transit</td>
+<td>✅</td>
+<td>✅</td>
 <td>—</td>
 <td>✅</td>
 <td>—</td>
-<td>✅ <code>OrderChequebookWhileInTransitTest.kt</code></td>
-<td>🔴 Missing "Automated ✅"</td>
-</tr>
-<tr>
-<td>OZ-79047</td>
-<td>Previously cashed check</td>
-<td>—</td>
-<td>—</td>
-<td>—</td>
-<td>❌ No code</td>
-<td>✅ Correct</td>
 </tr>
 <tr>
 <td>OZ-78941</td>
 <td>Depositing a new check</td>
 <td>✅</td>
+<td>✅ (running!)</td>
 <td>—</td>
-<td>—</td>
-<td>✅ <code>DepositChequeTest.kt</code></td>
-<td>⚠️ Code exists, not running (camera?)</td>
-</tr>
-<tr>
-<td>OZ-78939</td>
-<td>Cancel order checkbook</td>
-<td>—</td>
-<td>—</td>
-<td>—</td>
-<td>❌ No code</td>
-<td>✅ Correct</td>
+<td>🟡</td>
+<td>Description: Missing success verification</td>
 </tr>
 <tr>
 <td>OZ-78937</td>
@@ -514,8 +377,8 @@
 <td>✅</td>
 <td>✅</td>
 <td>—</td>
-<td>✅ <code>ChequesLobbyNavigateToChatTest.kt</code></td>
-<td>✅ Correct</td>
+<td>✅</td>
+<td>—</td>
 </tr>
 <tr>
 <td>OZ-78919</td>
@@ -523,28 +386,77 @@
 <td>✅</td>
 <td>✅</td>
 <td>—</td>
-<td>✅ <code>CreateChequeBookOrderRequestTest.kt</code></td>
-<td>✅ Correct</td>
+<td>✅</td>
+<td>—</td>
+</tr>
+<tr>
+<td>OZ-87594</td>
+<td>Deposit &gt; 100K</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>N/A</td>
+<td>No code — not in scope</td>
+</tr>
+<tr>
+<td>OZ-79047</td>
+<td>Previously cashed check</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>N/A</td>
+<td>No code — not in scope</td>
+</tr>
+<tr>
+<td>OZ-78939</td>
+<td>Cancel order checkbook</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>N/A</td>
+<td>No code — not in scope</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2>Key Questions for Discussion</h2>
-<ol>
-<li><strong>OZ-87592:</strong> Should we add the "Automated ✅" checkmark in Confluence? (Code exists and runs)</li>
-<li><strong>OZ-78941:</strong> Why isn't the deposit cheque test running on Android? Is it the camera injection requirement?</li>
-<li><strong>Backend tests (6):</strong> Should any of these be in the sanity table? They're all "Done" status.</li>
-<li><strong>Address validation tests (9):</strong> Are these edge cases that belong in regression only, not sanity?</li>
-<li><strong>Missing tests (3):</strong> OZ-87594, OZ-79047, OZ-78939 — are these candidates for automation?</li>
-</ol>
+<h2>Remaining Action Items</h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Action</th>
+<th>Ticket</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0</td>
+<td>Add Android ✅ to Confluence for OZ-78941</td>
+<td>OZ-78941</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Write TTM steps for OZ-95707 (currently empty)</td>
+<td>OZ-95707</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Consider adding success verification to OZ-78941 deposit test</td>
+<td>OZ-78941</td>
+</tr>
+</tbody>
+</table>
 <hr />
-<h2>Next Steps</h2>
-<ol>
-<li>Fix Confluence: Add "Automated ✅" to OZ-87592</li>
-<li>Decide: Should OZ-78941 (deposit cheque) be enabled for Android CI?</li>
-<li>Decide: Which of the 16 non-sanity tests should be added to the Confluence table?</li>
-<li>Decide: Which of the 3 no-code tests should be automated next?</li>
-</ol>
+<h2>Domain Status</h2>
+<p><strong>Can we mark Cheques as "Fully Automated"?</strong></p>
+<ul>
+<li>✅ 5/5 automated tests are running and passing on Android</li>
+<li>✅ 3 non-automated tests are intentionally excluded (not sanity scope)</li>
+<li>⚠️ 1 Confluence fix needed (OZ-78941 Android ✅)</li>
+<li>⚠️ 1 TTM needs steps (OZ-95707)</li>
+<li>🟡 1 test could use better assertions (OZ-78941)</li>
+</ul>
+<p><strong>Verdict:</strong> Almost ready. Fix Confluence + write TTM steps for OZ-95707, then domain is complete.</p>
 <hr />
 <p><strong>Report Generated:</strong> May 14, 2026<br />
 <strong>Prepared By:</strong> Automation Analysis<br />
