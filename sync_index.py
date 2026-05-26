@@ -244,7 +244,7 @@ def main() -> int:
         reverse=True,
     )
     production_issues.sort(key=lambda x: x[1].casefold())
-    automation_alignment.sort(key=lambda x: x[0].casefold())
+    automation_alignment.sort(key=lambda x: (0 if "automation-knowledge-base" in x[1].casefold() else 1, x[0].casefold()))
     guides.sort(key=lambda x: x[0].casefold())
     rest.sort(key=lambda x: x[0].casefold())
 
