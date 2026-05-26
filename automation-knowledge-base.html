@@ -442,6 +442,10 @@
       <p>
         <code>AUTOMATION_KNOWLEDGE.md</code> lives in the <code>mobile-tests</code> repo alongside the code. A CI check runs on every PR that touches the config source files — it reads the actual Kotlin code, extracts all environment variable names and <code>RunType</code> values, and fails the PR if any are missing from the doc.
       </p>
+      <p style="margin-top:14px;">
+        <strong>Run it yourself anytime</strong> — from the repo root:
+      </p>
+      <pre style="background:#0f172a;color:#e0fdf4;padding:10px 14px;border-radius:6px;font-size:0.82rem;margin-top:6px;overflow-x:auto;"><code style="background:transparent;color:inherit;padding:0;">python3 scripts/validate_knowledge_doc.py</code></pre>
       <p>
         This was set up after discovering that the original Confluence page had multiple stale facts — wrong variable names, missing enum values, and a hardcoded environment name that was actually a variable. The lesson: <strong>docs that live in the repo get reviewed like code.</strong>
       </p>
