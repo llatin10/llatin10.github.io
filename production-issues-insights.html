@@ -133,6 +133,62 @@
         .md-content p { margin: 12px 0; }
         .md-content pre { margin: 16px 0; }
         .md-content pre code { background: transparent !important; border: none !important; padding: 0 !important; }
+
+        /* Wider container for reports with wide tables (only when markdown content present) */
+        body:has(.md-content) .container { max-width: 1100px; }
+
+        /* Severity & status badges (inline spans) */
+        .md-content .badge {
+            display: inline-block; padding: 2px 8px; border-radius: 4px;
+            font-size: 0.78em; font-weight: 600; line-height: 1.4;
+            margin: 0 2px; white-space: nowrap;
+        }
+        .md-content .sev-critical { background: #fee2e2; color: #991b1b; }
+        .md-content .sev-high     { background: #fed7aa; color: #9a3412; }
+        .md-content .sev-medium   { background: #fef3c7; color: #854d0e; }
+        .md-content .sev-low      { background: #d1fae5; color: #065f46; }
+        .md-content .sev-none     { background: #e7e5e0; color: #57534e; }
+        .md-content .st-open              { background: #fef3c7; color: #854d0e; }
+        .md-content .st-reopened          { background: #fee2e2; color: #991b1b; }
+        .md-content .st-codereview        { background: #dbeafe; color: #1e40af; }
+        .md-content .st-possiblerejection { background: #fce7f3; color: #9d174d; }
+        .md-content .st-default           { background: #f5f5f4; color: #44403c; }
+        .md-content .stale-flag { color: #b91c1c; font-weight: 600; }
+        .md-content .due-flag   { color: #b45309; font-weight: 600; }
+        .md-content .reopens-hi { color: #b91c1c; font-weight: 700; }
+
+        /* CSS bar chart */
+        .md-content .bar-chart { margin: 12px 0 24px; }
+        .md-content .bar-row {
+            display: grid; grid-template-columns: 180px 1fr 60px;
+            gap: 12px; align-items: center; margin: 6px 0; font-size: 0.9rem;
+        }
+        .md-content .bar-track {
+            background: #f5f5f4; height: 16px; border-radius: 4px; overflow: hidden;
+            border: 1px solid #e7e5e0;
+        }
+        .md-content .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #14b8a6 0%, #0d9488 100%);
+            border-radius: 3px;
+        }
+        .md-content .bar-fill.crit { background: linear-gradient(90deg, #ef4444 0%, #b91c1c 100%); }
+        .md-content .bar-fill.high { background: linear-gradient(90deg, #f97316 0%, #c2410c 100%); }
+        .md-content .bar-fill.med  { background: linear-gradient(90deg, #eab308 0%, #a16207 100%); }
+        .md-content .bar-fill.low  { background: linear-gradient(90deg, #22c55e 0%, #15803d 100%); }
+        .md-content .bar-fill.reopen { background: linear-gradient(90deg, #f472b6 0%, #be185d 100%); }
+        .md-content .bar-value {
+            text-align: right; font-variant-numeric: tabular-nums; color: #57534e;
+        }
+
+        /* Hebrew section: soft highlight so audience switch is obvious */
+        .md-content .md-rtl {
+            background: #fefce8;
+            padding: 18px 22px;
+            border-radius: 10px;
+            border: 1px solid #fde68a;
+            margin: 16px 0 24px;
+        }
     
     </style>
 </head>
@@ -149,19 +205,23 @@
 <h2>How to read this report</h2>
 <ul>
 <li><strong>Age (days):</strong> days from <strong>Created</strong> to report date.  </li>
-<li><strong>Stale (days):</strong> days since <strong>Updated</strong>.  </li>
-<li><strong>Ranked shortlist</strong> is heuristic (severity, status, age); adjust in meetings as needed.  </li>
-<li><strong>Per-issue detail:</strong> bullets with a derived <strong>customer-impact</strong> summary and labeled <strong>Links</strong>; not the raw Jira paste.</li>
+<li><strong>Stale (days):</strong> days since <strong>Updated</strong> (red flag if &gt; 30).  </li>
+<li><strong>Reopens:</strong> value of the <em>number of times reopened</em> custom field.  </li>
+<li><strong>Ranked shortlist</strong> is heuristic (severity → status → reopens → age); adjust in meetings as needed.  </li>
+<li><strong>Per-issue detail:</strong> bullets with derived <strong>customer-impact</strong> summary, <strong>due date</strong>, <strong>reopen history</strong>, <strong>workaround</strong>, and labeled <strong>Links</strong> — not a raw Jira paste.</li>
 </ul>
 <hr />
 <h2>Changes since last export</h2>
-<p><em>Compared to snapshot from </em><em>2026-05-05</em><em> (16 keys).</em></p>
+<p><em>Compared to snapshot from </em><em>2026-05-26</em><em> (12 keys).</em></p>
 <ul>
 <li>
-<p><strong>Added (1):</strong> OZ-102855</p>
+<p><strong>Added:</strong> none</p>
 </li>
 <li>
-<p><strong>Removed (5):</strong> OZ-100089, OZ-81437, OZ-86210, OZ-92717, OZ-96079</p>
+<p><strong>Removed:</strong> none</p>
+</li>
+<li>
+<p><strong>Status changed:</strong> none</p>
 </li>
 </ul>
 <hr />
@@ -198,85 +258,63 @@
 <td>Most recently updated</td>
 <td style="text-align: right;">OZ-81823 (stale 0 d)</td>
 </tr>
+<tr>
+<td>Stale &gt; 30 days</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td>Currently Reopened</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td>Total reopen events (all-time)</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>Overdue (past Due date)</td>
+<td style="text-align: right;">0</td>
+</tr>
 </tbody>
 </table>
 <h3>By status</h3>
-<table>
-<thead>
-<tr>
-<th>Status</th>
-<th style="text-align: right;">Count</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Open</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr>
-<td>Reopened</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr>
-<td>Code Review</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr>
-<td>In Dev</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr>
-<td>Acceptance</td>
-<td style="text-align: right;">1</td>
-</tr>
-</tbody>
-</table>
+<div class="bar-chart">
+<div class="bar-row"><span class="bar-label">Open</span><div class="bar-track"><div class="bar-fill" style="width: 100%;"></div></div><span class="bar-value">7</span></div>
+<div class="bar-row"><span class="bar-label">Reopened</span><div class="bar-track"><div class="bar-fill" style="width: 29%;"></div></div><span class="bar-value">2</span></div>
+<div class="bar-row"><span class="bar-label">Code Review</span><div class="bar-track"><div class="bar-fill" style="width: 14%;"></div></div><span class="bar-value">1</span></div>
+<div class="bar-row"><span class="bar-label">In Dev</span><div class="bar-track"><div class="bar-fill" style="width: 14%;"></div></div><span class="bar-value">1</span></div>
+<div class="bar-row"><span class="bar-label">Acceptance</span><div class="bar-track"><div class="bar-fill" style="width: 14%;"></div></div><span class="bar-value">1</span></div>
+</div>
+
 <h3>By Jira Priority</h3>
-<table>
-<thead>
-<tr>
-<th>Priority</th>
-<th style="text-align: right;">Count</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Medium</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr>
-<td>Low</td>
-<td style="text-align: right;">2</td>
-</tr>
-</tbody>
-</table>
+<div class="bar-chart">
+<div class="bar-row"><span class="bar-label">Medium</span><div class="bar-track"><div class="bar-fill" style="width: 100%;"></div></div><span class="bar-value">10</span></div>
+<div class="bar-row"><span class="bar-label">Low</span><div class="bar-track"><div class="bar-fill" style="width: 20%;"></div></div><span class="bar-value">2</span></div>
+</div>
+
 <h3>By Severity (custom field)</h3>
-<table>
-<thead>
-<tr>
-<th>Severity</th>
-<th style="text-align: right;">Count</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Medium</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr>
-<td>Low</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr>
-<td>Critical</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr>
-<td>High</td>
-<td style="text-align: right;">1</td>
-</tr>
-</tbody>
-</table>
+<div class="bar-chart">
+<div class="bar-row"><span class="bar-label">Medium</span><div class="bar-track"><div class="bar-fill med" style="width: 100%;"></div></div><span class="bar-value">6</span></div>
+<div class="bar-row"><span class="bar-label">Low</span><div class="bar-track"><div class="bar-fill low" style="width: 50%;"></div></div><span class="bar-value">3</span></div>
+<div class="bar-row"><span class="bar-label">Critical</span><div class="bar-track"><div class="bar-fill crit" style="width: 33%;"></div></div><span class="bar-value">2</span></div>
+<div class="bar-row"><span class="bar-label">High</span><div class="bar-track"><div class="bar-fill high" style="width: 17%;"></div></div><span class="bar-value">1</span></div>
+</div>
+
+<h3>Age distribution</h3>
+<div class="bar-chart">
+<div class="bar-row"><span class="bar-label">91–180 d</span><div class="bar-track"><div class="bar-fill" style="width: 100%;"></div></div><span class="bar-value">5</span></div>
+<div class="bar-row"><span class="bar-label">180+ d</span><div class="bar-track"><div class="bar-fill" style="width: 80%;"></div></div><span class="bar-value">4</span></div>
+<div class="bar-row"><span class="bar-label">61–90 d</span><div class="bar-track"><div class="bar-fill" style="width: 40%;"></div></div><span class="bar-value">2</span></div>
+<div class="bar-row"><span class="bar-label">0–30 d</span><div class="bar-track"><div class="bar-fill" style="width: 20%;"></div></div><span class="bar-value">1</span></div>
+</div>
+
+<h3>Load per assignee</h3>
+<div class="bar-chart">
+<div class="bar-row"><span class="bar-label">Shai Herman</span><div class="bar-track"><div class="bar-fill" style="width: 100%;"></div></div><span class="bar-value">8</span></div>
+<div class="bar-row"><span class="bar-label">Tomer Cohen</span><div class="bar-track"><div class="bar-fill" style="width: 25%;"></div></div><span class="bar-value">2</span></div>
+<div class="bar-row"><span class="bar-label">Nadav Ben Itzhak</span><div class="bar-track"><div class="bar-fill" style="width: 12%;"></div></div><span class="bar-value">1</span></div>
+<div class="bar-row"><span class="bar-label">TechOps</span><div class="bar-track"><div class="bar-fill" style="width: 12%;"></div></div><span class="bar-value">1</span></div>
+</div>
+
 <h3>Themes (keyword grouping)</h3>
 <ul>
 <li><strong>Savings &amp; deposits:</strong> OZ-102855, OZ-81823, OZ-86631, OZ-92343, OZ-93048, OZ-94140, OZ-98164.</li>
@@ -288,18 +326,18 @@
 <h2>What to discuss first — ranked shortlist</h2>
 <p>Strategic order (onboarding → crash → savings data trust → force update; then payments/lending and the rest by severity):</p>
 <ol>
-<li><strong>OZ-98164</strong> — App Crash During Check Deposit · <em>Medium</em> · <strong>Open</strong></li>
-<li><strong>OZ-92343</strong> — Saving transactions list does not show the full data · <em>Critical</em> · <strong>Open</strong></li>
-<li><strong>OZ-80217</strong> — [PROD] PR2505157806 Force update is not always working · <em>Critical</em> · <strong>Reopened</strong></li>
-<li><strong>OZ-92886</strong> — LOANS - Problem with navigation ask for consent few times · <em>High</em> · <strong>Open</strong></li>
-<li><strong>OZ-86631</strong> — iOS - No validation of illegal characters when saving beneficiaries' details · <em>Low</em> · <strong>Acceptance</strong></li>
-<li><strong>OZ-81823</strong> — Savings - monthly &amp; daily savings - the amount shown in the savings lobby doesn't include the accrued interest · <em>Medium</em> · <strong>Reopened</strong></li>
-<li><strong>OZ-75774</strong> — Full login every app version update · <em>Medium</em> · <strong>Code Review</strong></li>
-<li><strong>OZ-93048</strong> — Cheque deposit front image saves as horizontal instead of vertical · <em>Medium</em> · <strong>Open</strong></li>
-<li><strong>OZ-97046</strong> — Incorrect First Name Displayed as “LABEL” on App Launch · <em>Medium</em> · <strong>Open</strong></li>
-<li><strong>OZ-97411</strong> — "Larger Text" setting makes the Dashboard page in app to be cut · <em>Medium</em> · <strong>Open</strong></li>
-<li><strong>OZ-102855</strong> — Pop up false display · <em>Low</em> · <strong>Open</strong></li>
-<li><strong>OZ-94140</strong> — Withdrawal and Deposit buttons are missing in Daily deposit · <em>Low</em> · <strong>In Dev</strong></li>
+<li><strong>OZ-98164</strong> — App Crash During Check Deposit · <span class="badge sev-medium">Medium</span> · <span class="badge st-open">Open</span></li>
+<li><strong>OZ-92343</strong> — Saving transactions list does not show the full data · <span class="badge sev-critical">Critical</span> · <span class="badge st-open">Open</span></li>
+<li><strong>OZ-80217</strong> — [PROD] PR2505157806 Force update is not always working · <span class="badge sev-critical">Critical</span> · <span class="badge st-reopened">Reopened</span></li>
+<li><strong>OZ-92886</strong> — LOANS - Problem with navigation ask for consent few times · <span class="badge sev-high">High</span> · <span class="badge st-open">Open</span></li>
+<li><strong>OZ-86631</strong> — iOS - No validation of illegal characters when saving beneficiaries' details · <span class="badge sev-low">Low</span> · <span class="badge st-default">Acceptance</span></li>
+<li><strong>OZ-81823</strong> — Savings - monthly &amp; daily savings - the amount shown in the savings lobby doesn't include the accrued interest · <span class="badge sev-medium">Medium</span> · <span class="badge st-reopened">Reopened</span></li>
+<li><strong>OZ-75774</strong> — Full login every app version update · <span class="badge sev-medium">Medium</span> · <span class="badge st-codereview">Code Review</span></li>
+<li><strong>OZ-93048</strong> — Cheque deposit front image saves as horizontal instead of vertical · <span class="badge sev-medium">Medium</span> · <span class="badge st-open">Open</span></li>
+<li><strong>OZ-97046</strong> — Incorrect First Name Displayed as “LABEL” on App Launch · <span class="badge sev-medium">Medium</span> · <span class="badge st-open">Open</span></li>
+<li><strong>OZ-97411</strong> — "Larger Text" setting makes the Dashboard page in app to be cut · <span class="badge sev-medium">Medium</span> · <span class="badge st-open">Open</span></li>
+<li><strong>OZ-102855</strong> — Pop up false display · <span class="badge sev-low">Low</span> · <span class="badge st-open">Open</span></li>
+<li><strong>OZ-94140</strong> — Withdrawal and Deposit buttons are missing in Daily deposit · <span class="badge sev-low">Low</span> · <span class="badge st-default">In Dev</span></li>
 </ol>
 <hr />
 <h2>Master table</h2>
@@ -309,6 +347,8 @@
 <th>Key</th>
 <th style="text-align: right;">Age</th>
 <th style="text-align: right;">Stale</th>
+<th style="text-align: right;">Reopens</th>
+<th>Due</th>
 <th>Status</th>
 <th>Prio</th>
 <th>Severity</th>
@@ -321,9 +361,11 @@
 <td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-102855">OZ-102855</a></td>
 <td style="text-align: right;">15</td>
 <td style="text-align: right;">15</td>
-<td>Open</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td><span class="badge st-open">Open</span></td>
 <td>Medium</td>
-<td>Low</td>
+<td><span class="badge sev-low">Low</span></td>
 <td>Shai Herman</td>
 <td>Pop up false display</td>
 </tr>
@@ -331,9 +373,11 @@
 <td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-75774">OZ-75774</a></td>
 <td style="text-align: right;">450</td>
 <td style="text-align: right;">1</td>
-<td>Code Review</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td><span class="badge st-codereview">Code Review</span></td>
 <td>Medium</td>
-<td>Medium</td>
+<td><span class="badge sev-medium">Medium</span></td>
 <td>Shai Herman</td>
 <td>Full login every app version update</td>
 </tr>
@@ -341,9 +385,11 @@
 <td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-80217">OZ-80217</a></td>
 <td style="text-align: right;">362</td>
 <td style="text-align: right;">22</td>
-<td>Reopened</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td><span class="badge st-reopened">Reopened</span></td>
 <td>Medium</td>
-<td>Critical</td>
+<td><span class="badge sev-critical">Critical</span></td>
 <td>Shai Herman</td>
 <td>[PROD] PR2505157806 Force update is not always working</td>
 </tr>
@@ -351,9 +397,11 @@
 <td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-81823">OZ-81823</a></td>
 <td style="text-align: right;">324</td>
 <td style="text-align: right;">0</td>
-<td>Reopened</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td><span class="badge st-reopened">Reopened</span></td>
 <td>Medium</td>
-<td>Medium</td>
+<td><span class="badge sev-medium">Medium</span></td>
 <td>Nadav Ben Itzhak</td>
 <td>Savings - monthly &amp; daily savings - the amount shown in the savings lobby doesn'</td>
 </tr>
@@ -361,19 +409,23 @@
 <td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-86631">OZ-86631</a></td>
 <td style="text-align: right;">233</td>
 <td style="text-align: right;">0</td>
-<td>Acceptance</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td><span class="badge st-default">Acceptance</span></td>
 <td>Low</td>
-<td>Low</td>
+<td><span class="badge sev-low">Low</span></td>
 <td>TechOps</td>
 <td>iOS - No validation of illegal characters when saving beneficiaries' details</td>
 </tr>
 <tr>
 <td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-92343">OZ-92343</a></td>
 <td style="text-align: right;">147</td>
-<td style="text-align: right;">106</td>
-<td>Open</td>
+<td style="text-align: right;"><span class="stale-flag">106</span></td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td><span class="badge st-open">Open</span></td>
 <td>Medium</td>
-<td>Critical</td>
+<td><span class="badge sev-critical">Critical</span></td>
 <td>Shai Herman</td>
 <td>Saving transactions list does not show the full data</td>
 </tr>
@@ -381,9 +433,11 @@
 <td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-92886">OZ-92886</a></td>
 <td style="text-align: right;">139</td>
 <td style="text-align: right;">28</td>
-<td>Open</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td><span class="badge st-open">Open</span></td>
 <td>Medium</td>
-<td>High</td>
+<td><span class="badge sev-high">High</span></td>
 <td>Shai Herman</td>
 <td>LOANS - Problem with navigation ask for consent few times</td>
 </tr>
@@ -391,9 +445,11 @@
 <td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-93048">OZ-93048</a></td>
 <td style="text-align: right;">135</td>
 <td style="text-align: right;">22</td>
-<td>Open</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td><span class="badge st-open">Open</span></td>
 <td>Medium</td>
-<td>Medium</td>
+<td><span class="badge sev-medium">Medium</span></td>
 <td>Tomer Cohen</td>
 <td>Cheque deposit front image saves as horizontal instead of vertical</td>
 </tr>
@@ -401,9 +457,11 @@
 <td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-94140">OZ-94140</a></td>
 <td style="text-align: right;">126</td>
 <td style="text-align: right;">1</td>
-<td>In Dev</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td><span class="badge st-default">In Dev</span></td>
 <td>Low</td>
-<td>Low</td>
+<td><span class="badge sev-low">Low</span></td>
 <td>Tomer Cohen</td>
 <td>Withdrawal and Deposit buttons are missing in Daily deposit</td>
 </tr>
@@ -411,9 +469,11 @@
 <td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-97046">OZ-97046</a></td>
 <td style="text-align: right;">91</td>
 <td style="text-align: right;">28</td>
-<td>Open</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td><span class="badge st-open">Open</span></td>
 <td>Medium</td>
-<td>Medium</td>
+<td><span class="badge sev-medium">Medium</span></td>
 <td>Shai Herman</td>
 <td>Incorrect First Name Displayed as “LABEL” on App Launch</td>
 </tr>
@@ -421,9 +481,11 @@
 <td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-97411">OZ-97411</a></td>
 <td style="text-align: right;">88</td>
 <td style="text-align: right;">28</td>
-<td>Open</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td><span class="badge st-open">Open</span></td>
 <td>Medium</td>
-<td>Medium</td>
+<td><span class="badge sev-medium">Medium</span></td>
 <td>Shai Herman</td>
 <td>"Larger Text" setting makes the Dashboard page in app to be cut</td>
 </tr>
@@ -431,9 +493,11 @@
 <td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-98164">OZ-98164</a></td>
 <td style="text-align: right;">76</td>
 <td style="text-align: right;">22</td>
-<td>Open</td>
+<td style="text-align: right;">—</td>
+<td>—</td>
+<td><span class="badge st-open">Open</span></td>
 <td>Medium</td>
-<td>Medium</td>
+<td><span class="badge sev-medium">Medium</span></td>
 <td>Shai Herman</td>
 <td>App Crash During Check Deposit</td>
 </tr>
@@ -447,6 +511,7 @@
 <ul>
 <li><strong>Product / area:</strong> Services / Engagements / PopUp</li>
 <li><strong>Customer impact (summary):</strong> Pop up false display for user: [[id]| device: Samsung SM-A715F The pop-up is not displayed correctly in the app UI. As shown in the attached screenshot, the content layout is broken/cut off and the CTA button is partially hidden at the bottom of the screen</li>
+<li><strong>Labels:</strong> <code>Production</code></li>
 <li><strong>Links:</strong></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:174790">ITCC case</a></li>
 <li><a href="https://looker.prod.fdb.internal:9999/explore/ACCOUNTS/dim_portfolio_v?qid=7JA27dkKO2vESAKUPE7lby&amp;origin_space=349&amp;toggle=fil#drillmenu">External link 2</a></li>
@@ -458,6 +523,7 @@
 <ul>
 <li><strong>Product / area:</strong> Services / Identity Management / Full Login/Logout</li>
 <li><strong>Customer impact (summary):</strong> The customer complains that despite setting up biometric login for the app, every time a new version of the app is released, he is "logged out" (Full Logout) by the system and must go through the full login process again (Full Login - phone number &gt; OTP code &gt; email + password). The customer notes that he does not click "Logout" when exiting the app.</li>
+<li><strong>Labels:</strong> <code>Production</code></li>
 <li><strong>Links:</strong></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:154131">ITCC case</a></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/9a41fa93f5ac11ef81400e9ba910e253/replay/mobile?sessionStartTime=1740730713470&amp;source_node=0">Glassbox session</a></li>
@@ -468,6 +534,7 @@
 <ul>
 <li><strong>Product / area:</strong> Services / Account Management / Customer</li>
 <li><strong>Customer impact (summary):</strong> Force update is not always working, letting the users use a backdated application versions. We reproduced it with our TechOps testing phone (Android). Connected to 2.18 and were not asked to update. Userid - [id] device - Samsung SM-A127F Android 13</li>
+<li><strong>Labels:</strong> <code>Production</code></li>
 <li><strong>Links:</strong></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/b549b5103c6711f0b0b1eeeeeeeeeeee/replay/mobile?sessionStartTime=1748507656929&amp;source_node=0">Glassbox session</a></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:157805">ITCC case</a></li>
@@ -547,6 +614,7 @@
 </tbody>
 </table>
 <ul>
+<li><strong>Labels:</strong> <code>Production</code></li>
 <li><strong>Links:</strong></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:159939">ITCC case</a></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/e3ce7950564f11f08e73eeeeeeeeeeee/replay/mobile?sessionStartTime=1751356157285&amp;source_node=0">Glassbox session</a></li>
@@ -557,6 +625,7 @@
 <ul>
 <li><strong>Product / area:</strong> Services / Payments / Beneficiary</li>
 <li><strong>Customer impact (summary):</strong> iOS - No validation of illegal characters when saving beneficiaries' details # Create new masav transfer # Save the beneficiary name # Type the transfer amount # Paste the beneficiary's illegal account number (with dash / hyphen, etc) Details for example - bank 10, branch 638, account - 24390-48 # Mobile doesn't remove the illegal character [ | [^ScreenRecording_10-05-2025 02-48-32_1.MP4]</li>
+<li><strong>Labels:</strong> <code>Production</code></li>
 <li><strong>Links:</strong></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/67f0f700a1d011f08f43eeeeeeeeeeee/replay/mobile?sessionStartTime=1759657691760&amp;source_node=0">Glassbox session</a></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:164342">ITCC case</a></li>
@@ -567,6 +636,7 @@
 <ul>
 <li><strong>Product / area:</strong> Services / Savings / Daily Saving - Details</li>
 <li><strong>Customer impact (summary):</strong> The customer has an active Daily Savings account that was opened on 03/02/2025. In the mobile app, the customer can see transactions in the savings page only up to 05/10/2025. Time &amp; Date: 30/12/2025 User:[id]</li>
+<li><strong>Labels:</strong> <code>Production</code></li>
 <li><strong>Links:</strong></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:168549">ITCC case</a></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/b575f4c4e55611f086cd9e4053f2c226/replay/mobile?sessionStartTime=1767082101780&amp;source_node=0">Glassbox session</a></li>
@@ -576,6 +646,7 @@
 <p><strong>Age:</strong> 139 days · <strong>Stale:</strong> 28 · <strong>Status:</strong> Open · <strong>Severity:</strong> High</p>
 <ul>
 <li><strong>Customer impact (summary):</strong> LOANS - Problem with navigation ask for consent few times Adi Tor and Gal Nevo tried to take loans (IOS\ANDROID) we both on Beta but also non Beta customer faced it.</li>
+<li><strong>Labels:</strong> <code>Production</code></li>
 <li><strong>Links:</strong></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/236b1e4bebc611f086cd9e4053f2c226/replay/mobile?sessionStartTime=1767789667672&amp;source_node=0">Glassbox session</a></li>
 <li><strong>Full detail:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-92886">OZ-92886 in Jira</a></li>
@@ -585,6 +656,7 @@
 <ul>
 <li><strong>Product / area:</strong> Services / Cheques / Cheque Images</li>
 <li><strong>Customer impact (summary):</strong> The customer deposits a cheque via the mobile app, but the image of the front side of the cheque saves in the DMS (and Bancs) as horizontal instead vertical, so the BO department cancelling the deposit (they are not allowed to authorize cheque deposits as horizontal). The customer sent screen record of him trying the cheque deposit process.</li>
+<li><strong>Labels:</strong> <code>Production</code></li>
 <li><strong>Links:</strong></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:169280">ITCC case</a></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/b3b72730eeed11f0890feeeeeeeeeeee/replay/mobile?sessionStartTime=1768136513827&amp;source_node=0">Glassbox session</a></li>
@@ -680,6 +752,7 @@
 </tbody>
 </table>
 <ul>
+<li><strong>Labels:</strong> <code>Production</code></li>
 <li><strong>Links:</strong></li>
 <li><a href="https://itcc.digibank.co.il/ords/f?p=100:36::::36:P36_CASE_ID:169786">ITCC case</a></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/70c07820f4c211f087deeeeeeeeeeeee/replay/mobile?sessionStartTime=1768777640098&amp;source_node=0">Glassbox session</a></li>
@@ -689,12 +762,14 @@
 <p><strong>Age:</strong> 91 days · <strong>Stale:</strong> 28 · <strong>Status:</strong> Open · <strong>Severity:</strong> Medium</p>
 <ul>
 <li><strong>Customer impact (summary):</strong> The customer has been experiencing a login screen error for about a month. On the login page, “LABEL” is displayed instead of his first name, which should appear like it does for all customers. According to the customer, the issue occurs several times a day, but not consistently. When he logs out and logs back in, the problem usually resolves temporarily.</li>
+<li><strong>Labels:</strong> <code>Production</code></li>
 <li><strong>Full detail:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-97046">OZ-97046 in Jira</a></li>
 </ul>
 <h3>OZ-97411 — "Larger Text" setting makes the Dashboard page in app to be cut</h3>
 <p><strong>Age:</strong> 88 days · <strong>Stale:</strong> 28 · <strong>Status:</strong> Open · <strong>Severity:</strong> Medium</p>
 <ul>
 <li><strong>Customer impact (summary):</strong> The customer is using the setting “Larger Text” (in iOS) and when he enters the app, the Dashboard page is cut and he see only part of the information there (screenshot attached). how to get to this setting: Settings &gt; Displays &amp; Brightness &gt; Display Zoom</li>
+<li><strong>Labels:</strong> <code>Production</code></li>
 <li><strong>Links:</strong></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/d05e8b5013a311f1a3d6eeeeeeeeeeee/replay/mobile?sessionStartTime=1772172972165&amp;source_node=0">Glassbox session</a></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/dd9df14113b511f197557a98dd933551/replay/mobile?sessionStartTime=1772180724832&amp;source_node=0">Glassbox session</a></li>
@@ -704,6 +779,7 @@
 <p><strong>Age:</strong> 76 days · <strong>Stale:</strong> 22 · <strong>Status:</strong> Open · <strong>Severity:</strong> Medium</p>
 <ul>
 <li><strong>Customer impact (summary):</strong> The customer is attempting to deposit a check in the mobile app. He enters the Checks screen, but once he taps the screen to enter the amount, the app crashes.</li>
+<li><strong>Labels:</strong> <code>Production</code></li>
 <li><strong>Links:</strong></li>
 <li><a href="https://console.onezero.glassboxdigital.io/webinterface/webui/sessions/6c776d601d3e11f1a3d6eeeeeeeeeeee/replay/mobile?sessionStartTime=1773228937014&amp;source_node=0">Glassbox session</a></li>
 <li><strong>Full detail:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-98164">OZ-98164 in Jira</a></li>
@@ -712,7 +788,7 @@
 <div class="md-rtl" dir="rtl" lang="he">
 <h2>סיכום בעברית</h2>
 <p><strong>תאריך דוח:</strong> 26 במאי 2026 · <strong>12 כרטיסי Production</strong> בפרויקט <strong>OZ</strong>.</p>
-<p><strong>שינוי מהייצוא הקודם (2026-05-05):</strong> נוספו <strong>1</strong> כרטיסים: OZ-102855. הוסרו <strong>5</strong> כרטיסים: OZ-100089, OZ-81437, OZ-86210, OZ-92717, OZ-96079.</p>
+<p><strong>שינוי מהייצוא הקודם (2026-05-26):</strong> נוספו <strong>0</strong> כרטיסים: אין. הוסרו <strong>0</strong> כרטיסים: אין.</p>
 <p><strong>מצב כללי:</strong> רוב הכרטיסים ב-<strong>Open</strong> עם עדיפות Jira <strong>Medium</strong> (<strong>2</strong> כרטיסים <strong>Low</strong>); <strong>2</strong> כרטיסים <strong>הוחזרו לפתיחה (Reopened)</strong>. טווח ה"גיל" הוא כ־<strong>15 עד 450</strong> ימים מתאריך הפתיחה; חלק מהכרטיסים לא התעדכנו <strong>כ־22 ימים</strong> (3 כרטיסים) — כדאי לשאול בהנהלה האם הם "קפואים" או רק מחכים לתור בפיתוח · <strong>1</strong> כרטיס ב-<strong>Code Review</strong>.</p>
 <p><strong>נושאים חוזרים:</strong><br />
 (א) <strong>חיסכון</strong> — סכומים/ריבית לא עקביים, כפתורי הפקדה/משיכה חסרים, תצוגת חיסכון שנתי נחתכת. מזוהים: OZ-102855, OZ-81823, OZ-86631, OZ-92343, OZ-93048, OZ-94140, OZ-98164.<br />

@@ -13,6 +13,20 @@
     "OZ-97411",
     "OZ-98164"
   ],
+  "last_statuses": {
+    "OZ-102855": "Open",
+    "OZ-75774": "Code Review",
+    "OZ-80217": "Reopened",
+    "OZ-81823": "Reopened",
+    "OZ-86631": "Acceptance",
+    "OZ-92343": "Open",
+    "OZ-92886": "Open",
+    "OZ-93048": "Open",
+    "OZ-94140": "In Dev",
+    "OZ-97046": "Open",
+    "OZ-97411": "Open",
+    "OZ-98164": "Open"
+  },
   "last_run_date": "2026-05-26",
   "source_csv": "production issues liran (Jira) (1).csv"
 }
