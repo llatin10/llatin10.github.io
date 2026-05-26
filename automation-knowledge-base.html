@@ -333,15 +333,20 @@
     <div class="card wide">
       <div class="card-header">
         <span class="icon">⚠️</span>
-        <h2>The package prefix trap (Android)</h2>
+        <h2>Finding locators — priority order &amp; the package prefix trap</h2>
       </div>
-      <p>This is one of the most common causes of locator failures. The rule is simple but easy to forget:</p>
+      <p>Always try locators in this order — stop as soon as one works:</p>
+      <ol class="steps">
+        <li><strong>Resource ID</strong> — find the element's <code>@AndroidFindBy(id = ...)</code> or <code>@iOSXCUITFindBy(id = ...)</code> in <code>android-banking</code>. This is the most stable option.</li>
+        <li><strong>Lokalise key</strong> — if no resource ID exists, search for a <code>LokalizeFindBy</code> annotation on that screen. The ID is the <strong>i18n translation key</strong> (e.g. <code>savings_transactions_title</code>), not a resource ID. Use <code>@LokalizeFindBySet</code> when Android and iOS need separate keys.</li>
+        <li><strong>XPath</strong> — last resort only, using approved fallback patterns.</li>
+      </ol>
+      <p style="margin-top:14px;">When using resource IDs, watch out for the prefix trap:</p>
       <div class="pill-list" style="margin-bottom:12px;">
-        <span class="pill pill-teal">✅ @AndroidFindBy(id = "my_button") — no prefix needed</span>
+        <span class="pill pill-teal">✅ @AndroidFindBy(id = "my_button") — short ID, no prefix</span>
         <span class="pill pill-rose">❌ @AndroidFindBy(id = "il.co.firstdigitalbank.uat:id/my_button") — wrong!</span>
       </div>
-      <p>When writing <strong>XPath</strong> queries, it's the opposite — you <em>must</em> include the full package prefix in <code>@resource-id</code>.</p>
-      <div class="danger">🚨 <strong>Rule:</strong> <code>@AndroidFindBy(id = ...)</code> → short ID only. XPath <code>@resource-id</code> → full package prefix always.</div>
+      <div class="danger">🚨 XPath <code>@resource-id</code> is the <em>opposite</em> — it always needs the full package prefix: <code>il.co.firstdigitalbank.uat:id/my_button</code></div>
     </div>
 
   </div>
