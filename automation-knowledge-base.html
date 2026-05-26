@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mobile Automation Knowledge Base</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: #f0fdf9;
+      color: #1c1917;
+      line-height: 1.65;
+      padding: 32px 16px 64px;
+    }
+
+    /* ── Header ── */
+    .hero {
+      max-width: 760px;
+      margin: 0 auto 40px;
+      text-align: center;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: #ccfbf1;
+      color: #0f766e;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+    .hero p {
+      font-size: 1rem;
+      color: #57534e;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ── Grid ── */
+    .grid {
+      max-width: 760px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 1.5rem; }
+    }
+    .card.wide { grid-column: 1 / -1; }
+
+    /* ── Card ── */
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 24px 26px;
+      box-shadow: 0 2px 12px rgba(15,118,110,0.07);
+      border: 1px solid #e0f2f1;
+      transition: box-shadow 0.15s;
+    }
+    .card:hover { box-shadow: 0 6px 24px rgba(15,118,110,0.12); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .icon {
+      font-size: 1.5rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .card-header h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: #57534e;
+      margin-bottom: 10px;
+    }
+    .card p:last-child { margin-bottom: 0; }
+
+    /* ── Pill list ── */
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 10px;
+    }
+    .pill {
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+    .pill-teal   { background: #ccfbf1; color: #0f766e; }
+    .pill-indigo { background: #e0e7ff; color: #4338ca; }
+    .pill-amber  { background: #fef3c7; color: #92400e; }
+    .pill-rose   { background: #ffe4e6; color: #9f1239; }
+    .pill-purple { background: #f3e8ff; color: #7e22ce; }
+    .pill-slate  { background: #f1f5f9; color: #475569; }
+
+    /* ── Step list ── */
+    .steps {
+      list-style: none;
+      margin-top: 10px;
+      counter-reset: steps;
+    }
+    .steps li {
+      counter-increment: steps;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.88rem;
+      color: #44403c;
+      margin-bottom: 8px;
+    }
+    .steps li::before {
+      content: counter(steps);
+      min-width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #0d9488;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── Bullet list ── */
+    .bullets {
+      list-style: none;
+      margin-top: 10px;
+    }
+    .bullets li {
+      font-size: 0.88rem;
+      color: #44403c;
+      padding: 4px 0 4px 18px;
+      position: relative;
+    }
+    .bullets li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #0d9488;
+      font-weight: 700;
+    }
+
+    /* ── Warning / tip box ── */
+    .tip {
+      background: #fefce8;
+      border-left: 3px solid #facc15;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: #713f12;
+      margin-top: 12px;
+    }
+    .danger {
+      background: #fff1f2;
+      border-left: 3px solid #fb7185;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: #9f1239;
+      margin-top: 12px;
+    }
+
+    /* ── Divider label ── */
+    .divider {
+      max-width: 760px;
+      margin: 36px auto 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #94a3b8;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .divider::before, .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #d1fae5;
+    }
+
+    /* ── Code snippet ── */
+    code {
+      font-family: "SF Mono", "Fira Code", monospace;
+      background: #f0fdf4;
+      color: #065f46;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 0.82em;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      max-width: 760px;
+      margin: 48px auto 0;
+      text-align: center;
+      font-size: 0.78rem;
+      color: #a8a29e;
+    }
+    .footer a { color: #0d9488; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <div class="badge">mobile-tests · digibank-il</div>
+    <h1>📱 Mobile Automation<br>Knowledge Base</h1>
+    <p>A plain-English overview of how the mobile automation framework works — how to run tests, name UI elements, manage test data, and keep Android PRs safe.</p>
+  </div>
+
+  <!-- ── Section 1: Running tests ── -->
+  <div class="divider">⚙️ Configuration &amp; Runs</div>
+  <div class="grid">
+
+    <div class="card wide">
+      <div class="card-header">
+        <span class="icon">⚙️</span>
+        <h2>How to configure a test run</h2>
+      </div>
+      <p>Every run is controlled by a set of environment variables. The most important ones tell the framework <strong>where</strong> to run, <strong>which app version</strong> to test, and <strong>what kind</strong> of run it is.</p>
+      <p>You can set these in a local <code>capabilities.local.properties</code> file (gitignored) or pass them as CI environment variables. Here are the key ones to know:</p>
+      <div class="pill-list">
+        <span class="pill pill-teal">📱 platformName — android / ios</span>
+        <span class="pill pill-teal">☁️ machine — local / browserstack</span>
+        <span class="pill pill-indigo">🌍 env — uat / sit</span>
+        <span class="pill pill-indigo">🏷️ runType — develop / release / mock…</span>
+        <span class="pill pill-amber">📦 appVersion — last-version or e.g. 1.3.4</span>
+        <span class="pill pill-slate">🌐 locale — he-IL / IT</span>
+        <span class="pill pill-slate">📅 eventName — local / manual / nightly</span>
+      </div>
+      <div class="tip">💡 <strong>Tip:</strong> For local runs, set <code>machine=local</code> and <code>localAppVersion=3.x.x</code>. The framework will use your connected device or emulator instead of BrowserStack.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">🏃</span>
+        <h2>Run profiles (runType)</h2>
+      </div>
+      <p>The <code>runType</code> tells the system which profile to use. Each team has its own, and mock runs need a special environment.</p>
+      <ul class="bullets">
+        <li><strong>-develop</strong> — nightly against develop branch</li>
+        <li><strong>-release</strong> — nightly against release branch</li>
+        <li><strong>-mock</strong> — stub BFF, requires <code>env=sit</code></li>
+        <li><strong>-teamBanking / -teamCustomer…</strong> — per-team profiles</li>
+      </ul>
+      <div class="tip">💡 The BrowserStack build name is auto-generated as: <code>Android-develop-uat-1.3.4 [nightly] 26-05-2026</code></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">🔌</span>
+        <h2>Local vs. BrowserStack</h2>
+      </div>
+      <p>Set <code>machine=local</code> to run on your own device or emulator. Set <code>machine=browserstack</code> to run on a real cloud device (used by CI).</p>
+      <ul class="bullets">
+        <li>Local runs use <code>localAppVersion</code> to pick the build</li>
+        <li>BrowserStack runs need <code>bsUserName</code> + <code>bsAccessKey</code> from env</li>
+        <li>Copy <code>capabilities.local.properties.example</code> to get started locally</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ── Section 2: Locators ── -->
+  <div class="divider">🔍 UI Locators</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">🔍</span>
+        <h2>How elements are named</h2>
+      </div>
+      <p>Every UI element gets a unique ID that reads like a sentence — it tells you the screen, where in a list it is (if any), and what type of element it is.</p>
+      <ul class="bullets">
+        <li>Simple screen: <code>screen_context</code> + <code>element_type</code></li>
+        <li>Inside a list: <code>screen</code> + <code>row_N</code> + <code>element_type</code></li>
+      </ul>
+      <p style="margin-top:10px;">For example: <code>savings_rules_row_10_toggle</code> means "the toggle in row 10 of the savings rules screen".</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">🏷️</span>
+        <h2>Element type suffixes</h2>
+      </div>
+      <p>Each element type has a standard suffix. Both Android and iOS use the same IDs.</p>
+      <div class="pill-list">
+        <span class="pill pill-teal">_button</span>
+        <span class="pill pill-teal">_text</span>
+        <span class="pill pill-teal">_image</span>
+        <span class="pill pill-teal">_toggle</span>
+        <span class="pill pill-teal">_text_field</span>
+        <span class="pill pill-indigo">_check_box</span>
+        <span class="pill pill-indigo">_radio</span>
+        <span class="pill pill-indigo">_scrollable</span>
+        <span class="pill pill-indigo">_chip_N</span>
+        <span class="pill pill-amber">_primary_button</span>
+        <span class="pill pill-amber">_secondary_button</span>
+        <span class="pill pill-slate">_loader / _progress</span>
+      </div>
+    </div>
+
+    <div class="card wide">
+      <div class="card-header">
+        <span class="icon">⚠️</span>
+        <h2>The package prefix trap (Android)</h2>
+      </div>
+      <p>This is one of the most common causes of locator failures. The rule is simple but easy to forget:</p>
+      <div class="pill-list" style="margin-bottom:12px;">
+        <span class="pill pill-teal">✅ @AndroidFindBy(id = "my_button") — no prefix needed</span>
+        <span class="pill pill-rose">❌ @AndroidFindBy(id = "il.co.firstdigitalbank.uat:id/my_button") — wrong!</span>
+      </div>
+      <p>When writing <strong>XPath</strong> queries, it's the opposite — you <em>must</em> include the full package prefix in <code>@resource-id</code>.</p>
+      <div class="danger">🚨 <strong>Rule:</strong> <code>@AndroidFindBy(id = ...)</code> → short ID only. XPath <code>@resource-id</code> → full package prefix always.</div>
+    </div>
+
+  </div>
+
+  <!-- ── Section 3: Test Data & Users ── -->
+  <div class="divider">📊 Test Data &amp; Users</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">📊</span>
+        <h2>How test data works</h2>
+      </div>
+      <p>Each feature area has a CSV file under <code>testData/&lt;feature&gt;/</code>. Every row is one test scenario, with a unique <code>testID</code> and <code>testName</code> plus whatever fields that feature needs.</p>
+      <p>Inside the test, you just access <code>testData.fieldName</code> — no hardcoded values anywhere.</p>
+      <div class="tip">💡 No test data needed? Set the data model type to <code>Unit</code> and skip the CSV entirely.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">👤</span>
+        <h2>Available test user types</h2>
+      </div>
+      <p>The User Generator V3 pool provides ready-made users for every scenario. One user per test — no two tests share the same user at the same time.</p>
+      <div class="pill-list">
+        <span class="pill pill-teal">🏦 Regular users with cards</span>
+        <span class="pill pill-teal">📈 Securities (portfolio + orders)</span>
+        <span class="pill pill-teal">💵 FCY (USD accounts)</span>
+        <span class="pill pill-indigo">💳 Card / OD limits</span>
+        <span class="pill pill-indigo">👨‍👩‍👧 Joint accounts</span>
+        <span class="pill pill-indigo">💰 Savings</span>
+        <span class="pill pill-amber">📋 Cheques (multiple states)</span>
+        <span class="pill pill-amber">🔄 Onboarding (mid-flow users)</span>
+      </div>
+    </div>
+
+    <div class="card wide">
+      <div class="card-header">
+        <span class="icon">🛠️</span>
+        <h2>Creating a custom test user</h2>
+      </div>
+      <p>When the standard pool doesn't have exactly what you need, you can provision a custom user and lock it for your test. It lives in <code>DashboardTestData.csv</code>.</p>
+      <ol class="steps">
+        <li>Clone an existing row in <code>DashboardTestData.csv</code> and give it a unique <code>testId</code> and <code>reservationKey</code>.</li>
+        <li>Use the <strong>User BFF Swagger</strong> (<code>/user/getByParameters</code>) to find a real user matching your needs and copy the returned IDs into the CSV.</li>
+        <li>Validate the user's balance via <code>getBalanceByPortfolio</code> in the Dev Tools Swagger.</li>
+        <li>Reserve the user via <code>/reserveUsers</code> so no other test grabs it during your test run.</li>
+      </ol>
+      <div class="tip">💡 <strong>Updating?</strong> Never create a new row — find the existing <code>testId</code> and update it in place.</div>
+    </div>
+
+  </div>
+
+  <!-- ── Section 4: CI & PR flows ── -->
+  <div class="divider">🤖 CI &amp; PR Flows</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">🏷️</span>
+        <h2>Running automation on an Android PR</h2>
+      </div>
+      <p>Android developers can trigger mobile automation tests directly from their PR — no manual test kick-off needed.</p>
+      <ol class="steps">
+        <li>Open a PR in <code>android-banking</code>.</li>
+        <li>Add one or more <strong>domain labels</strong> (e.g. <code>Cheques</code>, <code>Savings</code>, <code>Cards</code>).</li>
+        <li>Add <code>Ready For Review With Automation</code> instead of the normal review label.</li>
+        <li>After approval, Bitrise builds the APK, uploads it to BrowserStack, runs the matching tests, and posts results back on the PR.</li>
+      </ol>
+      <div class="tip">💡 Using just <code>Ready For Review</code> skips automation and runs only normal CI.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="icon">🛡️</span>
+        <h2>Locator guard on Android PRs</h2>
+      </div>
+      <p>Every Android PR that changes UI element IDs is automatically scanned to see if any <code>mobile-tests</code> automation would break.</p>
+      <ul class="bullets">
+        <li><strong>Removed locator</strong> — may break existing tests</li>
+        <li><strong>Renamed locator</strong> — old name may still be in tests</li>
+        <li><strong>Duplicate locator</strong> — same ID used twice (Error = block merge)</li>
+        <li><strong>Added locator</strong> — informational only</li>
+      </ul>
+      <p style="margin-top:10px;">Results are posted as a PR comment. Errors must be fixed before merge; warnings need a review.</p>
+    </div>
+
+    <div class="card wide">
+      <div class="card-header">
+        <span class="icon">📄</span>
+        <h2>This doc stays in sync automatically</h2>
+      </div>
+      <p>
+        <code>AUTOMATION_KNOWLEDGE.md</code> lives in the <code>mobile-tests</code> repo alongside the code. A CI check runs on every PR that touches the config source files — it reads the actual Kotlin code, extracts all environment variable names and <code>RunType</code> values, and fails the PR if any are missing from the doc.
+      </p>
+      <p>
+        This was set up after discovering that the original Confluence page had multiple stale facts — wrong variable names, missing enum values, and a hardcoded environment name that was actually a variable. The lesson: <strong>docs that live in the repo get reviewed like code.</strong>
+      </p>
+      <div class="tip">💡 In fact, the CI script caught a missing entry (<code>stubLocalPassword</code>) on its very first run — before it was even committed.</div>
+    </div>
+
+  </div>
+
+  <!-- ── Footer ── -->
+  <div class="footer">
+    <p>Sourced from <a href="https://github.com/digibank-il/mobile-tests/blob/mobile_dev/AUTOMATION_KNOWLEDGE.md" target="_blank">AUTOMATION_KNOWLEDGE.md</a> in <code>digibank-il/mobile-tests</code> · Updated May 2026</p>
+  </div>
+
+</body>
+</html>
