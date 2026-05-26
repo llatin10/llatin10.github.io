@@ -49,12 +49,16 @@ def is_production_issues_page(title: str, filename: str) -> bool:
 
 
 def is_automation_alignment_page(title: str, filename: str) -> bool:
-    """Automation domain alignment / verification reports."""
+    """Automation domain alignment / verification reports and knowledge base."""
     fn = filename.casefold()
     if "automation-verification-report" in fn or "automation-alignment-report" in fn:
         return True
+    if "automation-knowledge-base" in fn:
+        return True
     tl = title.casefold()
     if "automation verification report" in tl or "automation alignment report" in tl:
+        return True
+    if "automation knowledge base" in tl:
         return True
     return False
 
