@@ -454,6 +454,30 @@
 
   </div>
 
+  <!-- ── Section 5: Confluence action items ── -->
+  <div class="divider">📝 Action Items — Confluence</div>
+  <div class="grid">
+
+    <div class="card wide">
+      <div class="card-header">
+        <span class="icon">📌</span>
+        <h2>Fixes needed on the Confluence Tech Spec page</h2>
+      </div>
+      <p>
+        The original <a href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RnD/pages/891715801/Tech+Spec" target="_blank">Tech Spec page</a> (written May 2023) has drifted from the code. Until it's superseded by this repo-backed doc, here's what needs correcting there:
+      </p>
+      <ul class="bullets">
+        <li><strong>Variable name:</strong> the doc says <code>version</code> — the code actually reads <code>appVersion</code> (and <code>localAppVersion</code> for local runs).</li>
+        <li><strong>runType values:</strong> the doc lists only <code>develop</code> and <code>release</code>. The real enum has 10 values, all with a leading dash — <code>-develop</code>, <code>-release</code>, <code>-mock</code>, <code>-customize</code>, <code>-lobbiesVersion</code>, <code>-teamBanking</code>, <code>-teamCustomer</code>, <code>-teamAdvice</code>, <code>-securityServerSide</code> (plus empty = manual).</li>
+        <li><strong>Build name pattern:</strong> the doc hardcodes <code>uat</code>. It's actually the <code>env</code> variable, so the pattern is <code>{Android|iOS}{runType}-{env}-{appVersion} [{eventName}] {date}</code>.</li>
+        <li><strong>Missing variables:</strong> <code>env</code> (uat/sit) isn't documented at all, along with ~10 other settings added since 2023 (<code>locale</code>, <code>language</code>, <code>app</code>, <code>fullReset</code>, <code>saveLocalUser</code>, <code>useRealDevice</code>, etc.).</li>
+      </ul>
+      <div class="tip">💡 <strong>Recommended long-term fix:</strong> replace the env-var/runType details on the Confluence page with a link to this repo-backed doc, so there's only one copy to keep correct.</div>
+      <div class="tip">🛠️ <strong>Future idea:</strong> extend <code>validate_knowledge_doc.py</code> so it reports not just "what to fix in the code/doc" but also "what to fix on Confluence" — turning this manual checklist into automated output.</div>
+    </div>
+
+  </div>
+
   <!-- ── Footer ── -->
   <div class="footer">
     <p>Sourced from <a href="https://github.com/digibank-il/mobile-tests/blob/mobile_dev/AUTOMATION_KNOWLEDGE.md" target="_blank">AUTOMATION_KNOWLEDGE.md</a> in <code>digibank-il/mobile-tests</code> · Updated May 2026</p>
