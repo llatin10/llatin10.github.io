@@ -143,7 +143,7 @@
 <p><strong>Date:</strong> 2026-06-01<br />
 <strong>Jira Ticket:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-104390">OZ-104390 — Automation alignment</a> (Pending PRD)<br />
 <strong>Confluence:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RnD/pages/3206217730/Automation+by+Domain+Progress#Movements">Automation by Domain Progress → Movements</a><br />
-<strong>Repo branch checked:</strong> <code>fix/lokalize-content-desc-compose</code> (⚠️ not <code>main</code> — see note)<br />
+<strong>Repo branch checked:</strong> <code>origin/mobile_dev</code> (main, HEAD <code>015f6a920</code>, 2026-05-31) — cross-checked, result confirmed<br />
 <strong>TTM source:</strong> 2 Excel exports (8-case + 14-case; 14 unique keys total)</p>
 <hr />
 <h2>Column Legend</h2>
@@ -187,7 +187,7 @@
 <h3>Note on the count</h3>
 <p>You mentioned a "24 list (8 + more)". The two attached files actually contain <strong>14 unique keys</strong> — the 8-case file is a subset of the 14-case file. If there's a separate 24-case export, it wasn't among these two.</p>
 <h3>Branch note</h3>
-<p>The repo is on <code>fix/lokalize-content-desc-compose</code>, not <code>main</code>. Findings below reflect that branch. None of the 14 keys exist on it, so the conclusion (0 automated) is very unlikely to differ on <code>main</code>, but worth a re-check if you want CI-accurate certainty.</p>
+<p>Verified against <strong><code>origin/mobile_dev</code></strong> (the automation main branch, HEAD <code>015f6a920</code>, 2026-05-31). None of the 14 keys exist there, and only the two unrelated tests below are present (<code>OZ-76330</code> enabled, <code>MOB-T9813</code> disabled). The 0-of-14 result is CI-accurate.</p>
 <hr />
 <h2>Existing Movements code (NOT in the regression list)</h2>
 <table>
