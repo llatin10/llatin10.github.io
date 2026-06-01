@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movements Automation Verification Report</title>
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, -apple-system, Arial, sans-serif;
+            background: #faf9f7;
+            padding: 24px;
+            line-height: 1.65;
+            color: #44403c;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+            padding: 28px 32px 40px;
+        }
+        h1 {
+            color: #1c1917;
+            border-bottom: 2px solid #e7e5e0;
+            font-weight: 700;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #0d9488;
+            border-bottom: 1px solid #e7e5e0;
+            margin-top: 36px;
+            padding-bottom: 10px;
+        }
+        h3 { color: #0f766e; margin-top: 24px; }
+        .section-block {
+            background: #fafaf9;
+            border: 1px solid #e7e5e0;
+            border-left: 4px solid #14b8a6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .intro-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border: 1px solid #99f6e4;
+            border-left: 4px solid #14b8a6;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: "Consolas", ui-monospace, monospace;
+            border-left: 4px solid #14b8a6;
+            line-height: 1.55;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f5f5f4;
+            color: #0f766e;
+            padding: 0.2em 0.45em;
+            border-radius: 4px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.9em;
+            border: 1px solid #e7e5e0;
+        }
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .highlight-card {
+            background: #fff;
+            border: 1px solid #e7e5e0;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 3px solid #14b8a6;
+        }
+        
+        @media print {
+            body {
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .container {
+                box-shadow: none !important;
+                padding: 40px;
+                margin: 0 auto;
+                max-width: 100%;
+                width: 100%;
+                border-radius: 0;
+                box-sizing: border-box;
+            }
+            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
+            .section-block, .intro-block, .highlight-card, pre,
+            .simple-explanation, .next-steps { page-break-inside: avoid; break-inside: avoid; }
+            pre { white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden; }
+            @page { size: 210mm 1800mm; margin: 0; }
+        }
+
+
+        .md-content { margin-top: 8px; }
+        .md-content table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 0.88rem; }
+        .md-content th, .md-content td { border: 1px solid #e7e5e0; padding: 8px 10px; text-align: left; vertical-align: top; }
+        .md-content th { background: #f5f5f4; font-weight: 600; }
+        .md-content tr:nth-child(even) { background: #fafaf9; }
+        .md-content hr { margin: 28px 0; border: none; border-top: 1px solid #e7e5e0; }
+        .md-content ul, .md-content ol { margin: 12px 0 12px 1.5em; }
+        .md-content li > ul { margin-top: 6px; margin-bottom: 6px; }
+        .md-content .md-rtl,
+        .md-content [dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+            unicode-bidi: isolate;
+        }
+        .md-content .md-rtl ul,
+        .md-content .md-rtl ol,
+        .md-content [dir="rtl"] ul,
+        .md-content [dir="rtl"] ol {
+            margin: 12px 0 12px 0;
+            padding-inline-start: 1.5em;
+        }
+        .md-content p { margin: 12px 0; }
+        .md-content pre { margin: 16px 0; }
+        .md-content pre code { background: transparent !important; border: none !important; padding: 0 !important; }
+    
+    </style>
+</head>
+<body class="doc-theme-warm">
+    <div class="container">
+        <div class="md-content">
+<h1>Movements Automation Verification Report</h1>
+<p><strong>Date:</strong> 2026-06-01<br />
+<strong>Jira Ticket:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-104390">OZ-104390 — Automation alignment</a> (Pending PRD)<br />
+<strong>Confluence:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RnD/pages/3206217730/Automation+by+Domain+Progress#Movements">Automation by Domain Progress → Movements</a><br />
+<strong>Repo branch checked:</strong> <code>fix/lokalize-content-desc-compose</code> (⚠️ not <code>main</code> — see note)<br />
+<strong>TTM source:</strong> 2 Excel exports (8-case + 14-case; 14 unique keys total)</p>
+<hr />
+<h2>Column Legend</h2>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Automated ✅</strong></td>
+<td>Code exists in the repo</td>
+</tr>
+<tr>
+<td><strong>Android ✅</strong></td>
+<td>Test actively running on Android CI</td>
+</tr>
+<tr>
+<td><strong>iOS ✅</strong></td>
+<td>Test actively running on iOS CI</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Note: the Movements table in Confluence currently has <strong>no Android/iOS columns</strong> — only an (empty) Automated column. The whole domain is tracked as manual.</p>
+</blockquote>
+<hr />
+<h2>Executive Summary</h2>
+<ul>
+<li><strong>Total TTM test cases (both Excels):</strong> 14 unique</li>
+<li><strong>In the Confluence regression set:</strong> 8</li>
+<li><strong>Extra filtering sub-tests in Excel but NOT in Confluence:</strong> 6</li>
+<li><strong>Code exists (Automated ✅):</strong> 0 of 14</li>
+<li><strong>Actively running on any platform:</strong> 0</li>
+<li><strong>No code at all:</strong> 14 ❌</li>
+<li><strong>Confluence errors (Automated ✅ but no code):</strong> 0 🔴 — Confluence is accurate</li>
+</ul>
+<p><strong>Bottom line:</strong> Movements is a <strong>0%-automated domain</strong>. Confluence correctly reflects this (nothing falsely marked automated). The only Movements code in the repo belongs to test cases that are <strong>not in this regression list</strong> (see below).</p>
+<h3>Note on the count</h3>
+<p>You mentioned a "24 list (8 + more)". The two attached files actually contain <strong>14 unique keys</strong> — the 8-case file is a subset of the 14-case file. If there's a separate 24-case export, it wasn't among these two.</p>
+<h3>Branch note</h3>
+<p>The repo is on <code>fix/lokalize-content-desc-compose</code>, not <code>main</code>. Findings below reflect that branch. None of the 14 keys exist on it, so the conclusion (0 automated) is very unlikely to differ on <code>main</code>, but worth a re-check if you want CI-accurate certainty.</p>
+<hr />
+<h2>Existing Movements code (NOT in the regression list)</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th><code>@TmsLink</code></th>
+<th>Enabled?</th>
+<th>In this regression set?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RunningBalanceMovementsAndFCYTests.kt</code> — Running balance on Current Account &amp; FCY lobbies</td>
+<td><code>OZ-76330</code></td>
+<td>✅ Enabled</td>
+<td>❌ Not listed</td>
+</tr>
+<tr>
+<td><code>ExtraDetailsDigitalWallet.kt</code> — Digital wallet transactions extra details</td>
+<td><code>MOB-T9813</code></td>
+<td>⚠️ <strong>Disabled</strong> (<code>//@Test</code>)</td>
+<td>❌ Not listed</td>
+</tr>
+</tbody>
+</table>
+<p>These two are the only automated Movements flows that exist, and neither is one of your 14 cases.</p>
+<hr />
+<h2>No Code At All (all 14)</h2>
+<table>
+<thead>
+<tr>
+<th>Test Key</th>
+<th>TTM Summary</th>
+<th>In Confluence?</th>
+<th>TTM steps quality</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-59998</td>
+<td>Verify Deposit movement</td>
+<td>✅</td>
+<td>⚠️ Links to MOB- deposit tests only</td>
+</tr>
+<tr>
+<td>OZ-59999</td>
+<td>Verify Mandate movement</td>
+<td>✅</td>
+<td>❌ Screenshots only (no text)</td>
+</tr>
+<tr>
+<td>OZ-60000</td>
+<td>Verify Credit card billing movement</td>
+<td>✅</td>
+<td>❌ Screenshots only; precondition "can't simulate"</td>
+</tr>
+<tr>
+<td>OZ-60001</td>
+<td>Verify Payment movement</td>
+<td>✅</td>
+<td>❌ Screenshots only (no text)</td>
+</tr>
+<tr>
+<td>OZ-60002</td>
+<td>Verify FCY movement</td>
+<td>✅</td>
+<td>⚠️ Links to MOB-T8740 only</td>
+</tr>
+<tr>
+<td>OZ-60003</td>
+<td>Verify Cheque deposit movement</td>
+<td>✅</td>
+<td>❌ Screenshots only (no text)</td>
+</tr>
+<tr>
+<td>OZ-70384</td>
+<td>Transaction Filtering – Excel export – UI</td>
+<td>❌ missing</td>
+<td>✅ 3 steps</td>
+</tr>
+<tr>
+<td>OZ-70385</td>
+<td>Transaction Filtering – Excel export – Functionality</td>
+<td>✅</td>
+<td>✅ 8 steps</td>
+</tr>
+<tr>
+<td>OZ-70386</td>
+<td>Transaction Filtering – Functionality</td>
+<td>✅</td>
+<td>✅ 13 steps</td>
+</tr>
+<tr>
+<td>OZ-70387</td>
+<td>Transaction Filtering – Filter button – Functionality</td>
+<td>❌ missing</td>
+<td>✅ 11 steps</td>
+</tr>
+<tr>
+<td>OZ-70388</td>
+<td>Transaction Filtering – Error state</td>
+<td>❌ missing</td>
+<td>⚠️ 4 steps (step 4 expected = "TBD")</td>
+</tr>
+<tr>
+<td>OZ-70389</td>
+<td>Transaction Filtering – Navigation</td>
+<td>❌ missing</td>
+<td>✅ 6 steps</td>
+</tr>
+<tr>
+<td>OZ-70390</td>
+<td>Transaction Filtering – Feature flag</td>
+<td>❌ missing</td>
+<td>✅ 3 steps</td>
+</tr>
+<tr>
+<td>OZ-70392</td>
+<td>Transaction Filtering – UI</td>
+<td>❌ missing</td>
+<td>✅ 6 steps</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Confluence Changes Needed</h2>
+<ol>
+<li><strong>No platform columns</strong> — Movements table lacks Android/iOS columns that other domains (Cheques, Savings, Mandates) have. Add them for consistency once automation starts.</li>
+<li><strong>6 missing rows</strong> — the Confluence Movements table lists only 8 tests, but TTM has 6 more filtering sub-tests: OZ-70384, OZ-70387, OZ-70388, OZ-70389, OZ-70390, OZ-70392. Decide whether these belong in the regression set; if yes, add them.</li>
+<li>No false "Automated ✅" marks — nothing to correct there. ✅</li>
+</ol>
+<hr />
+<h2>TTM Data-Quality Issues (fix before automating)</h2>
+<ul>
+<li><strong>OZ-59999 / OZ-60000 / OZ-60001 / OZ-60003</strong> — screenshots only, no written steps. Cannot be automated reliably until steps are written. <code>TTM:</code> fix needed.</li>
+<li><strong>OZ-59998 / OZ-60002</strong> — steps are just hyperlinks to MOB- deposit/FCY creation cases. Real intent: "after creating a deposit / doing an FCY conversion, the resulting movement appears in the movements list with correct extra details." Rewrite as explicit steps.</li>
+<li><strong>OZ-60000</strong> precondition literally says <em>"Can't simulate by me (Raz)"</em> — needs a test-data strategy (mock/seed) before it's automatable.</li>
+<li><strong>OZ-70388</strong> step 4 expected result = <em>"TBD"</em> — define it before automating the error-state retry behavior.</li>
+</ul>
+<hr />
+<h2>Flow Gap Analysis — absolute-must flows that are missing</h2>
+<p>Prioritised. P0 = should exist before calling Movements "covered"; P1 = strongly recommended.</p>
+<h3>P0 — must have</h3>
+<ol>
+<li><strong>Default movements lobby — Running balance IS displayed.</strong> The filter tests assert running balance is <em>hidden</em> while filtering (OZ-70386 step 10). There must be a positive counterpart proving it shows in the default lobby. <strong><code>OZ-76330</code> already automates this</strong> — add it to the regression list rather than writing new.</li>
+<li><strong>"Show All" / load-more on the default lobby.</strong> Pagination is tested <em>inside</em> the filter (50/scroll) but never on the main lobby. Your own tracking ticket references <em>"Show All historic movements does not crash"</em> (PR #1928) — there is no regression test guarding it. <strong>Add a Show-All / pagination-on-lobby test.</strong></li>
+<li><strong>Excel export — invalid &amp; boundary date ranges.</strong> OZ-70384/70385 only cover the happy path. FCY already has dedicated tests for: custom valid range = 1 year max (OZ-85011), cancel date picker (OZ-85012), file-naming convention (OZ-85013). Movements export needs the same trio: <strong>From &gt; To rejected, &gt;1-year range rejected, cancel picker, file-name format.</strong></li>
+<li><strong>Movement detail / extra-details per transaction type.</strong> OZ-70386 step 8 only spot-checks "extra details appear" inside the filter. The six "Verify X movement" cases are meant to be the per-type detail checks but are screenshot-only. At minimum automate <strong>deposit, payment, FCY, mandate</strong> extra-details once their TTM steps are written. (<code>MOB-T9813</code> digital-wallet detail test exists but is <strong>disabled</strong> — re-enable as part of this.)</li>
+</ol>
+<h3>P1 — strongly recommended</h3>
+<ol>
+<li><strong>Empty state of the whole movements lobby</strong> (new account / zero transactions) — only per-chip empty state is covered (OZ-70392 step 4), not the lobby itself.</li>
+<li><strong>Cash-blocks (הקצאות / pending) display in the default lobby.</strong> Filter tests assert they're <em>hidden</em> under filter (OZ-70386 step 9); no test proves they render correctly in the default view.</li>
+<li><strong>Pull-to-refresh on the default lobby</strong> — tested under filter (OZ-70386 step 11) but not on the main lobby.</li>
+<li><strong>FCY movements lobby</strong> beyond running balance — currency formatting, FCY-specific extra details. Partially in OZ-76330; consider a dedicated case.</li>
+</ol>
+<h3>Open question for you</h3>
+<ul>
+<li>Is there a <strong>text search</strong> over movements (distinct from category filtering)? If the feature exists, it has <strong>no</strong> TTM case at all — that's a real gap. (Flagging, not asserting — I couldn't confirm the feature exists.)</li>
+</ul>
+<hr />
+<h2>Platform-Type (customfield_11640) Review</h2>
+<p><strong>N/A for this domain.</strong> Workflow C only applies to actively-running tests (those with an Android/iOS checkmark). Movements has zero running tests, so there is no platform-type field to verify yet. Re-run this section once the P0 tests are automated and merged.</p>
+<hr />
+<h2>Recommended next steps (P0)</h2>
+<ol>
+<li>Write/repair TTM steps for OZ-59998/59999/60000/60001/60002/60003 (currently screenshots-only / link-only / TBD).</li>
+<li>Add <code>OZ-76330</code> (running balance) and the disabled <code>MOB-T9813</code> (digital-wallet extra details) into the Movements regression set + re-enable the latter.</li>
+<li>Decide on the 6 filtering sub-tests' regression membership and add the rows to Confluence + the Android/iOS columns.</li>
+<li>Add the four missing must-have flows: Show-All lobby pagination, Excel export edge cases, default-lobby running-balance, per-type extra-details.</li>
+</ol>
+        </div>
+    </div>
+</body>
+</html>
