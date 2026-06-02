@@ -187,22 +187,22 @@
 <h3>Branch note</h3>
 <p>Verified against <strong><code>origin/mobile_dev</code></strong> (the automation main branch, HEAD <code>015f6a920</code>, 2026-05-31). None of the 14 keys exist there, and only the two unrelated tests below are present (<code>OZ-76330</code> enabled, <code>MOB-T9813</code> disabled). The 0-of-14 result is CI-accurate.</p>
 <hr />
-<h2>Existing Movements code (NOT in the regression list)</h2>
+<h2>Existing Movements code (separate from the 8)</h2>
 <table>
 <thead>
 <tr>
 <th>Test</th>
 <th><code>@TmsLink</code></th>
 <th>Enabled?</th>
-<th>In this regression set?</th>
+<th>Tracked in Confluence?</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>RunningBalanceMovementsAndFCYTests.kt</code> — Running balance on Current Account &amp; FCY lobbies</td>
 <td><code>OZ-76330</code></td>
-<td>✅ Enabled</td>
-<td>❌ Not listed</td>
+<td>⚠️ <strong>Disabled</strong> (<code>//@ParameterizedTest</code>)</td>
+<td>✅ Added to Movements (2026-06-01)</td>
 </tr>
 <tr>
 <td><code>ExtraDetailsDigitalWallet.kt</code> — Digital wallet transactions extra details</td>
@@ -212,7 +212,14 @@
 </tr>
 </tbody>
 </table>
-<p>These two are the only automated Movements flows that exist, and neither is one of the 8 regression cases.</p>
+<p>Both existing Movements tests are <strong>disabled</strong> — Movements has <strong>zero running tests</strong> in CI. Neither is one of the 8 regression cases.</p>
+<h3>OZ-76330 — tracked automation candidate (not covered by the 8)</h3>
+<p>Now added to the Confluence Movements table. It is a <strong>distinct flow</strong> none of the 8 cover: running-balance display on the current-account movements lobby <strong>and</strong> the FCY lobby, plus joint-account balance consistency between partners. (The 8 only assert running balance is <em>hidden under filter</em> — OZ-70386 step 10.)</p>
+<p>The TTM case had <strong>no written steps</strong> (screenshots only), so steps were authored directly into the <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-76330">OZ-76330 ticket description</a> on 2026-06-01.</p>
+<p><strong>🔴 Code-vs-test mismatch (logged in the ticket):</strong><br />
+- The test is <strong>disabled</strong> (<code>@ParameterizedTest</code> commented out) → not running in CI → must not get a platform checkmark yet.<br />
+- The code's <code>@Description</code> annotation is <strong>wrong</strong>: it claims <em>"click the first transaction and verify the extra-details page"</em>, but the code actually reads the current-account + FCY lobby balances and asserts both joint partners see identical balances.</p>
+<p><strong>Actions:</strong> (1) re-enable <code>@ParameterizedTest</code>; (2) fix the <code>@Description</code> to match the real flow; (3) set Platform type once it runs.</p>
 <hr />
 <h2>No Code At All (the 8 in scope)</h2>
 <table>
@@ -284,12 +291,12 @@
 <p>Rule applied: only flag a <strong>standalone</strong> must-have if it genuinely can't be covered by adding a step or two to one of the 8. Everything else is listed as a <strong>fold-in</strong> (a step to add to an existing case), not a new test.</p>
 <h3>Standalone must-have (cannot be a step in the 8)</h3>
 <ol>
-<li><strong>"Show All" / load-more on the default movements lobby.</strong> This is a lobby-level behavior none of the 8 touches (the 8 cover per-type movement detail + filtering). Your tracking ticket OZ-104390 explicitly references <em>"Show All historic movements does not crash"</em> (PR #1928), and there is no regression guarding it. This is the one gap worth a dedicated case — or fold it onto the existing <code>OZ-76330</code> running-balance lobby test if you'd rather not add a row. <strong>Verdict: real must-have, not foldable into the 8.</strong></li>
+<li><strong>"Show All" / load-more on the default movements lobby.</strong> This is a lobby-level behavior none of the 8 touches (the 8 cover per-type movement detail + filtering). Your tracking ticket OZ-104390 explicitly references <em>"Show All historic movements does not crash"</em> (PR #1928), and there is no regression guarding it. This is the one gap worth a dedicated case — or fold it onto <code>OZ-76330</code> (the running-balance lobby test) <strong>once that test is re-enabled and fixed</strong>. <strong>Verdict: real must-have, not foldable into the 8.</strong></li>
 </ol>
 <h3>Fold into the existing 8 (add a step or two — do NOT create new tests)</h3>
 <ul>
 <li><strong>Excel export edge cases → add to OZ-70385.</strong> It only walks the happy path. Add steps for: From &gt; To rejected, &gt;1-year range rejected, cancel date-picker, file-name format. (FCY automates these as separate tests OZ-85011/12/13 — for Movements they're just extra steps on OZ-70385.)</li>
-<li><strong>Default-lobby running balance IS shown → already automated by <code>OZ-76330</code>.</strong> Just include OZ-76330 in the set; it's the positive counterpart to OZ-70386 step 10 (which asserts it's hidden under filter).</li>
+<li><strong>Default-lobby running balance IS shown → code exists in <code>OZ-76330</code> but is disabled + mislabeled.</strong> It's the positive counterpart to OZ-70386 step 10 (which asserts it's hidden under filter). Re-enable it and fix its <code>@Description</code> rather than writing new (see OZ-76330 section above).</li>
 <li><strong>Empty whole-lobby state → add a step to OZ-70386</strong> (it already has per-chip empty state in step 6).</li>
 <li><strong>Cash-blocks render in default view → add a step to OZ-70386</strong> (step 9 already asserts they're hidden under filter — add the positive case).</li>
 <li><strong>Pull-to-refresh on default lobby → already a step under filter (OZ-70386 step 11);</strong> extend that step to the lobby too.</li>
@@ -306,7 +313,7 @@
 <h2>Recommended next steps</h2>
 <ol>
 <li>Write/repair TTM steps for OZ-59998/59999/60000/60001/60002/60003 (currently screenshots-only / link-only).</li>
-<li>Include <code>OZ-76330</code> (running balance, already automated) in the Movements set, and re-enable the disabled <code>MOB-T9813</code> (digital-wallet extra details).</li>
+<li><code>OZ-76330</code> (running balance) is now in Confluence — <strong>re-enable it</strong> (<code>@ParameterizedTest</code>) and <strong>fix its <code>@Description</code></strong> to match the real flow; steps are now in the ticket. Also re-enable the disabled <code>MOB-T9813</code> (digital-wallet extra details).</li>
 <li>Add the one standalone must-have: <strong>Show-All / load-more on the default lobby</strong> (the crash-guard).</li>
 <li>Fold the export edge cases into OZ-70385 and the lobby empty-state / cash-blocks / pull-to-refresh checks into OZ-70386 — as extra steps, not new tests.</li>
 </ol>
