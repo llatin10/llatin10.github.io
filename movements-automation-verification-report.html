@@ -187,6 +187,48 @@
 <h3>Branch note</h3>
 <p>Verified against <strong><code>origin/mobile_dev</code></strong> (the automation main branch, HEAD <code>015f6a920</code>, 2026-05-31). None of the 14 keys exist there. The 0-of-14 result is CI-accurate.</p>
 <hr />
+<h2>Planned Restructure (target test set)</h2>
+<p>Instead of automating all 8 separately, the set is consolidated around data state — one <strong>data-rich user</strong> to verify every movement type, one <strong>fresh user</strong> to verify empty states:</p>
+<table>
+<thead>
+<tr>
+<th>Ticket</th>
+<th>Role</th>
+<th>User/data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OZ-70385</strong></td>
+<td>Keep — Excel export functionality</td>
+<td>as-is</td>
+</tr>
+<tr>
+<td><strong>OZ-70386</strong></td>
+<td>Keep — Filtering functionality</td>
+<td>as-is</td>
+</tr>
+<tr>
+<td><strong>OZ-59998</strong></td>
+<td><strong>Expanded</strong> — verify extra-details for all movement types (deposit, mandate, CC billing, payment, FCY, cheque) in one test</td>
+<td>data-rich user</td>
+</tr>
+<tr>
+<td><strong>OZ-59999</strong></td>
+<td><strong>Repurposed</strong> — empty-state across all relevant screens</td>
+<td>fresh user</td>
+</tr>
+<tr>
+<td>OZ-60000 / 60001 / 60002 / 60003</td>
+<td><strong>Folded into OZ-59998</strong> → no longer standalone</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>OZ-59998 data approach:</strong> mix — real data-rich user where the type exists, stub <code>GET_MOVEMENTS</code> for the hard ones (e.g. credit-card billing, flagged "can't simulate"). Use <code>softly.assertThat</code> so one test reports failures across all types.</p>
+<p><strong>OZ-59999 empty-state screens (fresh user):</strong> Movements lobby · FCY lobby · Filter screen · Excel export (no data in range).</p>
+<p><strong>OZ-60000–60003:</strong> kept open, each annotated <em>"covered by OZ-59998"</em> (not closed).</p>
+<hr />
 <h2>No Code At All (the 8 in scope)</h2>
 <table>
 <thead>
