@@ -232,8 +232,8 @@
 </table>
 <p><strong>OZ-59998 data approach:</strong> mix — real data-rich user where the type exists, stub <code>GET_MOVEMENTS</code> for credit-card billing ("can't simulate"). Field checks limited to <strong>header/title/date</strong>. <code>softly.assertThat</code> reports failures across all types in one run.</p>
 <p><strong>OZ-59999 empty-state screens (fresh user):</strong> Movements lobby · Filter screen · Excel export (no data in range). <em>(FCY-lobby empty state is owned by the FCY domain.)</em></p>
-<p><strong>OZ-60001–60003:</strong> kept open, each annotated <em>"covered by OZ-59998"</em> (not closed).</p>
-<p><strong>Status (2026-06-07):</strong> descriptions + step outlines written in Jira for OZ-59998 (expanded, +loan), OZ-59999 (empty-state), OZ-60000 (repurposed → Show-All/pagination), OZ-70385 (export edge cases); OZ-60001–60003 marked "covered by OZ-59998". Formal TTM step <em>rows</em> to be added manually. Folded into OZ-59998: running-balance display + pull-to-refresh.</p>
+<p><strong>OZ-60001–60003:</strong> removed from the Confluence Movements table; <strong>kept open in Jira</strong>, each annotated <em>"covered by OZ-59998"</em> and de-flagged from sanity/mobile.</p>
+<p><strong>Status (2026-06-07):</strong> descriptions + step outlines written in Jira for OZ-59998 (expanded, +loan), OZ-59999 (empty-state), OZ-60000 (repurposed → Show-All/pagination), OZ-70385 (export edge cases); OZ-60001–60003 marked "covered by OZ-59998". <strong>Confluence synced</strong> (rows renamed, Android/iOS columns added, 60001–60003 removed). Formal TTM step <em>rows</em> still to be added manually. Folded into OZ-59998: running-balance display + pull-to-refresh.</p>
 <hr />
 <h2>Per-Ticket Status (no code automated yet for any)</h2>
 <table>
@@ -263,17 +263,17 @@
 <tr>
 <td>OZ-60001</td>
 <td>Payment movement</td>
-<td>Covered by OZ-59998 (kept open)</td>
+<td>Covered by OZ-59998 — removed from Confluence table, kept open in Jira</td>
 </tr>
 <tr>
 <td>OZ-60002</td>
 <td>FCY movement</td>
-<td>Covered by OZ-59998 (kept open)</td>
+<td>Covered by OZ-59998 — removed from Confluence table, kept open in Jira</td>
 </tr>
 <tr>
 <td>OZ-60003</td>
 <td>Cheque deposit movement</td>
-<td>Covered by OZ-59998 (kept open)</td>
+<td>Covered by OZ-59998 — removed from Confluence table, kept open in Jira</td>
 </tr>
 <tr>
 <td>OZ-70385</td>
@@ -288,11 +288,14 @@
 </tbody>
 </table>
 <hr />
-<h2>Confluence Changes Needed</h2>
+<h2>Confluence Changes Needed — ✅ synced (2026-06-07)</h2>
 <ol>
-<li><strong>No platform columns</strong> — Movements table lacks Android/iOS columns that other domains (Cheques, Savings, Mandates) have. Add them for consistency once automation starts.</li>
-<li>No false "Automated ✅" marks — nothing to correct there. ✅</li>
+<li>✅ <strong>Platform columns added</strong> — the Movements table now has Android/iOS columns.</li>
+<li>✅ <strong>Rows renamed</strong> — OZ-59998, OZ-59999, OZ-60000 updated to their new roles.</li>
+<li>✅ <strong>OZ-60001/60002/60003 removed</strong> from the table (covered by OZ-59998; kept open in Jira, de-flagged from sanity/mobile).</li>
+<li>No false "Automated ✅" marks — nothing to correct. ✅</li>
 </ol>
+<p><em>Minor follow-up: the three renamed summaries were pasted wrapped in backticks — strip them so they render as plain text.</em></p>
 <hr />
 <h2>TTM Data-Quality Issues</h2>
 <ul>
