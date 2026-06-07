@@ -140,7 +140,7 @@
     <div class="container">
         <div class="md-content">
 <h1>Movements Automation Verification Report</h1>
-<p><strong>Date:</strong> 2026-06-01<br />
+<p><strong>Date:</strong> 2026-06-07<br />
 <strong>Jira Ticket:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-104390">OZ-104390 — Automation alignment</a> (Pending PRD)<br />
 <strong>Confluence:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RnD/pages/3206217730/Automation+by+Domain+Progress#Movements">Automation by Domain Progress → Movements</a><br />
 <strong>Repo branch checked:</strong> <code>origin/mobile_dev</code> (main, HEAD <code>015f6a920</code>, 2026-05-31) — cross-checked, result confirmed<br />
@@ -228,56 +228,57 @@
 <p><strong>OZ-59998 data approach:</strong> mix — real data-rich user where the type exists, stub <code>GET_MOVEMENTS</code> for the hard ones (e.g. credit-card billing, flagged "can't simulate"). Use <code>softly.assertThat</code> so one test reports failures across all types.</p>
 <p><strong>OZ-59999 empty-state screens (fresh user):</strong> Movements lobby · FCY lobby · Filter screen · Excel export (no data in range).</p>
 <p><strong>OZ-60000–60003:</strong> kept open, each annotated <em>"covered by OZ-59998"</em> (not closed).</p>
+<p><strong>Status (2026-06-07):</strong> ticket descriptions + step outlines updated in Jira and summaries renamed (OZ-59998, OZ-59999); covered-by notes added to OZ-60000–60003. Formal TTM step <em>rows</em> to be added manually. Two low-hanging-fruit flow-gap checks were folded into OZ-59998: <strong>running balance is displayed</strong> (lobby) and <strong>pull-to-refresh</strong> on the lobby.</p>
 <hr />
-<h2>No Code At All (the 8 in scope)</h2>
+<h2>Per-Ticket Status (no code automated yet for any)</h2>
 <table>
 <thead>
 <tr>
 <th>Test Key</th>
-<th>TTM Summary</th>
-<th>TTM steps quality</th>
+<th>Role / Summary</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>OZ-59998</td>
-<td>Verify Deposit movement</td>
-<td>⚠️ Links to MOB- deposit tests only</td>
+<td>Movements – Extra details for all transaction types (<strong>expanded</strong>)</td>
+<td>Description + step outline written 2026-06-07; no code yet</td>
 </tr>
 <tr>
 <td>OZ-59999</td>
-<td>Verify Mandate movement</td>
-<td>❌ Screenshots only (no text)</td>
+<td>Movements – Empty state (fresh user) – all screens (<strong>repurposed</strong>)</td>
+<td>Description + step outline written 2026-06-07; no code yet</td>
 </tr>
 <tr>
 <td>OZ-60000</td>
-<td>Verify Credit card billing movement</td>
-<td>❌ Screenshots only; precondition "can't simulate"</td>
+<td>Credit card billing movement</td>
+<td>Covered by OZ-59998 (kept open)</td>
 </tr>
 <tr>
 <td>OZ-60001</td>
-<td>Verify Payment movement</td>
-<td>❌ Screenshots only (no text)</td>
+<td>Payment movement</td>
+<td>Covered by OZ-59998 (kept open)</td>
 </tr>
 <tr>
 <td>OZ-60002</td>
-<td>Verify FCY movement</td>
-<td>⚠️ Links to MOB-T8740 only</td>
+<td>FCY movement</td>
+<td>Covered by OZ-59998 (kept open)</td>
 </tr>
 <tr>
 <td>OZ-60003</td>
-<td>Verify Cheque deposit movement</td>
-<td>❌ Screenshots only (no text)</td>
+<td>Cheque deposit movement</td>
+<td>Covered by OZ-59998 (kept open)</td>
 </tr>
 <tr>
 <td>OZ-70385</td>
-<td>Transaction Filtering – Excel export – Functionality</td>
-<td>✅ 8 steps</td>
+<td>Transaction Filtering – Excel export – Functionality (<strong>keep</strong>)</td>
+<td>Has TTM steps; no code yet</td>
 </tr>
 <tr>
 <td>OZ-70386</td>
-<td>Transaction Filtering – Functionality</td>
-<td>✅ 13 steps</td>
+<td>Transaction Filtering – Functionality (<strong>keep</strong>)</td>
+<td>Has TTM steps; no code yet</td>
 </tr>
 </tbody>
 </table>
@@ -288,11 +289,11 @@
 <li>No false "Automated ✅" marks — nothing to correct there. ✅</li>
 </ol>
 <hr />
-<h2>TTM Data-Quality Issues (fix before automating)</h2>
+<h2>TTM Data-Quality Issues</h2>
 <ul>
-<li><strong>OZ-59999 / OZ-60000 / OZ-60001 / OZ-60003</strong> — screenshots only, no written steps. Cannot be automated reliably until steps are written. <code>TTM:</code> fix needed.</li>
-<li><strong>OZ-59998 / OZ-60002</strong> — steps are just hyperlinks to MOB- deposit/FCY creation cases. Real intent: "after creating a deposit / doing an FCY conversion, the resulting movement appears in the movements list with correct extra details." Rewrite as explicit steps.</li>
-<li><strong>OZ-60000</strong> precondition literally says <em>"Can't simulate by me (Raz)"</em> — needs a test-data strategy (mock/seed) before it's automatable.</li>
+<li>✅ <strong>OZ-59998 / OZ-59999</strong> — descriptions + step outlines authored in Jira (2026-06-07). Formal TTM step <em>rows</em> still to be added manually.</li>
+<li><strong>OZ-59998 data strategy</strong> — needs a data-rich user containing all six movement types; <strong>stub <code>GET_MOVEMENTS</code></strong> for credit-card billing (previously flagged "can't simulate").</li>
+<li><strong>OZ-60000–60003</strong> — now covered by OZ-59998 (kept open for traceability); their original screenshots-only steps are no longer a blocker.</li>
 </ul>
 <hr />
 <h2>Flow Gap Analysis</h2>
@@ -320,9 +321,10 @@
 <hr />
 <h2>Recommended next steps</h2>
 <ol>
-<li>Write/repair TTM steps for OZ-59998/59999/60000/60001/60002/60003 (currently screenshots-only / link-only).</li>
-<li>Add the one standalone must-have: <strong>Show-All / load-more on the default lobby</strong> (the crash-guard).</li>
-<li>Fold the export edge cases into OZ-70385 and the lobby empty-state / cash-blocks / pull-to-refresh checks into OZ-70386 — as extra steps, not new tests.</li>
+<li>✅ Descriptions updated in Jira (2026-06-07): OZ-59998 (expanded) &amp; OZ-59999 (empty-state) renamed + steps written; OZ-60000–60003 marked "covered by OZ-59998". <strong>Remaining:</strong> add the formal TTM step rows manually.</li>
+<li>Build the test data: OZ-59998 data-rich user (real + stub for CC billing) and OZ-59999 fresh user.</li>
+<li>Standalone must-have still open: <strong>Show-All / load-more on the default lobby</strong> (crash-guard).</li>
+<li>Flow-gap items still to allocate (later): Excel export edge cases → OZ-70385; cash-blocks positive view → OZ-59998; text search (if it exists). <em>Running-balance display + pull-to-refresh already folded into OZ-59998.</em></li>
 </ol>
         </div>
     </div>
