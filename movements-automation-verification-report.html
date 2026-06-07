@@ -144,7 +144,8 @@
 <strong>Jira Ticket:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-104390">OZ-104390 — Automation alignment</a> (Pending PRD)<br />
 <strong>Confluence:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RnD/pages/3206217730/Automation+by+Domain+Progress#Movements">Automation by Domain Progress → Movements</a><br />
 <strong>Repo branch checked:</strong> <code>origin/mobile_dev</code> (main, HEAD <code>015f6a920</code>, 2026-05-31) — cross-checked, result confirmed<br />
-<strong>TTM source:</strong> 2 Excel exports (8-case + 14-case; 14 unique keys total)</p>
+<strong>TTM source:</strong> 2 Excel exports (14 unique Movements keys reviewed)<br />
+<strong>Final regression set:</strong> <strong>5 tickets</strong> — OZ-59998, OZ-59999, OZ-60000, OZ-70385, OZ-70386</p>
 <hr />
 <h2>Column Legend</h2>
 <table>
@@ -175,20 +176,23 @@
 <hr />
 <h2>Executive Summary</h2>
 <ul>
-<li><strong>Regression scope (mobile-candidate / sanity):</strong> 8 test cases</li>
-<li><strong>Code exists (Automated ✅):</strong> 0 of 8</li>
+<li><strong>Movements regression set: 5 test cases</strong> — OZ-59998, OZ-59999, OZ-60000, OZ-70385, OZ-70386.</li>
+<li><strong>Code exists (Automated ✅):</strong> 0 of 5</li>
 <li><strong>Actively running on any platform:</strong> 0</li>
-<li><strong>No code at all:</strong> 8 ❌</li>
-<li><strong>Confluence errors (Automated ✅ but no code):</strong> 0 🔴 — Confluence is accurate</li>
+<li><strong>Confluence:</strong> accurate — 0 tickets falsely marked automated.</li>
 </ul>
-<p><strong>Bottom line:</strong> Movements is a <strong>0%-automated domain</strong>. Confluence correctly reflects this (nothing falsely marked automated). The only Movements code in the repo belongs to test cases that are <strong>not in this regression set</strong> (see below).</p>
-<h3>Scope note</h3>
-<p>TTM holds <strong>14 Movements cases total</strong>, but only the <strong>8</strong> below are mobile-candidate / sanity — this report covers those 8. The other 6 are filtering sub-tests (UI, filter-button, error-state, navigation, feature-flag, export-UI) treated as <strong>nice-to-have and intentionally out of scope</strong>. None of the 6 is a standalone must-have: each is either redundant with OZ-70386/OZ-70385 or foldable into them as a step or two (see Flow Gap Analysis).</p>
+<p><strong>Bottom line:</strong> Movements is a <strong>0%-automated domain</strong>. Confluence correctly reflects this (nothing falsely marked automated).</p>
+<h3>How the set became 5</h3>
+<p>The Movements TTM originally held 14 cases. After review they were consolidated into a focused <strong>5-ticket</strong> set:<br />
+- The six per-type "Verify X movement" cases (OZ-59998/59999/60000/60001/60002/60003) → <strong>merged into OZ-59998</strong> (one data-rich test covering all types).<br />
+- <strong>OZ-59999</strong> repurposed → empty-state test; <strong>OZ-60000</strong> repurposed → Show All / pagination.<br />
+- <strong>OZ-60001 / 60002 / 60003</strong> kept open in Jira but <strong>out of the set</strong> (covered by OZ-59998, removed from Confluence).<br />
+- The 6 filtering sub-tests were dropped as nice-to-have; only <strong>OZ-70385</strong> (export) and <strong>OZ-70386</strong> (filtering) stay.</p>
 <h3>Branch note</h3>
-<p>Verified against <strong><code>origin/mobile_dev</code></strong> (the automation main branch, HEAD <code>015f6a920</code>, 2026-05-31). None of the 14 keys exist there. The 0-of-14 result is CI-accurate.</p>
+<p>Verified against <strong><code>origin/mobile_dev</code></strong> (the automation main branch, HEAD <code>015f6a920</code>, 2026-05-31). None of the Movements test keys exist there (checked against the original 14 TTM keys) — the 0-automated result is CI-accurate.</p>
 <hr />
-<h2>Planned Restructure (target test set)</h2>
-<p>The set is consolidated around data state — one <strong>data-rich user</strong> to verify every movement type and large-history behavior, one <strong>fresh user</strong> for empty states:</p>
+<h2>The 5-ticket set</h2>
+<p>Consolidated around data state — one <strong>data-rich user</strong> to verify every movement type and large-history behavior, one <strong>fresh user</strong> for empty states:</p>
 <table>
 <thead>
 <tr>
@@ -198,16 +202,6 @@
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><strong>OZ-70385</strong></td>
-<td>Keep — Excel export functionality + <strong>edge cases added</strong></td>
-<td>as-is + edge cases</td>
-</tr>
-<tr>
-<td><strong>OZ-70386</strong></td>
-<td>Keep — Filtering functionality (<strong>step 13 pagination removed</strong> → moved to OZ-60000)</td>
-<td>as-is</td>
-</tr>
 <tr>
 <td><strong>OZ-59998</strong></td>
 <td><strong>Expanded</strong> — extra-details (header/title/date) for all <strong>7</strong> movement types: deposit, mandate, CC billing, payment, FCY, cheque, <strong>loan</strong></td>
@@ -224,12 +218,18 @@
 <td>data-rich user</td>
 </tr>
 <tr>
-<td>OZ-60001 / 60002 / 60003</td>
-<td><strong>Folded into OZ-59998</strong> → no longer standalone</td>
-<td>—</td>
+<td><strong>OZ-70385</strong></td>
+<td>Keep — Excel export functionality + <strong>edge cases added</strong></td>
+<td>as-is + edge cases</td>
+</tr>
+<tr>
+<td><strong>OZ-70386</strong></td>
+<td>Keep — Filtering functionality (<strong>step 13 pagination removed</strong> → moved to OZ-60000)</td>
+<td>as-is</td>
 </tr>
 </tbody>
 </table>
+<p><em>Not in the set: <strong>OZ-60001 / 60002 / 60003</strong> — folded into OZ-59998, kept open in Jira only (removed from Confluence).</em></p>
 <p><strong>OZ-59998 data approach:</strong> mix — real data-rich user where the type exists, stub <code>GET_MOVEMENTS</code> for credit-card billing ("can't simulate"). Field checks limited to <strong>header/title/date</strong>. <code>softly.assertThat</code> reports failures across all types in one run.</p>
 <p><strong>OZ-59999 empty-state screens (fresh user):</strong> Movements lobby · Filter screen · Excel export (no data in range). <em>(FCY-lobby empty state is owned by the FCY domain.)</em></p>
 <p><strong>OZ-60001–60003:</strong> removed from the Confluence Movements table; <strong>kept open in Jira</strong>, each annotated <em>"covered by OZ-59998"</em> and de-flagged from sanity/mobile.</p>
@@ -270,7 +270,7 @@
 </table>
 <p><strong>Rule of thumb:</strong> prefer MOCK + stub for deterministic data shapes; reserve dedicated real users only where realism matters, and never share one real login across parallel test classes.</p>
 <hr />
-<h2>Per-Ticket Status (no code automated yet for any)</h2>
+<h2>Per-Ticket Status (the 5 — no code automated yet for any)</h2>
 <table>
 <thead>
 <tr>
@@ -296,21 +296,6 @@
 <td>Description + step outline written 2026-06-07; no code yet</td>
 </tr>
 <tr>
-<td>OZ-60001</td>
-<td>Payment movement</td>
-<td>Covered by OZ-59998 — removed from Confluence table, kept open in Jira</td>
-</tr>
-<tr>
-<td>OZ-60002</td>
-<td>FCY movement</td>
-<td>Covered by OZ-59998 — removed from Confluence table, kept open in Jira</td>
-</tr>
-<tr>
-<td>OZ-60003</td>
-<td>Cheque deposit movement</td>
-<td>Covered by OZ-59998 — removed from Confluence table, kept open in Jira</td>
-</tr>
-<tr>
 <td>OZ-70385</td>
 <td>Transaction Filtering – Excel export – Functionality + edge cases (<strong>keep</strong>)</td>
 <td>Has TTM steps; edge cases added; no code yet</td>
@@ -322,6 +307,7 @@
 </tr>
 </tbody>
 </table>
+<p><em>Not in the set (kept open in Jira, covered by OZ-59998): OZ-60001, OZ-60002, OZ-60003.</em></p>
 <hr />
 <h2>Confluence Changes Needed — ✅ synced (2026-06-07)</h2>
 <ol>
@@ -335,8 +321,8 @@
 <h2>TTM Data-Quality Issues</h2>
 <ul>
 <li>✅ <strong>OZ-59998 / OZ-59999</strong> — descriptions + step outlines authored in Jira (2026-06-07). Formal TTM step <em>rows</em> still to be added manually.</li>
-<li><strong>OZ-59998 data strategy</strong> — needs a data-rich user containing all six movement types; <strong>stub <code>GET_MOVEMENTS</code></strong> for credit-card billing (previously flagged "can't simulate").</li>
-<li><strong>OZ-60000–60003</strong> — now covered by OZ-59998 (kept open for traceability); their original screenshots-only steps are no longer a blocker.</li>
+<li><strong>OZ-59998 data strategy</strong> — needs a data-rich user containing all <strong>seven</strong> movement types; <strong>stub <code>GET_MOVEMENTS</code></strong> for credit-card billing (previously flagged "can't simulate").</li>
+<li><strong>OZ-60001–60003</strong> — now covered by OZ-59998 (kept open for traceability); their original screenshots-only steps are no longer a blocker.</li>
 </ul>
 <hr />
 <h2>Flow Gap Analysis — allocation (resolved 2026-06-07)</h2>
