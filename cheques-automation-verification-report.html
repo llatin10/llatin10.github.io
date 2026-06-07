@@ -140,7 +140,7 @@
     <div class="container">
         <div class="md-content">
 <h1>Cheques Automation Verification Report</h1>
-<p><strong>Date:</strong> May 14, 2026<br />
+<p><strong>Date:</strong> May 14, 2026 (updated June 7, 2026)<br />
 <strong>Confluence:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/wiki/spaces/RnD/pages/3206217730/Automation+by+Domain+Progress#Cheques">Automation by Domain Progress — Cheques</a></p>
 <hr />
 <h2>Column Legend</h2>
@@ -261,14 +261,14 @@
 <strong>Code does:</strong> Login → Navigate → Verify status = activation ready → Click activation → Verify popup title &amp; subtitle → Click cancel → Verify status unchanged<br />
 <strong>Status:</strong> ✅ Perfect alignment (TTM steps written May 17, 2026)</p>
 <hr />
-<h3>🟡 OZ-78941 — Depositing a new check</h3>
+<h3>✅ OZ-78941 — Depositing a new check</h3>
 <p><strong>TTM (13 steps):</strong> Login → Navigate → Deposit → Back → Deposit again → Legal terms → Share → Back → Enter amount → Scan front → Scan back → Confirm → Success screen<br />
-<strong>Code does:</strong> Login → Navigate → Click deposit → Set amount → Submit → Add permission (camera injection)<br />
-<strong>Status:</strong> 🟡 Partial coverage for sanity  </p>
-<p><strong>What's covered:</strong> Steps 1-3, 9-12 (core deposit flow)<br />
+<strong>Code does:</strong> Login → Navigate → Click deposit → Set amount → Submit → Add permission → camera opens<br />
+<strong>Status:</strong> ✅ Correct for automation limits — ends where automation can reach  </p>
+<p><strong>What's covered:</strong> Steps 1-3, 9 (core deposit flow up to the camera handoff)<br />
 <strong>What's skipped (OK for sanity):</strong> Back navigation (4-5), Legal terms (6-8)<br />
-<strong>What's missing (notable):</strong> Step 13 — no verification of success confirmation screen after deposit  </p>
-<p><strong>Issue:</strong> <code>Description:</code> Code doesn't verify the final success/confirmation screen. The test deposits but doesn't assert the outcome is successful beyond camera permission.</p>
+<strong>Why the success screen is not asserted (by design):</strong> The cheque scan (steps 10-13) cannot be automated — a physical cheque can't be scanned through the camera in an automation run, so the deposit flow can never reach the success/confirmation screen. The test correctly ends when the camera opens. The <code>StatusCheckPage</code> / <code>clickScanBack()</code> / <code>clickApprove()</code> page objects exist but are intentionally unreachable in automation.</p>
+<p><strong>Note:</strong> This is <strong>not</strong> an assertion gap to fix in code — it's an inherent automation limit. The previously flagged "missing success verification" has been retired as a non-issue.</p>
 <hr />
 <h2>No Code — Not Automated (3 tests)</h2>
 <table>
@@ -365,8 +365,8 @@
 <td>✅</td>
 <td>✅</td>
 <td>—</td>
-<td>🟡</td>
-<td>Description: Missing success verification</td>
+<td>✅</td>
+<td>Ends at camera — scan not automatable (by design)</td>
 </tr>
 <tr>
 <td>OZ-78937</td>
@@ -417,22 +417,7 @@
 </table>
 <hr />
 <h2>Remaining Action Items</h2>
-<table>
-<thead>
-<tr>
-<th>Priority</th>
-<th>Action</th>
-<th>Ticket</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>P2</td>
-<td>Consider adding success verification to OZ-78941 deposit test (notify developers)</td>
-<td>OZ-78941</td>
-</tr>
-</tbody>
-</table>
+<p>None. The previously listed P2 (add success verification to OZ-78941) has been retired — the deposit success screen is unreachable in automation because a cheque cannot be scanned through the camera. The test correctly ends at the camera handoff.</p>
 <hr />
 <h2>Domain Status</h2>
 <p><strong>Can we mark Cheques as "Fully Automated"?</strong></p>
@@ -443,7 +428,7 @@
 <li>✅ All Platform Type fields set to "Done Android"</li>
 <li>✅ All TTM steps are documented</li>
 <li>✅ TTM vs Code alignment verified at sanity level</li>
-<li>🟡 1 test could use better assertions (OZ-78941 — notified developers)</li>
+<li>✅ OZ-78941 correctly ends at the camera — cheque scan is not automatable, so the success screen is out of reach by design (not a gap)</li>
 </ul>
 <p><strong>Verdict:</strong> ✅ Domain is COMPLETE. Cheques can be marked as "Fully Automated".</p>
 <hr />
