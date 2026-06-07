@@ -188,7 +188,7 @@
 <p>Verified against <strong><code>origin/mobile_dev</code></strong> (the automation main branch, HEAD <code>015f6a920</code>, 2026-05-31). None of the 14 keys exist there. The 0-of-14 result is CI-accurate.</p>
 <hr />
 <h2>Planned Restructure (target test set)</h2>
-<p>Instead of automating all 8 separately, the set is consolidated around data state — one <strong>data-rich user</strong> to verify every movement type, one <strong>fresh user</strong> to verify empty states:</p>
+<p>The set is consolidated around data state — one <strong>data-rich user</strong> to verify every movement type and large-history behavior, one <strong>fresh user</strong> for empty states:</p>
 <table>
 <thead>
 <tr>
@@ -200,8 +200,8 @@
 <tbody>
 <tr>
 <td><strong>OZ-70385</strong></td>
-<td>Keep — Excel export functionality</td>
-<td>as-is</td>
+<td>Keep — Excel export functionality + <strong>edge cases added</strong></td>
+<td>as-is + edge cases</td>
 </tr>
 <tr>
 <td><strong>OZ-70386</strong></td>
@@ -210,25 +210,30 @@
 </tr>
 <tr>
 <td><strong>OZ-59998</strong></td>
-<td><strong>Expanded</strong> — verify extra-details for all movement types (deposit, mandate, CC billing, payment, FCY, cheque) in one test</td>
-<td>data-rich user</td>
+<td><strong>Expanded</strong> — extra-details (header/title/date) for all <strong>7</strong> movement types: deposit, mandate, CC billing, payment, FCY, cheque, <strong>loan</strong></td>
+<td>data-rich user (+ stub CC billing)</td>
 </tr>
 <tr>
 <td><strong>OZ-59999</strong></td>
-<td><strong>Repurposed</strong> — empty-state across all relevant screens</td>
+<td><strong>Repurposed</strong> — empty-state: Movements lobby · Filter · Excel export</td>
 <td>fresh user</td>
 </tr>
 <tr>
-<td>OZ-60000 / 60001 / 60002 / 60003</td>
+<td><strong>OZ-60000</strong></td>
+<td><strong>Repurposed</strong> — Show All / load-more pagination on the lobby (crash-guard, PR #1928)</td>
+<td>data-rich user</td>
+</tr>
+<tr>
+<td>OZ-60001 / 60002 / 60003</td>
 <td><strong>Folded into OZ-59998</strong> → no longer standalone</td>
 <td>—</td>
 </tr>
 </tbody>
 </table>
-<p><strong>OZ-59998 data approach:</strong> mix — real data-rich user where the type exists, stub <code>GET_MOVEMENTS</code> for the hard ones (e.g. credit-card billing, flagged "can't simulate"). Use <code>softly.assertThat</code> so one test reports failures across all types.</p>
-<p><strong>OZ-59999 empty-state screens (fresh user):</strong> Movements lobby · Filter screen · Excel export (no data in range). <em>(FCY-lobby empty state is owned by the FCY domain, not here.)</em></p>
-<p><strong>OZ-60000–60003:</strong> kept open, each annotated <em>"covered by OZ-59998"</em> (not closed).</p>
-<p><strong>Status (2026-06-07):</strong> ticket descriptions + step outlines updated in Jira and summaries renamed (OZ-59998, OZ-59999); covered-by notes added to OZ-60000–60003. Formal TTM step <em>rows</em> to be added manually. Two low-hanging-fruit flow-gap checks were folded into OZ-59998: <strong>running balance is displayed</strong> (lobby) and <strong>pull-to-refresh</strong> on the lobby.</p>
+<p><strong>OZ-59998 data approach:</strong> mix — real data-rich user where the type exists, stub <code>GET_MOVEMENTS</code> for credit-card billing ("can't simulate"). Field checks limited to <strong>header/title/date</strong>. <code>softly.assertThat</code> reports failures across all types in one run.</p>
+<p><strong>OZ-59999 empty-state screens (fresh user):</strong> Movements lobby · Filter screen · Excel export (no data in range). <em>(FCY-lobby empty state is owned by the FCY domain.)</em></p>
+<p><strong>OZ-60001–60003:</strong> kept open, each annotated <em>"covered by OZ-59998"</em> (not closed).</p>
+<p><strong>Status (2026-06-07):</strong> descriptions + step outlines written in Jira for OZ-59998 (expanded, +loan), OZ-59999 (empty-state), OZ-60000 (repurposed → Show-All/pagination), OZ-70385 (export edge cases); OZ-60001–60003 marked "covered by OZ-59998". Formal TTM step <em>rows</em> to be added manually. Folded into OZ-59998: running-balance display + pull-to-refresh.</p>
 <hr />
 <h2>Per-Ticket Status (no code automated yet for any)</h2>
 <table>
@@ -242,7 +247,7 @@
 <tbody>
 <tr>
 <td>OZ-59998</td>
-<td>Movements – Extra details for all transaction types (<strong>expanded</strong>)</td>
+<td>Movements – Extra details for all transaction types — 7 types incl. <strong>loan</strong> (<strong>expanded</strong>)</td>
 <td>Description + step outline written 2026-06-07; no code yet</td>
 </tr>
 <tr>
@@ -252,8 +257,8 @@
 </tr>
 <tr>
 <td>OZ-60000</td>
-<td>Credit card billing movement</td>
-<td>Covered by OZ-59998 (kept open)</td>
+<td>Movements lobby – Show All / load-more pagination (<strong>repurposed</strong>)</td>
+<td>Description + step outline written 2026-06-07; no code yet</td>
 </tr>
 <tr>
 <td>OZ-60001</td>
@@ -272,8 +277,8 @@
 </tr>
 <tr>
 <td>OZ-70385</td>
-<td>Transaction Filtering – Excel export – Functionality (<strong>keep</strong>)</td>
-<td>Has TTM steps; no code yet</td>
+<td>Transaction Filtering – Excel export – Functionality + edge cases (<strong>keep</strong>)</td>
+<td>Has TTM steps; edge cases added; no code yet</td>
 </tr>
 <tr>
 <td>OZ-70386</td>
@@ -296,35 +301,61 @@
 <li><strong>OZ-60000–60003</strong> — now covered by OZ-59998 (kept open for traceability); their original screenshots-only steps are no longer a blocker.</li>
 </ul>
 <hr />
-<h2>Flow Gap Analysis</h2>
-<p>Rule applied: only flag a <strong>standalone</strong> must-have if it genuinely can't be covered by adding a step or two to one of the 8. Everything else is listed as a <strong>fold-in</strong> (a step to add to an existing case), not a new test.</p>
-<h3>Standalone must-have (cannot be a step in the 8)</h3>
-<ol>
-<li><strong>"Show All" / load-more on the default movements lobby.</strong> This is a lobby-level behavior none of the 8 touches (the 8 cover per-type movement detail + filtering). Your tracking ticket OZ-104390 explicitly references <em>"Show All historic movements does not crash"</em> (PR #1928), and there is no regression guarding it. <strong>Verdict: real must-have, worth a dedicated case (not foldable into the 8).</strong></li>
-</ol>
-<h3>Fold into the existing 8 (add a step or two — do NOT create new tests)</h3>
-<ul>
-<li><strong>Excel export edge cases → add to OZ-70385.</strong> It only walks the happy path. Add steps for: From &gt; To rejected, &gt;1-year range rejected, cancel date-picker, file-name format. (FCY automates these as separate tests OZ-85011/12/13 — for Movements they're just extra steps on OZ-70385.)</li>
-<li><strong>Default-lobby running balance IS shown</strong> — positive counterpart to OZ-70386 step 10 (which only asserts it's hidden under filter). Currently no coverage; candidate to fold into a lobby-level check.</li>
-<li><strong>Empty whole-lobby state → add a step to OZ-70386</strong> (it already has per-chip empty state in step 6).</li>
-<li><strong>Cash-blocks render in default view → add a step to OZ-70386</strong> (step 9 already asserts they're hidden under filter — add the positive case).</li>
-<li><strong>Pull-to-refresh on default lobby → already a step under filter (OZ-70386 step 11);</strong> extend that step to the lobby too.</li>
-<li><strong>Per-type extra-details</strong> are <em>already the 8</em> (OZ-59998–60003).</li>
-</ul>
-<h3>Open question for you</h3>
-<ul>
-<li>Is there a <strong>text search</strong> over movements (distinct from category filtering)? If the feature exists, it has <strong>no</strong> TTM case at all — that would be a real gap. (Flagging, not asserting — couldn't confirm the feature exists.)</li>
-</ul>
+<h2>Flow Gap Analysis — allocation (resolved 2026-06-07)</h2>
+<p>Every identified gap now has a home (or an explicit decision not to test):</p>
+<table>
+<thead>
+<tr>
+<th>Gap</th>
+<th>Disposition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Show All / load-more pagination on the lobby</strong> (crash-guard, PR #1928)</td>
+<td>→ <strong>OZ-60000</strong> (repurposed, data-rich user)</td>
+</tr>
+<tr>
+<td><strong>Excel export edge cases</strong> (From&gt;To, &gt;1-year, cancel picker, file-name)</td>
+<td>→ <strong>OZ-70385</strong> (steps 9–12 added)</td>
+</tr>
+<tr>
+<td><strong>Running balance is displayed</strong> on the lobby</td>
+<td>→ folded into <strong>OZ-59998</strong> (step 2)</td>
+</tr>
+<tr>
+<td><strong>Pull-to-refresh</strong> on the lobby</td>
+<td>→ folded into <strong>OZ-59998</strong> (step 10)</td>
+</tr>
+<tr>
+<td><strong>Loan movement type</strong> (extra-details)</td>
+<td>→ added to <strong>OZ-59998</strong> (step 9)</td>
+</tr>
+<tr>
+<td><strong>Whole-lobby empty state</strong></td>
+<td>→ <strong>OZ-59999</strong> (repurposed empty-state test)</td>
+</tr>
+<tr>
+<td><strong>Cash-blocks positive display</strong> in default view</td>
+<td><strong>Not testing</strong> (decision 2026-06-07)</td>
+</tr>
+<tr>
+<td><strong>Text search</strong> over movements</td>
+<td><strong>Not a feature</strong> — no UI element exists in the page objects; closed</td>
+</tr>
+</tbody>
+</table>
+<p>No standalone gaps remain open.</p>
 <hr />
 <h2>Platform-Type (customfield_11640) Review</h2>
 <p><strong>N/A for this domain.</strong> Workflow C only applies to actively-running tests (those with an Android/iOS checkmark). Movements has zero running tests, so there is no platform-type field to verify yet. Re-run this section once the P0 tests are automated and merged.</p>
 <hr />
 <h2>Recommended next steps</h2>
 <ol>
-<li>✅ Descriptions updated in Jira (2026-06-07): OZ-59998 (expanded) &amp; OZ-59999 (empty-state) renamed + steps written; OZ-60000–60003 marked "covered by OZ-59998". <strong>Remaining:</strong> add the formal TTM step rows manually.</li>
-<li>Build the test data: OZ-59998 data-rich user (real + stub for CC billing) and OZ-59999 fresh user.</li>
-<li>Standalone must-have still open: <strong>Show-All / load-more on the default lobby</strong> (crash-guard).</li>
-<li>Flow-gap items still to allocate (later): Excel export edge cases → OZ-70385; cash-blocks positive view → OZ-59998; text search (if it exists). <em>Running-balance display + pull-to-refresh already folded into OZ-59998.</em></li>
+<li>✅ Descriptions written in Jira (2026-06-07): OZ-59998 (expanded, 7 types incl. loan), OZ-59999 (empty-state), OZ-60000 (repurposed → Show-All/pagination), OZ-70385 (export edge cases); OZ-60001–60003 marked "covered by OZ-59998". <strong>Remaining:</strong> add the formal TTM step rows manually.</li>
+<li>Build the test data: a <strong>data-rich user</strong> (all movement types + large history) for OZ-59998 &amp; OZ-60000, stub CC billing; a <strong>fresh user</strong> for OZ-59999.</li>
+<li>✅ All flow-gap items allocated — no standalone gaps remain open (see Flow Gap Analysis).</li>
+<li>Update the Confluence Movements rows to match the renamed tickets (pending end-of-session).</li>
 </ol>
         </div>
     </div>
