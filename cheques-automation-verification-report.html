@@ -259,7 +259,8 @@
 <h3>✅ OZ-95707 — Activation Of New ChequeBook</h3>
 <p><strong>TTM (7 steps):</strong> Login → Navigate to Cheques → Verify "activation ready" status → Tap activation button → Verify popup title &amp; subtitle → Tap Cancel → Verify status unchanged<br />
 <strong>Code does:</strong> Login → Navigate → Verify status = activation ready → Click activation → Verify popup title &amp; subtitle → Click cancel → Verify status unchanged<br />
-<strong>Status:</strong> ✅ Perfect alignment (TTM steps written May 17, 2026)</p>
+<strong>Status:</strong> ✅ TTM ↔ code aligned — code matches the activation flow exactly</p>
+<p><strong>Fixed June 7, 2026 — <code>Description:</code> annotation was wrong:</strong> The <code>@Description</code> on <code>ChequeBookActivationTest.kt</code> was a stale copy-paste of the <strong>order-chequebook</strong> steps from OZ-78919 (Terms &amp; Conditions, PDF, apartment/entrance/address, bottom sheet) — none of which this activation test performs. Since <code>@Description</code> is what renders in the Allure report, the activation result was showing an order-chequebook script. The annotation has been rewritten to describe the real activation flow (verify status → tap activation → verify popup → cancel → verify unchanged).</p>
 <hr />
 <h3>✅ OZ-78941 — Depositing a new check</h3>
 <p><strong>TTM (13 steps):</strong> Login → Navigate → Deposit → Back → Deposit again → Legal terms → Share → Back → Enter amount → Scan front → Scan back → Confirm → Success screen<br />
@@ -348,7 +349,7 @@
 <td>✅</td>
 <td>—</td>
 <td>✅</td>
-<td>—</td>
+<td>Description: stale annotation fixed Jun 7 (was order-chequebook copy-paste)</td>
 </tr>
 <tr>
 <td>OZ-87592</td>
