@@ -235,6 +235,41 @@
 <p><strong>OZ-60001–60003:</strong> removed from the Confluence Movements table; <strong>kept open in Jira</strong>, each annotated <em>"covered by OZ-59998"</em> and de-flagged from sanity/mobile.</p>
 <p><strong>Status (2026-06-07):</strong> descriptions + step outlines written in Jira for OZ-59998 (expanded, +loan), OZ-59999 (empty-state), OZ-60000 (repurposed → Show-All/pagination), OZ-70385 (export edge cases); OZ-60001–60003 marked "covered by OZ-59998". <strong>Confluence synced</strong> (rows renamed, Android/iOS columns added, 60001–60003 removed). Formal TTM step <em>rows</em> still to be added manually. Folded into OZ-59998: running-balance display + pull-to-refresh.</p>
 <hr />
+<h2>Test Data &amp; Parallelism</h2>
+<p>The suite runs <strong>test classes in parallel</strong> (<code>build.gradle.kts</code>: <code>parallel.enabled=true</code>, <code>classes.default=concurrent</code>, <code>fixed.parallelism=11</code>); methods within a class run serially. All Movements tests here are <strong>read-only</strong>, so there's no data-mutation conflict — the only parallel risk is <strong>shared real-user session collisions</strong> (single-session / OTP / token invalidation).</p>
+<p>The framework's <code>Stubber</code> overrides GraphQL responses (<code>GET_MOVEMENTS overrideWith StubValues(...)</code>) and <strong>requires a MOCK user</strong> — so stubbed tests are inherently deterministic and parallel-safe.</p>
+<table>
+<thead>
+<tr>
+<th>Ticket</th>
+<th>Recommended data approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OZ-70386 (filtering)</td>
+<td>MOCK + stub <code>GET_MOVEMENTS</code>: fixed multi-category dataset (some chips populated, ≥1 empty)</td>
+</tr>
+<tr>
+<td>OZ-60000 (pagination / Show-All)</td>
+<td>MOCK + stub <code>GET_MOVEMENTS</code>: &gt;50 movements (several hundred) to cross page boundaries</td>
+</tr>
+<tr>
+<td>OZ-59998 (extra-details, all types)</td>
+<td>Mix: stub hard types (CC billing) via MOCK; dedicated real rich user where realism needed — never shared across parallel classes</td>
+</tr>
+<tr>
+<td>OZ-59999 (empty state)</td>
+<td>MOCK + stub empty <code>GET_MOVEMENTS</code> (or dedicated fresh real user)</td>
+</tr>
+<tr>
+<td>OZ-70385 (excel export)</td>
+<td>MOCK + stub known dataset (in-range + empty-range); date-range edges are UI-level</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb:</strong> prefer MOCK + stub for deterministic data shapes; reserve dedicated real users only where realism matters, and never share one real login across parallel test classes.</p>
+<hr />
 <h2>Per-Ticket Status (no code automated yet for any)</h2>
 <table>
 <thead>
