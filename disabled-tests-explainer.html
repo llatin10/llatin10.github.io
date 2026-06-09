@@ -134,14 +134,21 @@
 
     
         /* --- code blocks: dark + syntax highlighting (code_highlight.py) --- */
-        pre { background: #1e293b; color: #e2e8f0; border: 1px solid #14323b; border-left: 4px solid #14b8a6; }
-        pre code { background: transparent; border: 0; padding: 0; color: inherit; font: inherit; font-size: inherit; }
+        pre {
+            background: #1e293b; color: #e2e8f0;
+            border: 1px solid #14323b; border-left: 4px solid #14b8a6;
+            border-radius: 10px; padding: 16px 20px; margin: 18px 0;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", ui-monospace, monospace;
+            font-size: 13.5px; line-height: 1.6; overflow-x: auto;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.18);
+        }
+        pre code { background: transparent; border: 0; padding: 0; color: inherit; font: inherit; font-size: inherit; white-space: pre; }
         .tok-c  { color: #94a3b8; font-style: italic; }  /* comment */
         .tok-s  { color: #86efac; }                       /* string */
         .tok-k  { color: #7dd3fc; }                       /* keyword */
         .tok-a  { color: #fcd34d; }                       /* annotation */
         .tok-fn { color: #f0abfc; }                       /* function / backtick name */
-
+        /* --- end code blocks --- */
     </style>
 </head>
 <body class="doc-theme-warm">
