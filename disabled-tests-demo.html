@@ -152,6 +152,16 @@
             @page { size: 210mm 1800mm; margin: 0; }
         }
 
+    
+        /* --- code blocks: dark + syntax highlighting (code_highlight.py) --- */
+        pre { background: #1e293b; color: #e2e8f0; border: 1px solid #14323b; border-left: 4px solid #14b8a6; }
+        pre code { background: transparent; border: 0; padding: 0; color: inherit; font: inherit; font-size: inherit; }
+        .tok-c  { color: #94a3b8; font-style: italic; }  /* comment */
+        .tok-s  { color: #86efac; }                       /* string */
+        .tok-k  { color: #7dd3fc; }                       /* keyword */
+        .tok-a  { color: #fcd34d; }                       /* annotation */
+        .tok-fn { color: #f0abfc; }                       /* function / backtick name */
+
     </style>
 </head>
 <body class="doc-theme-warm">
@@ -203,21 +213,21 @@
                 <div class="code-section-block">
                     <h3>1. The three disable conventions</h3>
                     <p class="code-desc">How a test is turned off depends on where it&#x27;s broken — and each form leaves a visible, traceable trace in code.</p>
-                    <pre><code>// Both platforms -&gt; comment out @Test with a reason above it (also hides it from Allure):
-// DISABLED(broken): Needs user-provisioning job - OZ-75134
-//    @Test
-fun `Savings - Immediate Partial Withdrawal`() { ... }
+                    <pre><code><span class="tok-c">// Both platforms -&gt; comment out @Test with a reason above it (also hides it from Allure):</span>
+<span class="tok-c">// DISABLED(broken): Needs user-provisioning job - OZ-75134</span>
+<span class="tok-c">//    @Test</span>
+<span class="tok-k">fun</span> <span class="tok-fn">`Savings - Immediate Partial Withdrawal`</span>() { ... }
 
-// One platform -&gt; still runs on the other:
-@DisabledIfEnvironmentVariable(named = &quot;platformName&quot;, matches = &quot;android&quot;) // bug - OZ-85653
+<span class="tok-c">// One platform -&gt; still runs on the other:</span>
+<span class="tok-a">@DisabledIfEnvironmentVariable</span>(named = <span class="tok-s">&quot;platformName&quot;</span>, matches = <span class="tok-s">&quot;android&quot;</span>) <span class="tok-c">// bug - OZ-85653</span>
 
-// Data-driven -&gt; remove the CSV row and log it in scripts/disabled-tests/csv-removals.csv</code></pre>
+<span class="tok-c">// Data-driven -&gt; remove the CSV row and log it in scripts/disabled-tests/csv-removals.csv</span></code></pre>
                 </div>
 
                 <div class="code-section-block">
                     <h3>2. The CI guard — registry can&#x27;t silently drift</h3>
                     <p class="code-desc">build-project.yml runs the generator with --check on every PR. Toggle a test without regenerating and the PR fails with a copy-pasteable fix.</p>
-                    <pre><code>❌ DISABLED_TESTS.md is out of date with the test code.
+                    <pre><code>❌ DISABLED_TESTS.md <span class="tok-k">is</span> out of date with the test code.
    A test was enabled or disabled without updating the registry.
    Fix: run  python3 scripts/disabled_tests_report.py  and commit DISABLED_TESTS.md.</code></pre>
                 </div>
@@ -232,11 +242,11 @@ chore: auto-sync test registries from code   (github-actions[bot])</code></pre>
                 <div class="code-section-block">
                     <h3>3. Scope auto-derived from TeamBanking</h3>
                     <p class="code-desc">The generator reads its in-scope domains live from the TeamBanking tag group in build.gradle.kts — the same list that drives CI test routing. Add or remove a domain there and the registry scope follows, no script edit.</p>
-                    <pre><code>// build.gradle.kts — one source of truth for CI routing AND registry scope
-&quot;TeamBanking&quot; to listOf(&quot;IDM&quot;, &quot;Settings&quot;, ... , &quot;Onboarding&quot;, &quot;Dashboard&quot;),
+                    <pre><code><span class="tok-c">// build.gradle.kts — one source of truth for CI routing AND registry scope</span>
+<span class="tok-s">&quot;TeamBanking&quot;</span> to listOf(<span class="tok-s">&quot;IDM&quot;</span>, <span class="tok-s">&quot;Settings&quot;</span>, ... , <span class="tok-s">&quot;Onboarding&quot;</span>, <span class="tok-s">&quot;Dashboard&quot;</span>),
 
-# disabled_tests_report.py parses it at runtime:
-re.search(r&#x27;&quot;TeamBanking&quot;\s*to\s*listOf\(([^)]*)\)&#x27;, build_gradle)</code></pre>
+<span class="tok-c"># disabled_tests_report.py parses it at runtime:</span>
+re.search(r&#x27;<span class="tok-s">&quot;TeamBanking&quot;</span>\s*to\s*listOf\(([^)]*)\)&#x27;, build_gradle)</code></pre>
                 </div>
             </div>
 

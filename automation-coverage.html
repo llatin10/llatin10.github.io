@@ -62,6 +62,16 @@
             pre { white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden; }
             @page { size: 210mm 1800mm; margin: 0; }
         }
+    
+        /* --- code blocks: dark + syntax highlighting (code_highlight.py) --- */
+        pre { background: #1e293b; color: #e2e8f0; border: 1px solid #14323b; border-left: 4px solid #14b8a6; }
+        pre code { background: transparent; border: 0; padding: 0; color: inherit; font: inherit; font-size: inherit; }
+        .tok-c  { color: #94a3b8; font-style: italic; }  /* comment */
+        .tok-s  { color: #86efac; }                       /* string */
+        .tok-k  { color: #7dd3fc; }                       /* keyword */
+        .tok-a  { color: #fcd34d; }                       /* annotation */
+        .tok-fn { color: #f0abfc; }                       /* function / backtick name */
+
     </style>
 </head>
 <body class="doc-theme-warm">
@@ -97,9 +107,9 @@
         <div class="section-block">
             <h2>What "Automated" means (read from the code)</h2>
             <p>A test is <strong>Automated ✅</strong> if a <code>@TmsLink("OZ-…")</code> for it exists in the repo — even if it's disabled, broken, or commented out. <strong>Android ✅ / iOS ✅</strong> means it's <em>actively running</em> on that platform (enabled, not platform-disabled). So a disabled-but-automated test reads <code>✅ | (blank) | (blank)</code>.</p>
-            <pre><code>@TmsLink("OZ-74848")        // -> Automated ✅ (and Android/iOS if it runs there)
-@Test
-fun `Mandates - Create New Mandate`() { ... }</code></pre>
+            <pre><code><span class="tok-a">@TmsLink</span>(<span class="tok-s">&quot;OZ-74848&quot;</span>)        <span class="tok-c">// -&gt; Automated ✅ (and Android/iOS if it runs there)</span>
+<span class="tok-a">@Test</span>
+<span class="tok-k">fun</span> <span class="tok-fn">`Mandates - Create New Mandate`</span>() { ... }</code></pre>
         </div>
 
         <div class="section-block hands-free">
@@ -136,9 +146,9 @@ fun `Mandates - Create New Mandate`() { ... }</code></pre>
         <div class="section-block">
             <h2>The /automation-coverage command (#1964)</h2>
             <p>Since the bot keeps CI green, the command is for what it doesn't do: pushing the Confluence page and curating the backlog.</p>
-            <pre><code>/automation-coverage            # curate regression-suite.csv, regenerate, sync the page
-python3 scripts/automation_coverage_report.py --check          # CI gate
-python3 scripts/automation_coverage_report.py --confluence-html # page body for the manual sync</code></pre>
+            <pre><code>/automation-coverage            <span class="tok-c"># curate regression-suite.csv, regenerate, sync the page</span>
+python3 scripts/automation_coverage_report.py --check          <span class="tok-c"># CI gate</span>
+python3 scripts/automation_coverage_report.py --confluence-html <span class="tok-c"># page body for the manual sync</span></code></pre>
         </div>
 
         <div class="section-block">

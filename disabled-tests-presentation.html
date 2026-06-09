@@ -108,6 +108,16 @@
             @page { size: 210mm 1800mm; margin: 0; }
         }
 
+    
+        /* --- code blocks: dark + syntax highlighting (code_highlight.py) --- */
+        pre { background: #1e293b; color: #e2e8f0; border: 1px solid #14323b; border-left: 4px solid #14b8a6; }
+        pre code { background: transparent; border: 0; padding: 0; color: inherit; font: inherit; font-size: inherit; }
+        .tok-c  { color: #94a3b8; font-style: italic; }  /* comment */
+        .tok-s  { color: #86efac; }                       /* string */
+        .tok-k  { color: #7dd3fc; }                       /* keyword */
+        .tok-a  { color: #fcd34d; }                       /* annotation */
+        .tok-fn { color: #f0abfc; }                       /* function / backtick name */
+
     </style>
 </head>
 <body class="doc-theme-warm">
@@ -161,9 +171,9 @@
             <h2>#1955 — Conventions + Registry + CI Guard (merged)</h2>
             <p>Three disable conventions, one per situation. Broken on BOTH platforms: comment out @Test with a reason line above it (this also keeps it out of Allure). Broken on ONE platform: use @DisabledIfEnvironmentVariable so it still runs on the other platform. Data-driven case: remove the CSV row and log it in a sidecar file. A Python generator then scans the code and writes DISABLED_TESTS.md, and the merge CI runs that generator with --check, failing the PR if the committed registry is out of date.</p>
 
-            <pre><code>// DISABLED(broken): Needs user-provisioning job - OZ-75134
-//    @Test
-fun `Savings - Monthly saving - Immediate Partial Withdrawal`() { ... }</code></pre>
+            <pre><code><span class="tok-c">// DISABLED(broken): Needs user-provisioning job - OZ-75134</span>
+<span class="tok-c">//    @Test</span>
+<span class="tok-k">fun</span> <span class="tok-fn">`Savings - Monthly saving - Immediate Partial Withdrawal`</span>() { ... }</code></pre>
 
         </div>
 
@@ -171,8 +181,8 @@ fun `Savings - Monthly saving - Immediate Partial Withdrawal`() { ... }</code></
             <h2>#1960 — Self-Service &amp; Automation (merged)</h2>
             <p>A shared /disabled-tests command is committed into the repo, so every developer who pulls mobile_dev gets it automatically. It disables or enables a test the agreed way, regenerates the registry, and syncs the Confluence tracker — in one step. The generator's scope is now read live from the TeamBanking tag group in build.gradle.kts, so adding or removing a domain there updates the registry scope automatically, with no script edit. We also removed the unused allure-generator dependency to clear CVE-2026-33166.</p>
 
-            <pre><code>python3 scripts/disabled_tests_report.py          # regenerate the registry
-python3 scripts/disabled_tests_report.py --check   # CI: exit 1 if stale</code></pre>
+            <pre><code>python3 scripts/disabled_tests_report.py          <span class="tok-c"># regenerate the registry</span>
+python3 scripts/disabled_tests_report.py --check   <span class="tok-c"># CI: exit 1 if stale</span></code></pre>
 
         </div>
 
@@ -180,8 +190,8 @@ python3 scripts/disabled_tests_report.py --check   # CI: exit 1 if stale</code><
             <h2 style="color:#0d9488">🪄 Now shipping (#1962) — the registry maintains itself</h2>
             <p>A new CI workflow (<code>sync-test-registries.yml</code>) regenerates the registries on every PR and, if anything is stale, <strong>commits the fix back to your branch automatically</strong> — as <code>github-actions[bot]</code>. No script to run, no hook to install. It covers <em>both</em> the disabled-tests registry and the new automation-coverage registry, using the repo-scoped GITHUB_TOKEN (no long-lived secret).</p>
 
-            <pre><code># on every PR: regenerate -> if stale, auto-commit back to the branch
-git commit -m "chore: auto-sync test registries from code"   # github-actions[bot]</code></pre>
+            <pre><code><span class="tok-c"># on every PR: regenerate -&gt; if stale, auto-commit back to the branch</span>
+git commit -m <span class="tok-s">&quot;chore: auto-sync test registries from code&quot;</span>   <span class="tok-c"># github-actions[bot]</span></code></pre>
         </div>
 
         <div class="section-block">

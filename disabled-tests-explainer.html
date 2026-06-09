@@ -132,6 +132,16 @@
             @page { size: 210mm 1800mm; margin: 0; }
         }
 
+    
+        /* --- code blocks: dark + syntax highlighting (code_highlight.py) --- */
+        pre { background: #1e293b; color: #e2e8f0; border: 1px solid #14323b; border-left: 4px solid #14b8a6; }
+        pre code { background: transparent; border: 0; padding: 0; color: inherit; font: inherit; font-size: inherit; }
+        .tok-c  { color: #94a3b8; font-style: italic; }  /* comment */
+        .tok-s  { color: #86efac; }                       /* string */
+        .tok-k  { color: #7dd3fc; }                       /* keyword */
+        .tok-a  { color: #fcd34d; }                       /* annotation */
+        .tok-fn { color: #f0abfc; }                       /* function / backtick name */
+
     </style>
 </head>
 <body class="doc-theme-warm">
@@ -184,15 +194,15 @@
             <p><strong>Code that makes it work:</strong></p>
             <p>Both-platform disables also disappear from Allure (commented @Test). One-platform keeps coverage on the working OS. Data-driven removals are logged so they stay visible.</p>
 
-            <pre><code>// Both platforms -&gt; comment out @Test with a reason above it:
-// DISABLED(broken): Needs user-provisioning job - OZ-75134
-//    @Test
-fun `Savings - Immediate Partial Withdrawal`() { ... }
+            <pre><code><span class="tok-c">// Both platforms -&gt; comment out @Test with a reason above it:</span>
+<span class="tok-c">// DISABLED(broken): Needs user-provisioning job - OZ-75134</span>
+<span class="tok-c">//    @Test</span>
+<span class="tok-k">fun</span> <span class="tok-fn">`Savings - Immediate Partial Withdrawal`</span>() { ... }
 
-// One platform -&gt; still runs on the other:
-@DisabledIfEnvironmentVariable(named = &quot;platformName&quot;, matches = &quot;android&quot;) // bug - OZ-85653
+<span class="tok-c">// One platform -&gt; still runs on the other:</span>
+<span class="tok-a">@DisabledIfEnvironmentVariable</span>(named = <span class="tok-s">&quot;platformName&quot;</span>, matches = <span class="tok-s">&quot;android&quot;</span>) <span class="tok-c">// bug - OZ-85653</span>
 
-// Data-driven -&gt; remove the CSV row and log it in scripts/disabled-tests/csv-removals.csv</code></pre>
+<span class="tok-c">// Data-driven -&gt; remove the CSV row and log it in scripts/disabled-tests/csv-removals.csv</span></code></pre>
 
         </div>
 
@@ -205,8 +215,8 @@ fun `Savings - Immediate Partial Withdrawal`() { ... }
             <p><strong>Code that makes it work:</strong></p>
             <p>One source of truth for &amp;#x27;what is turned off, and why&amp;#x27; — always generated, never typed by hand.</p>
 
-            <pre><code>python3 scripts/disabled_tests_report.py          # regenerate the registry
-python3 scripts/disabled_tests_report.py --check   # exit 1 if stale (used by CI)</code></pre>
+            <pre><code>python3 scripts/disabled_tests_report.py          <span class="tok-c"># regenerate the registry</span>
+python3 scripts/disabled_tests_report.py --check   <span class="tok-c"># exit 1 if stale (used by CI)</span></code></pre>
 
         </div>
 
@@ -219,7 +229,7 @@ python3 scripts/disabled_tests_report.py --check   # exit 1 if stale (used by CI
             <p><strong>Code that makes it work:</strong></p>
             <p>The failure message tells you exactly what to run — works for any developer, no Claude Code required.</p>
 
-            <pre><code>❌ DISABLED_TESTS.md is out of date with the test code.
+            <pre><code>❌ DISABLED_TESTS.md <span class="tok-k">is</span> out of date with the test code.
    A test was enabled or disabled without updating the registry.
    Fix: run  python3 scripts/disabled_tests_report.py  and commit DISABLED_TESTS.md.</code></pre>
 
@@ -235,7 +245,7 @@ python3 scripts/disabled_tests_report.py --check   # exit 1 if stale (used by CI
             <p>The registry half needs only python3; the Confluence push uses the Atlassian connection (documented as a per-dev prerequisite).</p>
 
             <pre><code>/disabled-tests disable SavingsFooTest on android
-/disabled-tests sync          # regenerate + push Confluence</code></pre>
+/disabled-tests sync          <span class="tok-c"># regenerate + push Confluence</span></code></pre>
 
         </div>
 
@@ -248,11 +258,11 @@ python3 scripts/disabled_tests_report.py --check   # exit 1 if stale (used by CI
             <p><strong>Code that makes it work:</strong></p>
             <p>No more hardcoded domain list to keep in sync — the build config is the one place that defines the team&amp;#x27;s domains.</p>
 
-            <pre><code>// build.gradle.kts — single source of truth for CI routing AND registry scope
-&quot;TeamBanking&quot; to listOf(&quot;IDM&quot;, &quot;Settings&quot;, ... , &quot;Onboarding&quot;, &quot;Dashboard&quot;),
+            <pre><code><span class="tok-c">// build.gradle.kts — single source of truth for CI routing AND registry scope</span>
+<span class="tok-s">&quot;TeamBanking&quot;</span> to listOf(<span class="tok-s">&quot;IDM&quot;</span>, <span class="tok-s">&quot;Settings&quot;</span>, ... , <span class="tok-s">&quot;Onboarding&quot;</span>, <span class="tok-s">&quot;Dashboard&quot;</span>),
 
-# disabled_tests_report.py parses it at runtime:
-re.search(r&#x27;&quot;TeamBanking&quot;\s*to\s*listOf\(([^)]*)\)&#x27;, build_gradle)</code></pre>
+<span class="tok-c"># disabled_tests_report.py parses it at runtime:</span>
+re.search(r&#x27;<span class="tok-s">&quot;TeamBanking&quot;</span>\s*to\s*listOf\(([^)]*)\)&#x27;, build_gradle)</code></pre>
 
         </div>
 
@@ -265,8 +275,8 @@ re.search(r&#x27;&quot;TeamBanking&quot;\s*to\s*listOf\(([^)]*)\)&#x27;, build_g
             <p><strong>Code that makes it work:</strong></p>
             <p>Verified on CI: tests still write results and upload to Allure TestOps, report unaffected. The adapters (allure-junit5, allure-java-commons, allure-attachments) stay at 2.34.0.</p>
 
-            <pre><code>-  implementation(&quot;io.qameta.allure:allure-generator:$allureVersion&quot;)
-+  // removed: unused in source; Allure plugin + allurectl build the report</code></pre>
+            <pre><code>-  implementation(<span class="tok-s">&quot;io.qameta.allure:allure-generator:$allureVersion&quot;</span>)
++  <span class="tok-c">// removed: unused in source; Allure plugin + allurectl build the report</span></code></pre>
 
         </div>
 
@@ -279,11 +289,11 @@ re.search(r&#x27;&quot;TeamBanking&quot;\s*to\s*listOf\(([^)]*)\)&#x27;, build_g
             <p><strong>Code that makes it work:</strong></p>
             <p>One workflow covers <em>both</em> registries; repo-scoped GITHUB_TOKEN, no long-lived secret. The <code>--check</code> gate stays as the backstop, so a stale registry is never merged.</p>
 
-            <pre><code># .github/workflows/sync-test-registries.yml — on every PR:
+            <pre><code><span class="tok-c"># .github/workflows/sync-test-registries.yml — on every PR:</span>
 python3 scripts/disabled_tests_report.py
 python3 scripts/automation_coverage_report.py
-# if a registry changed -> commit it back, as github-actions[bot]
-git commit -m "chore: auto-sync test registries from code" &amp;&amp; git push</code></pre>
+<span class="tok-c"># if a registry changed -&gt; commit it back, as github-actions[bot]</span>
+git commit -m <span class="tok-s">&quot;chore: auto-sync test registries from code&quot;</span> &amp;&amp; git push</code></pre>
 
         </div>
 
