@@ -145,6 +145,10 @@
         <h2>✨ Key Highlights</h2>
         <div class="highlight-grid">
 
+            <div class="highlight-card" style="border-left-color:#0d9488;background:#f0fdfa">
+                <span class="badge-new">#1962 · NEW</span> <p>🪄 Hands-free: the registries regenerate and commit themselves on every PR — you just push.</p>
+            </div>
+
             <div class="highlight-card">
                 <span class="badge-#1955">#1955</span> <p>33+ broken tests disabled the agreed way, each with a reason and an OZ ticket.</p>
             </div>
@@ -266,9 +270,26 @@ re.search(r&#x27;&quot;TeamBanking&quot;\s*to\s*listOf\(([^)]*)\)&#x27;, build_g
 
         </div>
 
+        <div class="section-block" style="border-left-color:#0d9488;background:#f0fdfa">
+            <h2 style="color:#0d9488">7. The registries now fix themselves — hands-free (#1962)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> You no longer act on the red <code>--check</code>. A new workflow regenerates the registries on every PR and <strong>commits the fix back to your branch</strong> for you — the "run the generator + commit" step becomes automatic.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>One workflow covers <em>both</em> registries; repo-scoped GITHUB_TOKEN, no long-lived secret. The <code>--check</code> gate stays as the backstop, so a stale registry is never merged.</p>
+
+            <pre><code># .github/workflows/sync-test-registries.yml — on every PR:
+python3 scripts/disabled_tests_report.py
+python3 scripts/automation_coverage_report.py
+# if a registry changed -> commit it back, as github-actions[bot]
+git commit -m "chore: auto-sync test registries from code" &amp;&amp; git push</code></pre>
+
+        </div>
+
         <div class="next-steps">
             <h2>Next Steps</h2>
-            <p>Both PRs (#1955 and #1960) are merged to mobile_dev, and the TeamJarvis heads-up about the Dashboard CI-routing move is done. Going forward: use /disabled-tests for every disable or enable, and add new domains to the TeamBanking tag group so they are tracked automatically.</p>
+            <p>#1955 and #1960 are merged. The hands-free auto-sync and a second, code-derived registry — <strong>automation coverage by domain</strong> (AUTOMATION_COVERAGE.md, 138/358 automated) — ship in #1962, with a <code>/automation-coverage</code> command in #1964. After they merge: just push your code, and the registries stay honest on their own.</p>
         </div>
 
     </div>

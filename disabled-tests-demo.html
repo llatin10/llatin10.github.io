@@ -167,7 +167,7 @@
         
         <div class="content">
             <div class="summary-block">
-                <p>A live demo of how broken automation tests are now disabled, tracked, and enforced — across PR #1955 and PR #1960, both now merged. Tests are turned off the agreed way, a single registry (DISABLED_TESTS.md) is generated from the code, CI fails any PR whose registry drifts, and a shared /disabled-tests command does the whole thing in one step. Suggested live run order: (1) regenerate the registry; (2) show --check passing, then toggle a test to show the CI-style failure with the exact fix; (3) run /disabled-tests to apply a convention + regenerate + sync Confluence; (4) point at the build-project.yml --check guard; (5) show the scope is read live from the TeamBanking tag group in build.gradle.kts.</p>
+                <p>A live demo of how broken automation tests are disabled, tracked, and enforced — and how the registries now <strong>keep themselves in sync</strong>. Built across #1955 / #1960 (merged) plus the coverage registry + hands-free auto-sync in #1962. Suggested run order: (1) show <code>--check</code> passing; (2) toggle a test to show the CI-style failure with the exact fix; (3) ★ <strong>push it to a PR and watch the bot auto-commit the corrected registry</strong> — the hands-free beat; (4) point at the <code>build-project.yml</code> <code>--check</code> backstop; (5) show the scope is read live from the TeamBanking tag group in <code>build.gradle.kts</code>.</p>
             </div>
 
             <div class="demo-section">
@@ -220,6 +220,13 @@ fun `Savings - Immediate Partial Withdrawal`() { ... }
                     <pre><code>❌ DISABLED_TESTS.md is out of date with the test code.
    A test was enabled or disabled without updating the registry.
    Fix: run  python3 scripts/disabled_tests_report.py  and commit DISABLED_TESTS.md.</code></pre>
+                </div>
+
+                <div class="code-section-block" style="border-left-color:#0d9488;background:#f0fdfa">
+                    <h3 style="color:#0d9488">★ The bot fixes it for you — hands-free (#1962)</h3>
+                    <p class="code-desc">Push the stale change to a PR. The <code>sync-test-registries</code> workflow regenerates and commits the corrected registries back to the branch — nobody runs a script. (Live-tested: the bot auto-committed the fix; the <code>--check</code> gate stays as the backstop.)</p>
+                    <pre><code>$ git log --oneline -1 origin/&lt;your-branch&gt;
+chore: auto-sync test registries from code   (github-actions[bot])</code></pre>
                 </div>
 
                 <div class="code-section-block">

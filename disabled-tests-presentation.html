@@ -121,6 +121,10 @@
         <h2>✨ Key Highlights</h2>
         <div class="highlight-grid">
 
+            <div class="highlight-card" style="border-left-color:#0d9488;background:#f0fdfa">
+                <p>🪄 <strong>Hands-free (new — #1962):</strong> the registry regenerates and commits itself on every PR. You just push your code.</p>
+            </div>
+
             <div class="highlight-card">
                 <p>33+ broken tests disabled the agreed way — visible, each with a reason and an OZ ticket.</p>
             </div>
@@ -172,9 +176,17 @@ python3 scripts/disabled_tests_report.py --check   # CI: exit 1 if stale</code><
 
         </div>
 
+        <div class="section-block" style="border-left-color:#0d9488;background:#f0fdfa">
+            <h2 style="color:#0d9488">🪄 Now shipping (#1962) — the registry maintains itself</h2>
+            <p>A new CI workflow (<code>sync-test-registries.yml</code>) regenerates the registries on every PR and, if anything is stale, <strong>commits the fix back to your branch automatically</strong> — as <code>github-actions[bot]</code>. No script to run, no hook to install. It covers <em>both</em> the disabled-tests registry and the new automation-coverage registry, using the repo-scoped GITHUB_TOKEN (no long-lived secret).</p>
+
+            <pre><code># on every PR: regenerate -> if stale, auto-commit back to the branch
+git commit -m "chore: auto-sync test registries from code"   # github-actions[bot]</code></pre>
+        </div>
+
         <div class="section-block">
             <h2>How the Team Uses It</h2>
-            <p>Disabling or re-enabling a test? Run /disabled-tests (or just the python generator) and commit DISABLED_TESTS.md in the same change. If you forget, CI fails with the exact command to fix it — no tribal knowledge required. The registry stays the single source of truth, Confluence mirrors it, and Allure shows only the tests that actually run.</p>
+            <p><strong>Just push your code.</strong> Disable or re-enable a test and open your PR — the bot regenerates <code>DISABLED_TESTS.md</code> and commits it for you, so you no longer run a script to keep CI green. The <code>--check</code> gate stays as the backstop, so you never merge a stale registry. (Edge case: if your <em>last</em> push leaves it stale and you merge <em>immediately</em>, the green check needs one "Re-run".) Reach for <code>/disabled-tests</code> when you want to sync the Confluence page or apply a convention.</p>
 
         </div>
 
@@ -186,7 +198,7 @@ python3 scripts/disabled_tests_report.py --check   # CI: exit 1 if stale</code><
 
         <div class="section-block">
             <h2>Next Steps</h2>
-            <p>Both PRs (#1955 and #1960) are merged to mobile_dev, and the TeamJarvis heads-up about the Dashboard CI-routing move is done. Going forward: use /disabled-tests for every disable or enable, and add new domains to the TeamBanking tag group so they are tracked automatically.</p>
+            <p>#1955 and #1960 are merged. The hands-free auto-sync and a second, code-derived registry — <strong>automation coverage by domain</strong> (<code>AUTOMATION_COVERAGE.md</code>, 138/358 automated) — are shipping in #1962, with a <code>/automation-coverage</code> command in #1964. Once they merge, disabling/enabling a test and tracking coverage are fully hands-free: just push.</p>
         </div>
 
     </div>
