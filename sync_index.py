@@ -74,6 +74,19 @@ def is_guides_page(title: str, filename: str) -> bool:
     return False
 
 
+def is_disabled_tests_page(title: str, filename: str) -> bool:
+    """The Disabled-Tests Workflow presentation set (PRs #1955 + #1960)."""
+    return filename.casefold().startswith("disabled-tests-")
+
+
+# Preferred ordering within the Disabled-Tests Workflow section.
+DISABLED_TESTS_ORDER = {
+    "disabled-tests-presentation.html": 0,
+    "disabled-tests-explainer.html": 1,
+    "disabled-tests-demo.html": 2,
+}
+
+
 def version_tuple_for_sort(title: str, filename: str) -> tuple[int, int, int]:
     """Parse X.Y.Z (or X.Y) from title/filename for ordering; missing -> (0,0,0)."""
     for s in (title, filename):
@@ -223,6 +236,7 @@ def main() -> int:
     production_issues: list[tuple[str, str]] = []
     automation_alignment: list[tuple[str, str]] = []
     guides: list[tuple[str, str]] = []
+    disabled_tests: list[tuple[str, str]] = []
     rest: list[tuple[str, str]] = []
     for title, name in all_pages:
         if is_deep_links_page(title, name):
@@ -233,6 +247,8 @@ def main() -> int:
             production_issues.append((title, name))
         elif is_automation_alignment_page(title, name):
             automation_alignment.append((title, name))
+        elif is_disabled_tests_page(title, name):
+            disabled_tests.append((title, name))
         elif is_guides_page(title, name):
             guides.append((title, name))
         else:
@@ -246,9 +262,10 @@ def main() -> int:
     production_issues.sort(key=lambda x: x[1].casefold())
     automation_alignment.sort(key=lambda x: (0 if "automation-knowledge-base" in x[1].casefold() else 1, x[0].casefold()))
     guides.sort(key=lambda x: x[0].casefold())
+    disabled_tests.sort(key=lambda x: DISABLED_TESTS_ORDER.get(x[1].casefold(), 99))
     rest.sort(key=lambda x: x[0].casefold())
 
-    pages: list[tuple[str, str]] = pinned + qa_features + production_issues + automation_alignment + guides + rest
+    pages: list[tuple[str, str]] = pinned + qa_features + production_issues + automation_alignment + guides + disabled_tests + rest
 
     if not all_pages:
         body = "            <li><em>No pages yet</em></li>"
@@ -314,6 +331,16 @@ def main() -> int:
             <p class="section-hint">On-demand tests, workflows, and Kiro steering guides.</p>
 {on_demand_html}{other_guides_html}"""
             )
+        if disabled_tests:
+            hints.append("Disabled-tests workflow (presentation set)")
+            border = " section-disabled" if (pinned or qa_features or production_issues or automation_alignment or guides) else ""
+            blocks.append(
+                f"""            <h2 class="section{border}">Disabled-Tests Workflow</h2>
+            <p class="section-hint">Team presentation for PRs #1955 + #1960 — deck, explainer, and demo.</p>
+            <ul class="page-list">
+{_list_items(disabled_tests)}
+            </ul>"""
+            )
         if rest:
             hints.append("Other pages A–Z by title")
             sep = " section-other" if blocks else ""
@@ -359,6 +386,7 @@ def main() -> int:
         h2.section-other {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         h2.section-guides {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         h2.section-automation {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
+        h2.section-disabled {{ margin-top: 28px; padding-top: 20px; border-top: 1px solid #e7e5e4; }}
         .section-hint {{ font-size: 0.75rem; color: #a8a29e; margin: -4px 0 10px 0; }}
         ul.page-list {{ list-style: none; }}
         ul.page-list li {{ margin-bottom: 10px; }}
@@ -410,6 +438,12 @@ def main() -> int:
         print()
         print("  Guides & Documentation:")
         for title, filename in guides:
+            url = f"{SITE_BASE}/{quote(filename, safe='/')}"
+            print(f"  - {title} — {url}")
+    if disabled_tests:
+        print()
+        print("  Disabled-Tests Workflow:")
+        for title, filename in disabled_tests:
             url = f"{SITE_BASE}/{quote(filename, safe='/')}"
             print(f"  - {title} — {url}")
     if rest:
