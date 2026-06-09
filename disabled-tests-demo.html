@@ -167,7 +167,7 @@
         
         <div class="content">
             <div class="summary-block">
-                <p>A live demo of how broken automation tests are now disabled, tracked, and enforced — across PR #1955 (merged) and PR #1960 (open). Tests are turned off the agreed way, a single registry (DISABLED_TESTS.md) is generated from the code, CI fails any PR whose registry drifts, and a shared /disabled-tests command does the whole thing in one step. Suggested live run order: (1) regenerate the registry; (2) show --check passing, then toggle a test to show the CI-style failure with the exact fix; (3) run /disabled-tests to apply a convention + regenerate + sync Confluence; (4) point at the build-project.yml --check guard; (5) show the scope is read live from the TeamBanking tag group in build.gradle.kts.</p>
+                <p>A live demo of how broken automation tests are now disabled, tracked, and enforced — across PR #1955 and PR #1960, both now merged. Tests are turned off the agreed way, a single registry (DISABLED_TESTS.md) is generated from the code, CI fails any PR whose registry drifts, and a shared /disabled-tests command does the whole thing in one step. Suggested live run order: (1) regenerate the registry; (2) show --check passing, then toggle a test to show the CI-style failure with the exact fix; (3) run /disabled-tests to apply a convention + regenerate + sync Confluence; (4) point at the build-project.yml --check guard; (5) show the scope is read live from the TeamBanking tag group in build.gradle.kts.</p>
             </div>
 
             <div class="demo-section">

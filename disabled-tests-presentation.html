@@ -115,7 +115,7 @@
         <h1>From Noise to Signal: A Tracked, Self-Enforcing Disabled-Tests Workflow</h1>
         
         <div class="intro-block">
-            <p>Broken automation tests were cluttering Allure and getting silently switched off with no record of why. Across two PRs — #1955 (merged) and #1960 (open) — we standardized how tests are disabled, generated a single source-of-truth registry, made CI enforce it, shipped a one-command self-service tool, made the scope auto-adapt to the team&#x27;s domains, and cleared a security finding.</p>
+            <p>Broken automation tests were cluttering Allure and getting silently switched off with no record of why. Across two PRs — #1955 and #1960, both now merged — we standardized how tests are disabled, generated a single source-of-truth registry, made CI enforce it, shipped a one-command self-service tool, made the scope auto-adapt to the team&#x27;s domains, and cleared a security finding.</p>
         </div>
 
         <h2>✨ Key Highlights</h2>
@@ -164,7 +164,7 @@ fun `Savings - Monthly saving - Immediate Partial Withdrawal`() { ... }</code></
         </div>
 
         <div class="section-block">
-            <h2>#1960 — Self-Service &amp; Automation (open)</h2>
+            <h2>#1960 — Self-Service &amp; Automation (merged)</h2>
             <p>A shared /disabled-tests command is committed into the repo, so every developer who pulls mobile_dev gets it automatically. It disables or enables a test the agreed way, regenerates the registry, and syncs the Confluence tracker — in one step. The generator's scope is now read live from the TeamBanking tag group in build.gradle.kts, so adding or removing a domain there updates the registry scope automatically, with no script edit. We also removed the unused allure-generator dependency to clear CVE-2026-33166.</p>
 
             <pre><code>python3 scripts/disabled_tests_report.py          # regenerate the registry
@@ -186,7 +186,7 @@ python3 scripts/disabled_tests_report.py --check   # CI: exit 1 if stale</code><
 
         <div class="section-block">
             <h2>Next Steps</h2>
-            <p>Merge #1960 (its #1955 dependency is already on mobile_dev). Give TeamJarvis a heads-up that Dashboard tests now run in the TeamBanking CI suite. Going forward: use /disabled-tests for every disable or enable, and add new domains to the TeamBanking tag group so they are tracked automatically.</p>
+            <p>Both PRs (#1955 and #1960) are merged to mobile_dev, and the TeamJarvis heads-up about the Dashboard CI-routing move is done. Going forward: use /disabled-tests for every disable or enable, and add new domains to the TeamBanking tag group so they are tracked automatically.</p>
         </div>
 
     </div>
