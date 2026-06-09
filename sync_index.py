@@ -75,15 +75,18 @@ def is_guides_page(title: str, filename: str) -> bool:
 
 
 def is_disabled_tests_page(title: str, filename: str) -> bool:
-    """The Disabled-Tests Workflow presentation set (PRs #1955 + #1960)."""
-    return filename.casefold().startswith("disabled-tests-")
+    """The test-registry presentation set: disabled-tests (PRs #1955 + #1960)
+    and automation-coverage (PRs #1962 + #1964)."""
+    fn = filename.casefold()
+    return fn.startswith("disabled-tests-") or fn == "automation-coverage.html"
 
 
-# Preferred ordering within the Disabled-Tests Workflow section.
+# Preferred ordering within the Test Registries & Coverage section.
 DISABLED_TESTS_ORDER = {
     "disabled-tests-presentation.html": 0,
     "disabled-tests-explainer.html": 1,
     "disabled-tests-demo.html": 2,
+    "automation-coverage.html": 3,
 }
 
 
@@ -332,11 +335,11 @@ def main() -> int:
 {on_demand_html}{other_guides_html}"""
             )
         if disabled_tests:
-            hints.append("Disabled-tests workflow (presentation set)")
+            hints.append("Test registries & coverage (presentation set)")
             border = " section-disabled" if (pinned or qa_features or production_issues or automation_alignment or guides) else ""
             blocks.append(
-                f"""            <h2 class="section{border}">Disabled-Tests Workflow</h2>
-            <p class="section-hint">Team presentation for PRs #1955 + #1960 — deck, explainer, and demo.</p>
+                f"""            <h2 class="section{border}">Test Registries &amp; Coverage</h2>
+            <p class="section-hint">Decks, explainer &amp; demo for the disabled-tests and automation-coverage registries — PRs #1955, #1960, #1962, #1964.</p>
             <ul class="page-list">
 {_list_items(disabled_tests)}
             </ul>"""
