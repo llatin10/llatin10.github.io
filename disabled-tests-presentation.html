@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Noise to Signal: A Tracked, Self-Enforcing Disabled-Tests Workflow</title>
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, -apple-system, Arial, sans-serif;
+            background: #faf9f7;
+            padding: 24px;
+            line-height: 1.65;
+            color: #44403c;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+            padding: 28px 32px 40px;
+        }
+        h1 {
+            color: #1c1917;
+            border-bottom: 2px solid #e7e5e0;
+            font-weight: 700;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #0d9488;
+            border-bottom: 1px solid #e7e5e0;
+            margin-top: 36px;
+            padding-bottom: 10px;
+        }
+        h3 { color: #0f766e; margin-top: 24px; }
+        .section-block {
+            background: #fafaf9;
+            border: 1px solid #e7e5e0;
+            border-left: 4px solid #14b8a6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .intro-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border: 1px solid #99f6e4;
+            border-left: 4px solid #14b8a6;
+            padding: 18px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: "Consolas", ui-monospace, monospace;
+            border-left: 4px solid #14b8a6;
+            line-height: 1.55;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f5f5f4;
+            color: #0f766e;
+            padding: 0.2em 0.45em;
+            border-radius: 4px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.9em;
+            border: 1px solid #e7e5e0;
+        }
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .highlight-card {
+            background: #fff;
+            border: 1px solid #e7e5e0;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 3px solid #14b8a6;
+        }
+        
+        @media print {
+            body {
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .container {
+                box-shadow: none !important;
+                padding: 40px;
+                margin: 0 auto;
+                max-width: 100%;
+                width: 100%;
+                border-radius: 0;
+                box-sizing: border-box;
+            }
+            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
+            .section-block, .intro-block, .highlight-card, pre,
+            .simple-explanation, .next-steps { page-break-inside: avoid; break-inside: avoid; }
+            pre { white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden; }
+            @page { size: 210mm 1800mm; margin: 0; }
+        }
+
+    </style>
+</head>
+<body class="doc-theme-warm">
+    <div class="container">
+        <h1>From Noise to Signal: A Tracked, Self-Enforcing Disabled-Tests Workflow</h1>
+        
+        <div class="intro-block">
+            <p>Broken automation tests were cluttering Allure and getting silently switched off with no record of why. Across two PRs — #1955 (merged) and #1960 (open) — we standardized how tests are disabled, generated a single source-of-truth registry, made CI enforce it, shipped a one-command self-service tool, made the scope auto-adapt to the team&#x27;s domains, and cleared a security finding.</p>
+        </div>
+
+        <h2>✨ Key Highlights</h2>
+        <div class="highlight-grid">
+
+            <div class="highlight-card">
+                <p>33+ broken tests disabled the agreed way — visible, each with a reason and an OZ ticket.</p>
+            </div>
+
+            <div class="highlight-card">
+                <p>DISABLED_TESTS.md: one auto-generated registry (domain · test · platform · reason · ticket).</p>
+            </div>
+
+            <div class="highlight-card">
+                <p>CI guard: a PR fails if the registry drifts from the code — with the exact fix printed.</p>
+            </div>
+
+            <div class="highlight-card">
+                <p>/disabled-tests: one command to disable or enable a test, regenerate the registry, and sync Confluence.</p>
+            </div>
+
+            <div class="highlight-card">
+                <p>Scope auto-derived from the TeamBanking tag group in build.gradle.kts — no hardcoded list to maintain.</p>
+            </div>
+
+            <div class="highlight-card">
+                <p>Security: removed the unused, vulnerable allure-generator dependency (CVE-2026-33166).</p>
+            </div>
+
+        </div>
+
+        <div class="section-block">
+            <h2>The Problem</h2>
+            <p>Allure showed red from tests that were already known to be broken, drowning real failures in noise. People "fixed" it by quietly commenting out @Test — but with no reason, no ticket, and no list, those tests silently vanished and were never revisited. There was no single place to answer the basic question: what is turned off, and why?</p>
+
+        </div>
+
+        <div class="section-block">
+            <h2>#1955 — Conventions + Registry + CI Guard (merged)</h2>
+            <p>Three disable conventions, one per situation. Broken on BOTH platforms: comment out @Test with a reason line above it (this also keeps it out of Allure). Broken on ONE platform: use @DisabledIfEnvironmentVariable so it still runs on the other platform. Data-driven case: remove the CSV row and log it in a sidecar file. A Python generator then scans the code and writes DISABLED_TESTS.md, and the merge CI runs that generator with --check, failing the PR if the committed registry is out of date.</p>
+
+            <pre><code>// DISABLED(broken): Needs user-provisioning job - OZ-75134
+//    @Test
+fun `Savings - Monthly saving - Immediate Partial Withdrawal`() { ... }</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>#1960 — Self-Service &amp; Automation (open)</h2>
+            <p>A shared /disabled-tests command is committed into the repo, so every developer who pulls mobile_dev gets it automatically. It disables or enables a test the agreed way, regenerates the registry, and syncs the Confluence tracker — in one step. The generator's scope is now read live from the TeamBanking tag group in build.gradle.kts, so adding or removing a domain there updates the registry scope automatically, with no script edit. We also removed the unused allure-generator dependency to clear CVE-2026-33166.</p>
+
+            <pre><code>python3 scripts/disabled_tests_report.py          # regenerate the registry
+python3 scripts/disabled_tests_report.py --check   # CI: exit 1 if stale</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>How the Team Uses It</h2>
+            <p>Disabling or re-enabling a test? Run /disabled-tests (or just the python generator) and commit DISABLED_TESTS.md in the same change. If you forget, CI fails with the exact command to fix it — no tribal knowledge required. The registry stays the single source of truth, Confluence mirrors it, and Allure shows only the tests that actually run.</p>
+
+        </div>
+
+        <div class="section-block">
+            <h2>Impact</h2>
+            <p>Allure is clean — only running tests appear. Every disabled test is now visible with a reason and a ticket. The registry can no longer silently drift from the code. New domains are picked up automatically. And there is one fewer vulnerable dependency on the classpath.</p>
+
+        </div>
+
+        <div class="section-block">
+            <h2>Next Steps</h2>
+            <p>Merge #1960 (its #1955 dependency is already on mobile_dev). Give TeamJarvis a heads-up that Dashboard tests now run in the TeamBanking CI suite. Going forward: use /disabled-tests for every disable or enable, and add new domains to the TeamBanking tag group so they are tracked automatically.</p>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - Disabled-Tests Workflow</title>
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(180deg, #ecfdf5 0%, #faf9f7 40%, #e0f2fe 100%);
+            padding: 24px;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(13, 148, 136, 0.12);
+            overflow: hidden;
+            border: 1px solid #e7e5e0;
+        }
+        .demo-header {
+            background: linear-gradient(135deg, #0d9488 0%, #0ea5e9 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .demo-header-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.22);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .demo-header h1 { font-size: 32px; font-weight: 700; margin-top: 8px; }
+        .demo-header .demo-date { font-size: 14px; opacity: 0.95; margin-top: 8px; }
+        .links-bar {
+            display: flex; flex-wrap: wrap; gap: 16px;
+            padding: 20px 24px;
+            background: #fafaf9;
+            border-bottom: 1px solid #e7e5e0;
+        }
+        .links-section { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+        .links-section-title {
+            font-size: 12px; font-weight: 600; text-transform: uppercase; color: #78716c;
+        }
+        .link-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 14px; border-radius: 20px; font-size: 14px;
+            text-decoration: none; font-weight: 500;
+        }
+        .link-pill-jira { background: #0052CC; color: white; }
+        .link-pill-figma { background: #F24E1E; color: white; }
+        .content { padding: 32px 40px; }
+        .summary-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border-left: 4px solid #14b8a6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 28px;
+            border: 1px solid #99f6e4;
+        }
+        .summary-block p { color: #44403c; margin: 0; }
+        .demo-section h2 {
+            color: #0f766e;
+            border-bottom: 2px solid #e7e5e0;
+            padding-bottom: 10px;
+            margin: 28px 0 16px;
+            font-size: 22px;
+        }
+        .screenshot-container {
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(45, 42, 38, 0.08);
+            border: 1px solid #e7e5e0;
+            page-break-inside: avoid;
+        }
+        .screenshot-header {
+            background: #44403c;
+            color: #fafaf9;
+            padding: 12px 20px;
+            font-weight: 600;
+        }
+        .screenshot-img { width: 100%; height: auto; display: block; }
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+        .highlight-card {
+            background: #fff;
+            border: 1px solid #e7e5e0;
+            border-radius: 8px;
+            padding: 18px;
+            border-left: 4px solid #14b8a6;
+        }
+        .highlight-card p { margin: 0; color: #44403c; }
+        .code-section-block {
+            background: #fafaf9;
+            border-left: 4px solid #0d9488;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #e7e5e0;
+            page-break-inside: avoid;
+        }
+        .code-section-block h3 { color: #0f766e; margin: 0 0 8px; font-size: 18px; }
+        .code-section-block .code-desc { color: #57534e; margin-bottom: 12px; font-size: 14px; }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: ui-monospace, monospace;
+            border-left: 4px solid #14b8a6;
+            line-height: 1.5;
+            font-size: 13px;
+            overflow-x: auto;
+        }
+        code {
+            background: #ecfdf5;
+            color: #0f766e;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.9em;
+            border: 1px solid #99f6e4;
+        }
+        .demo-footer {
+            background: #fafaf9;
+            padding: 20px 40px;
+            text-align: center;
+            color: #78716c;
+            border-top: 1px solid #e7e5e0;
+            font-size: 14px;
+        }
+        
+        @media print {
+            body { padding: 0 !important; background: #fff !important; }
+            .container { box-shadow: none !important; border-radius: 0 !important; }
+            h2 { page-break-after: avoid; break-after: avoid; }
+            .screenshot-container, .code-section-block, .highlight-card { page-break-inside: avoid; break-inside: avoid; }
+            pre { white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden; }
+            @page { size: 210mm 1800mm; margin: 0; }
+        }
+
+    </style>
+</head>
+<body class="doc-theme-warm">
+    <div class="container">
+        <div class="demo-header">
+            <span class="demo-header-badge">mobile-tests Demo</span>
+            <h1>Disabled-Tests Workflow</h1>
+            <div class="demo-date">2026-06-09</div>
+        </div>
+        
+        <div class="links-bar">
+        </div>
+        
+        <div class="content">
+            <div class="summary-block">
+                <p>A live demo of how broken automation tests are now disabled, tracked, and enforced — across PR #1955 (merged) and PR #1960 (open). Tests are turned off the agreed way, a single registry (DISABLED_TESTS.md) is generated from the code, CI fails any PR whose registry drifts, and a shared /disabled-tests command does the whole thing in one step. Suggested live run order: (1) regenerate the registry; (2) show --check passing, then toggle a test to show the CI-style failure with the exact fix; (3) run /disabled-tests to apply a convention + regenerate + sync Confluence; (4) point at the build-project.yml --check guard; (5) show the scope is read live from the TeamBanking tag group in build.gradle.kts.</p>
+            </div>
+
+            <div class="demo-section">
+                <h2>Key changes</h2>
+                <div class="highlight-grid">
+
+                    <div class="highlight-card">
+                        <p>33+ broken tests disabled the agreed way — visible, each with a reason and an OZ ticket (#1955).</p>
+                    </div>
+
+                    <div class="highlight-card">
+                        <p>DISABLED_TESTS.md: one auto-generated registry — domain, test, platform, reason, ticket.</p>
+                    </div>
+
+                    <div class="highlight-card">
+                        <p>CI guard fails a PR if the registry drifts from the code, and prints the exact one-line fix.</p>
+                    </div>
+
+                    <div class="highlight-card">
+                        <p>/disabled-tests: one command to disable/enable a test, regenerate the registry, and sync Confluence (#1960).</p>
+                    </div>
+
+                    <div class="highlight-card">
+                        <p>Scope auto-derived from the TeamBanking tag group in build.gradle.kts — and a security cleanup removing the unused allure-generator (CVE-2026-33166).</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="demo-section">
+                <h2>Code highlights</h2>
+
+                <div class="code-section-block">
+                    <h3>1. The three disable conventions</h3>
+                    <p class="code-desc">How a test is turned off depends on where it&#x27;s broken — and each form leaves a visible, traceable trace in code.</p>
+                    <pre><code>// Both platforms -&gt; comment out @Test with a reason above it (also hides it from Allure):
+// DISABLED(broken): Needs user-provisioning job - OZ-75134
+//    @Test
+fun `Savings - Immediate Partial Withdrawal`() { ... }
+
+// One platform -&gt; still runs on the other:
+@DisabledIfEnvironmentVariable(named = &quot;platformName&quot;, matches = &quot;android&quot;) // bug - OZ-85653
+
+// Data-driven -&gt; remove the CSV row and log it in scripts/disabled-tests/csv-removals.csv</code></pre>
+                </div>
+
+                <div class="code-section-block">
+                    <h3>2. The CI guard — registry can&#x27;t silently drift</h3>
+                    <p class="code-desc">build-project.yml runs the generator with --check on every PR. Toggle a test without regenerating and the PR fails with a copy-pasteable fix.</p>
+                    <pre><code>❌ DISABLED_TESTS.md is out of date with the test code.
+   A test was enabled or disabled without updating the registry.
+   Fix: run  python3 scripts/disabled_tests_report.py  and commit DISABLED_TESTS.md.</code></pre>
+                </div>
+
+                <div class="code-section-block">
+                    <h3>3. Scope auto-derived from TeamBanking</h3>
+                    <p class="code-desc">The generator reads its in-scope domains live from the TeamBanking tag group in build.gradle.kts — the same list that drives CI test routing. Add or remove a domain there and the registry scope follows, no script edit.</p>
+                    <pre><code>// build.gradle.kts — one source of truth for CI routing AND registry scope
+&quot;TeamBanking&quot; to listOf(&quot;IDM&quot;, &quot;Settings&quot;, ... , &quot;Onboarding&quot;, &quot;Dashboard&quot;),
+
+# disabled_tests_report.py parses it at runtime:
+re.search(r&#x27;&quot;TeamBanking&quot;\s*to\s*listOf\(([^)]*)\)&#x27;, build_gradle)</code></pre>
+                </div>
+            </div>
+
+        <div class="demo-footer">
+            <strong>Branch:</strong> add-disabled-tests-command &nbsp;|&nbsp; <strong>Generated:</strong> 2026-06-09
+        </div>
+        </div>
+    </div>
+</body>
+</html>

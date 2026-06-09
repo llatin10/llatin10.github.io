@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disabled-Tests Workflow — How It Works (PRs #1955 + #1960)</title>
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: #faf9f7;
+            padding: 24px;
+            line-height: 1.65;
+            color: #44403c;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 28px 32px 36px;
+            box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+        }
+        h1 {
+            color: #1c1917;
+            border-bottom: 2px solid #e7e5e0;
+            font-weight: 600;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #0d9488;
+            border-bottom: 1px solid #e7e5e0;
+            margin-top: 36px;
+            font-weight: 600;
+            padding-bottom: 10px;
+        }
+        h3 { color: #0f766e; font-weight: 600; margin-top: 20px; }
+        .section-block {
+            background: #fafaf9;
+            border: 1px solid #e7e5e0;
+            border-left: 4px solid #14b8a6;
+            padding: 22px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .intro-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border: 1px solid #99f6e4;
+            border-left: 4px solid #14b8a6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .simple-explanation {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-left: 4px solid #d97706;
+            padding: 15px;
+            border-radius: 8px;
+            color: #44403c;
+            margin: 16px 0;
+        }
+        pre {
+            background: #f5f5f4;
+            color: #1c1917;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: ui-monospace, monospace;
+            border: 1px solid #e7e5e0;
+            line-height: 1.45;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        code {
+            background: #ecfdf5;
+            color: #0f766e;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.85em;
+            border: 1px solid #99f6e4;
+        }
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .highlight-card {
+            background: #fff;
+            border: 1px solid #e7e5e0;
+            border-radius: 8px;
+            padding: 18px;
+            border-left: 3px solid #14b8a6;
+        }
+        .badge-new { background: #ecfdf5; color: #047857; border: 1px solid #14b8a6;
+            padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .badge-fix { background: #fef2f2; color: #b91c1c; border: 1px solid #f87171;
+            padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .badge-improved { background: #e0f2fe; color: #0369a1; border: 1px solid #38bdf8;
+            padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .next-steps {
+            background: linear-gradient(135deg, #0d9488 0%, #0ea5e9 100%);
+            color: #fff;
+            padding: 24px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .next-steps h2 { color: #fff; border: none; margin-top: 0; }
+        
+        @media print {
+            body {
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .container {
+                box-shadow: none !important;
+                padding: 40px;
+                margin: 0 auto;
+                max-width: 100%;
+                width: 100%;
+                border-radius: 0;
+                box-sizing: border-box;
+            }
+            h1, h2, h3, h4, h5, h6 { page-break-after: avoid; break-after: avoid; }
+            .section-block, .intro-block, .highlight-card, pre,
+            .simple-explanation, .next-steps { page-break-inside: avoid; break-inside: avoid; }
+            pre { white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden; }
+            @page { size: 210mm 1800mm; margin: 0; }
+        }
+
+    </style>
+</head>
+<body class="doc-theme-warm">
+    <div class="container">
+        <h1>Disabled-Tests Workflow — How It Works (PRs #1955 + #1960)</h1>
+        
+        <div class="intro-block">
+            <p>A code-level walkthrough of the disabled-tests workflow: how a test is turned off the agreed way, how the DISABLED_TESTS.md registry is generated, how CI keeps it honest, the one-command /disabled-tests tool, auto-scoping from the TeamBanking tag group, and a security cleanup. Audience: the QA/automation team.</p>
+        </div>
+
+        <h2>✨ Key Highlights</h2>
+        <div class="highlight-grid">
+
+            <div class="highlight-card">
+                <span class="badge-#1955">#1955</span> <p>33+ broken tests disabled the agreed way, each with a reason and an OZ ticket.</p>
+            </div>
+
+            <div class="highlight-card">
+                <span class="badge-#1955">#1955</span> <p>Single source-of-truth registry: DISABLED_TESTS.md, auto-generated from code.</p>
+            </div>
+
+            <div class="highlight-card">
+                <span class="badge-ci guard">CI GUARD</span> <p>CI fails any PR whose registry drifts from the code — with the exact fix printed.</p>
+            </div>
+
+            <div class="highlight-card">
+                <span class="badge-#1960">#1960</span> <p>/disabled-tests: one command to disable/enable, regenerate, and sync Confluence.</p>
+            </div>
+
+            <div class="highlight-card">
+                <span class="badge-#1960">#1960</span> <p>Scope auto-derived from the TeamBanking tag group — add a domain, it&#x27;s tracked.</p>
+            </div>
+
+            <div class="highlight-card">
+                <span class="badge-cve-2026-33166">CVE-2026-33166</span> <p>Removed the unused, vulnerable allure-generator dependency.</p>
+            </div>
+
+        </div>
+
+        <div class="section-block">
+            <h2>1. Three disable conventions — one per situation</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> How a test is turned off depends on where it&#x27;s broken. Each convention leaves a visible, traceable trace in code instead of a silent deletion.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>Both-platform disables also disappear from Allure (commented @Test). One-platform keeps coverage on the working OS. Data-driven removals are logged so they stay visible.</p>
+
+            <pre><code>// Both platforms -&gt; comment out @Test with a reason above it:
+// DISABLED(broken): Needs user-provisioning job - OZ-75134
+//    @Test
+fun `Savings - Immediate Partial Withdrawal`() { ... }
+
+// One platform -&gt; still runs on the other:
+@DisabledIfEnvironmentVariable(named = &quot;platformName&quot;, matches = &quot;android&quot;) // bug - OZ-85653
+
+// Data-driven -&gt; remove the CSV row and log it in scripts/disabled-tests/csv-removals.csv</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>2. The registry generator (DISABLED_TESTS.md)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> A Python script scans all Kotlin test code for every disable mechanism and writes DISABLED_TESTS.md — domain, test, platform, reason, ticket. It is the only thing that builds the file; never hand-edit it.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>One source of truth for &amp;#x27;what is turned off, and why&amp;#x27; — always generated, never typed by hand.</p>
+
+            <pre><code>python3 scripts/disabled_tests_report.py          # regenerate the registry
+python3 scripts/disabled_tests_report.py --check   # exit 1 if stale (used by CI)</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>3. CI guard — the registry can&#x27;t silently drift</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> build-project.yml runs the generator with --check on every PR. If the committed registry doesn&#x27;t match the code, the PR fails with a clear, copy-pasteable fix — no tribal knowledge needed.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>The failure message tells you exactly what to run — works for any developer, no Claude Code required.</p>
+
+            <pre><code>❌ DISABLED_TESTS.md is out of date with the test code.
+   A test was enabled or disabled without updating the registry.
+   Fix: run  python3 scripts/disabled_tests_report.py  and commit DISABLED_TESTS.md.</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>4. The shared /disabled-tests command (#1960)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> Committed into the repo at .claude/commands/, so every developer who pulls mobile_dev gets it automatically. It applies the right convention, regenerates the registry, and syncs the Confluence tracker — in one step.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>The registry half needs only python3; the Confluence push uses the Atlassian connection (documented as a per-dev prerequisite).</p>
+
+            <pre><code>/disabled-tests disable SavingsFooTest on android
+/disabled-tests sync          # regenerate + push Confluence</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>5. Auto-scoped to the TeamBanking tag group</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> The generator now reads its in-scope domains live from the TeamBanking tag group in build.gradle.kts — the same list that drives CI test routing. Add or remove a domain there and the registry scope follows, with no script edit. (Dashboard was moved TeamJarvis -&gt; TeamBanking as part of this.)</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>No more hardcoded domain list to keep in sync — the build config is the one place that defines the team&amp;#x27;s domains.</p>
+
+            <pre><code>// build.gradle.kts — single source of truth for CI routing AND registry scope
+&quot;TeamBanking&quot; to listOf(&quot;IDM&quot;, &quot;Settings&quot;, ... , &quot;Onboarding&quot;, &quot;Dashboard&quot;),
+
+# disabled_tests_report.py parses it at runtime:
+re.search(r&#x27;&quot;TeamBanking&quot;\s*to\s*listOf\(([^)]*)\)&#x27;, build_gradle)</code></pre>
+
+        </div>
+
+        <div class="section-block">
+            <h2>6. Security cleanup — allure-generator removed (CVE-2026-33166)</h2>
+            <div class="simple-explanation">
+                <p><strong>What it does:</strong> Wiz flagged allure-generator &lt;2.38.0. The fixed version (2.38.0) transitively forces Kotlin 2.1.x, incompatible with the project&#x27;s Kotlin 1.9 — and the library was unused in source. Reports are built by the Allure Gradle plugin + allurectl/TestOps, not this dependency. So we removed it: CVE eliminated, no version conflict, lighter classpath.</p>
+            </div>
+
+            <p><strong>Code that makes it work:</strong></p>
+            <p>Verified on CI: tests still write results and upload to Allure TestOps, report unaffected. The adapters (allure-junit5, allure-java-commons, allure-attachments) stay at 2.34.0.</p>
+
+            <pre><code>-  implementation(&quot;io.qameta.allure:allure-generator:$allureVersion&quot;)
++  // removed: unused in source; Allure plugin + allurectl build the report</code></pre>
+
+        </div>
+
+        <div class="next-steps">
+            <h2>Next Steps</h2>
+            <p>Merge #1960 (its #1955 dependency is already on mobile_dev). Give TeamJarvis a heads-up that Dashboard tests now run in the TeamBanking CI suite. Going forward: use /disabled-tests for every disable or enable, and add new domains to the TeamBanking tag group so they are tracked automatically.</p>
+        </div>
+
+    </div>
+</body>
+</html>
