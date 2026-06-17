@@ -83,17 +83,19 @@ def is_disabled_tests_page(title: str, filename: str) -> bool:
         or fn == "automation-coverage.html"
         or fn == "test-suite-health.html"
         or fn == "test-suite-health-coverage-presentation.html"
+        or fn == "test-suite-health-coverage-presentation-hebrew.html"
     )
 
 
 # Preferred ordering within the Test Registries & Coverage section.
 DISABLED_TESTS_ORDER = {
     "test-suite-health-coverage-presentation.html": 0,
-    "test-suite-health.html": 1,
-    "disabled-tests-presentation.html": 2,
-    "disabled-tests-explainer.html": 3,
-    "disabled-tests-demo.html": 4,
-    "automation-coverage.html": 5,
+    "test-suite-health-coverage-presentation-hebrew.html": 1,
+    "test-suite-health.html": 2,
+    "disabled-tests-presentation.html": 3,
+    "disabled-tests-explainer.html": 4,
+    "disabled-tests-demo.html": 5,
+    "automation-coverage.html": 6,
 }
 
 
