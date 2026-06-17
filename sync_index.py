@@ -78,15 +78,22 @@ def is_disabled_tests_page(title: str, filename: str) -> bool:
     """The test-registry presentation set: disabled-tests (PRs #1955 + #1960)
     and automation-coverage (PRs #1962 + #1964)."""
     fn = filename.casefold()
-    return fn.startswith("disabled-tests-") or fn == "automation-coverage.html"
+    return (
+        fn.startswith("disabled-tests-")
+        or fn == "automation-coverage.html"
+        or fn == "test-suite-health.html"
+        or fn == "test-suite-health-coverage-presentation.html"
+    )
 
 
 # Preferred ordering within the Test Registries & Coverage section.
 DISABLED_TESTS_ORDER = {
-    "disabled-tests-presentation.html": 0,
-    "disabled-tests-explainer.html": 1,
-    "disabled-tests-demo.html": 2,
-    "automation-coverage.html": 3,
+    "test-suite-health-coverage-presentation.html": 0,
+    "test-suite-health.html": 1,
+    "disabled-tests-presentation.html": 2,
+    "disabled-tests-explainer.html": 3,
+    "disabled-tests-demo.html": 4,
+    "automation-coverage.html": 5,
 }
 
 
