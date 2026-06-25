@@ -79,7 +79,6 @@ def is_disabled_tests_page(title: str, filename: str) -> bool:
     fn = filename.casefold()
     return (
         fn == "disabled-tests-demo.html"
-        or fn == "automation-coverage.html"
         or fn == "automation-coverage-wiki-and-candidate-sync.html"
     )
 
@@ -87,8 +86,7 @@ def is_disabled_tests_page(title: str, filename: str) -> bool:
 # Preferred ordering within the Test Registries & Coverage section.
 DISABLED_TESTS_ORDER = {
     "disabled-tests-demo.html": 0,
-    "automation-coverage.html": 1,
-    "automation-coverage-wiki-and-candidate-sync.html": 2,
+    "automation-coverage-wiki-and-candidate-sync.html": 1,
 }
 
 
