@@ -160,6 +160,69 @@
         <li><strong>22 Dashboard backlog rows</strong> seeded — the Dashboard section went from 10/10 to 10/32 automated, reflecting real outstanding work.</li>
     </ul>
 
+    <!-- ── Examples ── -->
+    <h2>What it looks like in practice</h2>
+
+    <p>Two surfaces show the sync state: the <strong>GitHub Actions run summary</strong> (visible after every iOS/Android develop-uat run) and the <strong>wiki file</strong> itself (<code>AUTOMATION_COVERAGE.md</code>). Both show the same information in slightly different form.</p>
+
+    <!-- GitHub Actions -->
+    <h3>GitHub Actions run summary</h3>
+    <p>Appears at the bottom of every develop-uat run summary, produced by the <code>jira-sync-summary</code> job.</p>
+
+    <div class="highlight-grid">
+        <div class="highlight-card" style="border-left-color: #16a34a;">
+            <h3 style="color:#16a34a;">✅ Nothing to sync</h3>
+            <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:12px; font-family:ui-monospace,monospace; font-size:13px; line-height:1.6; color:#1c1917;">
+                <strong>✅ Jira automation dashboard — up to date</strong><br><br>
+                <em>No pending Jira-sync note on the wiki.</em>
+            </div>
+        </div>
+        <div class="highlight-card" style="border-left-color: #d97706;">
+            <h3 style="color:#d97706;">🔄 Tests waiting to be synced</h3>
+            <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:6px; padding:12px; font-family:ui-monospace,monospace; font-size:13px; line-height:1.6; color:#1c1917;">
+                <strong>🔄 Pending Jira dashboard sync — 3 test(s)</strong><br><br>
+                These tests are automated in code but still marked <code>Candidate</code> on the <strong>"Mobile automation - banking"</strong> Jira dashboard — their Platform-type needs updating. Paste <code>/automation-coverage sync to jira</code> into Claude to apply.<br><br>
+                <table style="width:100%;font-size:12px;border-collapse:collapse;">
+                    <tr style="color:#0f766e;"><td><strong>OZ</strong></td><td><strong>Automated on</strong></td><td><strong>Set platform-type to</strong></td></tr>
+                    <tr><td>OZ-70218</td><td>Android only</td><td><code>Mobile / Done Android</code></td></tr>
+                    <tr><td>OZ-78939</td><td>Both platforms</td><td><code>Mobile / Done both platforms</code></td></tr>
+                    <tr><td>OZ-85572</td><td>Android only</td><td><code>Mobile / Done Android</code></td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wiki file -->
+    <h3>Inside <code>AUTOMATION_COVERAGE.md</code> on the wiki</h3>
+    <p>The same note lives at the top of the wiki file, between HTML comment markers. The <code>jira-sync-summary</code> job reads it from the wiki and echoes it into the run summary.</p>
+
+    <h3 style="font-size:0.9em; color:#16a34a; margin-top:18px;">✅ Nothing to sync</h3>
+    <pre>&lt;!-- JIRA-PENDING:START --&gt;
+&lt;!-- data: {} --&gt;
+### ✅ Jira automation dashboard — up to date
+
+All automated in-scope tests are already reflected on the
+**"Mobile automation - banking"** dashboard. Nothing to sync. *(as of 2026-06-25)*
+&lt;!-- JIRA-PENDING:END --&gt;</pre>
+
+    <h3 style="font-size:0.9em; color:#d97706; margin-top:18px;">🔄 Tests waiting to be synced</h3>
+    <pre>&lt;!-- JIRA-PENDING:START --&gt;
+&lt;!-- data: {"OZ-70218":"Done Android","OZ-78939":"Done both platforms","OZ-85572":"Done Android"} --&gt;
+### 🔄 Pending Jira dashboard sync — 3 test(s)
+
+These tests are automated in code but still marked `Candidate` on the
+**"Mobile automation - banking"** Jira dashboard — their Platform-type needs
+updating. Paste `/automation-coverage sync to jira` into Claude to apply.
+
+| OZ | Automated on | Set platform-type to |
+| --- | --- | --- |
+| OZ-70218 | Android only | `Mobile / Done Android` |
+| OZ-78939 | Both platforms | `Mobile / Done both platforms` |
+| OZ-85572 | Android only | `Mobile / Done Android` |
+&lt;!-- JIRA-PENDING:END --&gt;</pre>
+
+    <p style="margin-top:12px; font-size:0.9em; color:#78716c;">The <code>&lt;!-- data: … --&gt;</code> line is a machine-readable JSON snapshot used by the clear workflow — it is hidden when the file is rendered as Markdown.</p>
+
 </div>
 </body>
 </html>
