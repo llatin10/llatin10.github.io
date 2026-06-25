@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automation Coverage — Wiki Registry &amp; Candidate Sync (PRs #1986 + #1989)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, -apple-system, Arial, sans-serif;
+            background: #faf9f7; padding: 24px; line-height: 1.65; color: #44403c;
+        }
+        .container {
+            max-width: 800px; margin: 0 auto; background: #fff;
+            border-radius: 12px; box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+            padding: 28px 32px 40px;
+        }
+        h1 { color: #1c1917; border-bottom: 2px solid #e7e5e0; font-weight: 700; padding-bottom: 12px; margin-bottom: 20px; }
+        h2 { color: #0d9488; border-bottom: 1px solid #e7e5e0; margin-top: 36px; padding-bottom: 10px; margin-bottom: 16px; }
+        h3 { color: #1c1917; margin-top: 20px; margin-bottom: 8px; font-size: 1em; }
+        p { margin: 10px 0; }
+        ul { margin: 10px 0 10px 20px; }
+        li { margin: 6px 0; }
+        .intro-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border: 1px solid #99f6e4; border-left: 4px solid #14b8a6;
+            padding: 18px; border-radius: 8px; margin: 20px 0;
+        }
+        .section-block {
+            background: #fafaf9; border: 1px solid #e7e5e0; border-left: 4px solid #14b8a6;
+            padding: 20px; border-radius: 8px; margin: 20px 0;
+        }
+        .highlight-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px; margin: 20px 0;
+        }
+        .highlight-card {
+            background: #fff; border: 1px solid #e7e5e0; border-radius: 8px;
+            padding: 18px; border-left: 3px solid #14b8a6;
+        }
+        .highlight-card h3 { margin-top: 0; color: #0f766e; font-size: 0.95em; }
+        .pr-badge {
+            display: inline-block; background: #0d9488; color: #fff;
+            border-radius: 6px; padding: 2px 10px; font-size: 0.8em;
+            font-weight: 600; margin-right: 8px; vertical-align: middle;
+        }
+        pre {
+            background: #1e293b; color: #e2e8f0; padding: 14px 18px; border-radius: 8px;
+            font-family: "SFMono-Regular", Consolas, ui-monospace, monospace;
+            border-left: 4px solid #14b8a6; line-height: 1.55; font-size: 13.5px;
+            overflow-x: auto; margin: 12px 0;
+        }
+        code {
+            background: #f5f5f4; color: #0f766e; padding: 0.2em 0.45em; border-radius: 4px;
+            font-family: ui-monospace, monospace; font-size: 0.9em; border: 1px solid #e7e5e0;
+        }
+        .flow-step {
+            display: flex; gap: 14px; align-items: flex-start; margin: 12px 0;
+        }
+        .step-num {
+            flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+            background: #14b8a6; color: #fff; display: flex; align-items: center;
+            justify-content: center; font-weight: 700; font-size: 0.85em; margin-top: 2px;
+        }
+        .step-body { flex: 1; }
+        .wiki-link {
+            display: inline-block; background: #f0fdfa; border: 1px solid #99f6e4;
+            border-radius: 6px; padding: 4px 12px; color: #0f766e; font-size: 0.9em;
+            text-decoration: none; font-family: ui-monospace, monospace;
+        }
+        .wiki-link:hover { background: #ccfbf1; }
+        table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+        th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #e7e5e0; }
+        th { color: #0f766e; font-weight: 600; }
+        .tag { display: inline-block; background: #e0f2fe; color: #0369a1; border-radius: 4px;
+               padding: 1px 7px; font-size: 0.78em; font-weight: 600; }
+        @media print {
+            body { padding: 0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .container { box-shadow: none !important; padding: 40px; max-width: 100%; border-radius: 0; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .section-block, .intro-block, .highlight-card, pre { page-break-inside: avoid; }
+            @page { size: A4; margin: 15mm; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>Automation Coverage — Wiki Registry &amp; Candidate Sync</h1>
+
+    <div class="intro-block">
+        <strong>Two PRs, one complete picture.</strong>
+        <span class="pr-badge">#1986</span> moved the registry out of the repo and into the GitHub Wiki — so it regenerates automatically on every merge, with no PR conflicts.
+        <span class="pr-badge">#1989</span> added the inbound flow: pull newly-flagged Jira candidates into the backlog with a single command.
+    </div>
+
+    <!-- ── PR #1986 ── -->
+    <h2><span class="pr-badge">#1986</span> Registry → GitHub Wiki (auto-regenerated)</h2>
+
+    <p>Before this PR, <code>AUTOMATION_COVERAGE.md</code> was committed to <code>mobile_dev</code>. Every PR that touched a test file had to regenerate it and commit it — causing conflicts whenever two PRs were open at once.</p>
+
+    <div class="section-block">
+        <h3>What changed</h3>
+        <ul>
+            <li><code>AUTOMATION_COVERAGE.md</code> is now <strong>gitignored</strong> — never committed to the repo.</li>
+            <li>After every merge to <code>mobile_dev</code>, the <code>sync-test-registries</code> CI workflow regenerates the file from code and pushes it to the <strong>GitHub Wiki</strong>.</li>
+            <li>Same for <code>DISABLED_TESTS.md</code> — both registries now live in the wiki.</li>
+            <li>PRs no longer need a "regenerate and commit" step — just merge and the wiki updates within ~30s.</li>
+        </ul>
+    </div>
+
+    <div class="highlight-grid">
+        <div class="highlight-card">
+            <h3>📖 Wiki — Automation Coverage</h3>
+            <a class="wiki-link" href="https://github.com/digibank-il/mobile-tests/wiki/AUTOMATION_COVERAGE" target="_blank">
+                mobile-tests/wiki/AUTOMATION_COVERAGE
+            </a>
+        </div>
+        <div class="highlight-card">
+            <h3>📖 Wiki — Disabled Tests</h3>
+            <a class="wiki-link" href="https://github.com/digibank-il/mobile-tests/wiki/DISABLED_TESTS" target="_blank">
+                mobile-tests/wiki/DISABLED_TESTS
+            </a>
+        </div>
+    </div>
+
+    <h3>Before vs. After</h3>
+    <table>
+        <tr><th></th><th>Before #1986</th><th>After #1986</th></tr>
+        <tr><td>Registry location</td><td><code>mobile_dev</code> branch</td><td>GitHub Wiki</td></tr>
+        <tr><td>Updated by</td><td>Developer (manual regenerate + commit)</td><td>CI — auto on every merge</td></tr>
+        <tr><td>PR conflicts</td><td>Every concurrent PR conflicts</td><td>Never — file not in the repo</td></tr>
+        <tr><td>Pending Jira sync note</td><td>In <code>AUTOMATION_COVERAGE.md</code> header</td><td>Same, carried over to wiki</td></tr>
+    </table>
+
+    <!-- ── PR #1989 ── -->
+    <h2><span class="pr-badge">#1989</span> Pull New Candidates from Jira</h2>
+
+    <p>The registry shows what's <em>already automated</em>. This PR adds the other half: pulling in Jira tickets that QA flagged as mobile-sanity candidates but haven't been automated yet — so they appear in the backlog and can't silently stay off the radar.</p>
+
+    <div class="section-block">
+        <h3>The command</h3>
+        <pre>/automation-coverage sync from jira</pre>
+        <p style="margin-top:10px;">That's it. Claude exports the candidates from Jira, reconciles them into <code>regression-suite.csv</code>, and the wiki refreshes after merge. No token or MCP required — just a CSV export from the Jira filter UI.</p>
+    </div>
+
+    <h3>What gets pulled in</h3>
+    <p>Only tickets that are <strong>Testing Level = Sanity</strong> and <strong>Platform type = Mobile / Candidate</strong> — scoped to the domains we track (TeamBanking + page domains). Out-of-scope domains (Securities, Chat, Open Banking…) are skipped. Unrecognised domains go to a triage file for a human to review.</p>
+
+    <h3>How the flow works end-to-end</h3>
+    <div class="flow-step"><div class="step-num">1</div><div class="step-body">QA flags a TTM Test Case in Jira: <strong>Platform type = Mobile / Candidate</strong>, <strong>Testing Level = Sanity</strong>.</div></div>
+    <div class="flow-step"><div class="step-num">2</div><div class="step-body">Run <code>/automation-coverage sync from jira</code> in Claude Code — exports the saved filter and reconciles into <code>regression-suite.csv</code>.</div></div>
+    <div class="flow-step"><div class="step-num">3</div><div class="step-body">Commit the updated CSV via a normal PR. The wiki <code>AUTOMATION_COVERAGE.md</code> refreshes automatically ~30s after merge — no extra step.</div></div>
+    <div class="flow-step"><div class="step-num">4</div><div class="step-body">The develop-uat CI run summary echoes a short reminder to repeat the sync whenever new candidates are flagged.</div></div>
+
+    <h3>Also in #1989</h3>
+    <ul>
+        <li><strong>Out-of-scope domain highlight</strong> — if a domain is removed from TeamBanking, its CSV rows appear in a clearly-labelled <em>⚠️ Not in TeamBanking scope</em> section instead of silently rendering as normal.</li>
+        <li><strong>27 unit tests</strong> covering the CSV ingestion, domain classification, and reconciliation logic.</li>
+        <li><strong>22 Dashboard backlog rows</strong> seeded — the Dashboard section went from 10/10 to 10/32 automated, reflecting real outstanding work.</li>
+    </ul>
+
+</div>
+</body>
+</html>
