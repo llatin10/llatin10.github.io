@@ -75,27 +75,20 @@ def is_guides_page(title: str, filename: str) -> bool:
 
 
 def is_disabled_tests_page(title: str, filename: str) -> bool:
-    """The test-registry presentation set: disabled-tests (PRs #1955 + #1960)
-    and automation-coverage (PRs #1962 + #1964)."""
+    """The test-registry set: disabled-tests demo and automation-coverage pages."""
     fn = filename.casefold()
     return (
-        fn.startswith("disabled-tests-")
+        fn == "disabled-tests-demo.html"
         or fn == "automation-coverage.html"
-        or fn == "test-suite-health.html"
-        or fn == "test-suite-health-coverage-presentation.html"
-        or fn == "test-suite-health-coverage-presentation-hebrew.html"
+        or fn == "automation-coverage-wiki-and-candidate-sync.html"
     )
 
 
 # Preferred ordering within the Test Registries & Coverage section.
 DISABLED_TESTS_ORDER = {
-    "test-suite-health-coverage-presentation.html": 0,
-    "test-suite-health-coverage-presentation-hebrew.html": 1,
-    "test-suite-health.html": 2,
-    "disabled-tests-presentation.html": 3,
-    "disabled-tests-explainer.html": 4,
-    "disabled-tests-demo.html": 5,
-    "automation-coverage.html": 6,
+    "disabled-tests-demo.html": 0,
+    "automation-coverage.html": 1,
+    "automation-coverage-wiki-and-candidate-sync.html": 2,
 }
 
 
@@ -348,7 +341,7 @@ def main() -> int:
             border = " section-disabled" if (pinned or qa_features or production_issues or automation_alignment or guides) else ""
             blocks.append(
                 f"""            <h2 class="section{border}">Test Registries &amp; Coverage</h2>
-            <p class="section-hint">Decks, explainer &amp; demo for the disabled-tests and automation-coverage registries — PRs #1955, #1960, #1962, #1964.</p>
+            <p class="section-hint">Automation coverage and disabled-tests registries — auto-published to the wiki on every merge (PRs #1986, #1989).</p>
             <ul class="page-list">
 {_list_items(disabled_tests)}
             </ul>"""
