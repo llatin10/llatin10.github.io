@@ -83,6 +83,38 @@
         .toc { margin: 16px 0; }
         .toc a { color: #0d9488; text-decoration: none; }
         .toc a:hover { text-decoration: underline; }
+        /* GitHub Actions job-summary simulation */
+        .gh-summary-frame {
+            border: 1px solid #d0d7de; border-radius: 6px; margin: 16px 0 24px;
+            overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        }
+        .gh-summary-titlebar {
+            background: #f6f8fa; border-bottom: 1px solid #d0d7de;
+            padding: 8px 14px; font-size: 13px; color: #57606a; font-weight: 600;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .gh-summary-titlebar .gh-caret { color: #57606a; font-size: 11px; }
+        .gh-summary-body {
+            background: #fff; padding: 16px 20px; color: #1f2328; font-size: 14px; line-height: 1.6;
+        }
+        .gh-summary-body h3 {
+            font-size: 15px; font-weight: 600; margin: 0 0 8px 0; color: #1f2328;
+            border-bottom: none; padding-bottom: 0;
+        }
+        .gh-summary-body p { margin: 0 0 8px 0; color: #1f2328; }
+        .gh-summary-body table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13px; }
+        .gh-summary-body th, .gh-summary-body td {
+            border: 1px solid #d0d7de; padding: 6px 10px; text-align: left;
+        }
+        .gh-summary-body th { background: #f6f8fa; font-weight: 600; }
+        .gh-summary-body code {
+            background: rgba(175,184,193,0.2); color: #1f2328; border: none;
+            padding: 0.15em 0.35em; font-size: 0.88em; border-radius: 6px;
+        }
+        .gh-summary-footer {
+            border-top: 1px solid #d0d7de; background: #f6f8fa; padding: 6px 14px;
+            font-size: 11.5px; color: #848d97;
+        }
         @media print {
             body { padding: 0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .container { box-shadow: none !important; padding: 40px; max-width: 100%; border-radius: 0; }
@@ -116,7 +148,8 @@
         <a href="#pr-gate">4. The PR gate that used to exist</a> ·
         <a href="#platform-type">5. Platform-type (<code>--check</code> / <code>--sync</code>)</a> ·
         <a href="#user-story">6. User story — a developer's PR, start to finish</a> ·
-        <a href="#other-checks">7. Other CI checks worth knowing</a>
+        <a href="#summary-sim">7. What the run-summary banners actually look like</a> ·
+        <a href="#other-checks">8. Other CI checks worth knowing</a>
     </div>
 
     <!-- ── 1. Wiki sync ── -->
@@ -422,8 +455,77 @@ python3 scripts/jira_done_sync.py     --jira-api --check   # exit 1 if any autom
         </div>
     </div>
 
-    <!-- ── 7. Other checks ── -->
-    <h2 id="other-checks">7. Other CI checks worth knowing about</h2>
+    <!-- ── 7. Run-summary simulation ── -->
+    <h2 id="summary-sim">7. What the run-summary banners actually look like</h2>
+    <p>Both reusable workflows from section 2 write into GitHub's <strong>Job Summary</strong> panel — the
+    collapsible section at the top of a workflow run, above the individual job logs. Below is a simulation of
+    what each one renders, for the two states you'll actually see.</p>
+
+    <h3>State A — nothing pending (the common case)</h3>
+    <p>This is what shows up after every merge where nothing new became automated since the last Jira sync —
+    i.e. most runs, most days.</p>
+
+    <div class="gh-summary-frame">
+        <div class="gh-summary-titlebar"><span class="gh-caret">▾</span> jira-sync-summary summary</div>
+        <div class="gh-summary-body">
+            <h3>✅ Jira automation dashboard — up to date</h3>
+            <p>All automated in-scope tests are already reflected on the <strong>"Mobile automation - banking"</strong>
+            dashboard. Nothing to sync. <em>(as of 2026-07-12)</em></p>
+        </div>
+        <div class="gh-summary-footer">Job summary generated at run-time</div>
+    </div>
+
+    <h3>State B — tickets waiting on a Jira update</h3>
+    <p>This is what shows up once one or more tests get automated in code but haven't been pushed to Jira yet
+    (see step 2 of the user story in section 6 — this is exactly the banner Dana's team would see after her
+    <code>OZ-123456</code> merge, plus a couple of older still-pending examples).</p>
+
+    <div class="gh-summary-frame">
+        <div class="gh-summary-titlebar"><span class="gh-caret">▾</span> jira-sync-summary summary</div>
+        <div class="gh-summary-body">
+            <h3>🔄 Pending Jira dashboard sync — 3 test(s)</h3>
+            <p>These tests are automated in code but still marked <code>Candidate</code> on the
+            <strong>"Mobile automation - banking"</strong> Jira dashboard — their Platform-type needs updating.
+            Paste <code>/automation-coverage sync to jira</code> into Claude to apply (it dry-runs, then updates
+            only what is needed via the Atlassian MCP).</p>
+            <table>
+                <tr><th>OZ</th><th>Automated on</th><th>Set platform-type to</th></tr>
+                <tr><td>OZ-111095</td><td>Android only</td><td><code>Mobile / Done Android</code></td></tr>
+                <tr><td>OZ-117467</td><td>iOS only</td><td><code>Mobile / Done iOS</code></td></tr>
+                <tr><td>OZ-123456</td><td>Both platforms</td><td><code>Mobile / Done both platforms</code></td></tr>
+            </table>
+        </div>
+        <div class="gh-summary-footer">Job summary generated at run-time</div>
+    </div>
+
+    <p>Once the list grows past 15 rows, the banner keeps the header count accurate but caps the visible table
+    and appends a line like <em>"…and 4 more not shown — run <code>/automation-coverage sync to jira</code>
+    to view and apply the full list."</em> — the wiki page always has the complete set.</p>
+
+    <h3>The candidate-sync reminder (separate banner, only on the two scheduled runs)</h3>
+    <p>This one is static — it doesn't read any file or check any state, so it always renders the same way,
+    whenever it appears at all:</p>
+
+    <div class="gh-summary-frame">
+        <div class="gh-summary-titlebar"><span class="gh-caret">▾</span> candidate-sync-reminder summary</div>
+        <div class="gh-summary-body">
+            <h3>🧲 New mobile-sanity candidates to pull in?</h3>
+            <p>Run <code>/automation-coverage sync from jira</code> in Claude Code to pull newly-flagged
+            Jira candidates into the backlog.</p>
+        </div>
+        <div class="gh-summary-footer">Job summary generated at run-time</div>
+    </div>
+
+    <table>
+        <tr><th>Banner</th><th>Reads from</th><th>Changes with state?</th><th>Appears on</th></tr>
+        <tr><td><code>jira-sync-summary</code></td><td>Wiki <code>AUTOMATION_COVERAGE.md</code> pending block</td>
+            <td>Yes — up-to-date vs. N pending</td><td>Every iOS/Android/custom test run</td></tr>
+        <tr><td><code>candidate-sync-reminder</code></td><td>Nothing (static text)</td><td>No — always the same</td>
+            <td>Only the 2 scheduled develop-banking-uat runs</td></tr>
+    </table>
+
+    <!-- ── 8. Other checks ── -->
+    <h2 id="other-checks">8. Other CI checks worth knowing about</h2>
     <ul>
         <li><strong>User-collision auto-serialize</strong> (<code>build-project.yml</code> → <code>user_collision_check</code>)
         — non-blocking, PR-time. If a PR introduces two tests sharing a login identity, it auto-adds
