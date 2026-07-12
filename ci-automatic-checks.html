@@ -115,7 +115,8 @@
         <a href="#clear-note">3. Clearing the pending note</a> ·
         <a href="#pr-gate">4. The PR gate that used to exist</a> ·
         <a href="#platform-type">5. Platform-type (<code>--check</code> / <code>--sync</code>)</a> ·
-        <a href="#other-checks">6. Other CI checks worth knowing</a>
+        <a href="#user-story">6. User story — a developer's PR, start to finish</a> ·
+        <a href="#other-checks">7. Other CI checks worth knowing</a>
     </div>
 
     <!-- ── 1. Wiki sync ── -->
@@ -308,8 +309,121 @@ python3 scripts/jira_done_sync.py     --jira-api --check   # exit 1 if any autom
         </div>
     </div>
 
-    <!-- ── 6. Other checks ── -->
-    <h2 id="other-checks">6. Other CI checks worth knowing about</h2>
+    <!-- ── 6. User story ── -->
+    <h2 id="user-story">6. User story — a developer's PR, start to finish</h2>
+    <div class="intro-block">
+        <strong>Dana</strong> picks up two things from her sprint: re-enable <code>OZ-100111</code>
+        (a Savings test that's been commented out since a bug was fixed) and automate <code>OZ-123456</code>,
+        a brand-new test that's been sitting in the Jira <strong>Mobile / Candidate</strong> backlog since the
+        last <code>/automation-coverage sync from jira</code>. To save setup time, she points her new test at
+        <code>userEmail: qa-savings-04@test.digibank.co.il</code> — a login identity that
+        <code>SavingsWithdrawalLimitTest</code> already uses elsewhere in the suite.
+    </div>
+
+    <h3>What Dana does</h3>
+    <ul>
+        <li><strong>Re-enables OZ-100111</strong> — removes the <code>// DISABLED(bug): …</code> comment and
+        un-comments the <code>@Test</code> in <code>SavingsAutoInvestPauseTest.kt</code>.</li>
+        <li><strong>Writes OZ-123456</strong> — a new <code>SavingsAutoInvestOptInTest.kt</code> with
+        <code>@TmsLink("OZ-123456")</code>, wired to a data row in the domain's CSV with
+        <code>userEmail = qa-savings-04@test.digibank.co.il</code> (same value as another test's row).</li>
+        <li>Runs <code>./gradlew compileTestKotlin ktlintCheck</code> locally, then opens the PR:
+        <em>"feat(savings): re-enable OZ-100111, automate OZ-123456"</em>.</li>
+    </ul>
+
+    <h3>What Dana sees in the PR</h3>
+    <div class="section-block">
+        <div class="flow-step">
+            <div class="step-num">1</div>
+            <div class="step-body"><strong><code>build_no_test</code> check</strong> runs and goes green —
+            it's the standard build, unrelated to the registries or Jira.</div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">2</div>
+            <div class="step-body"><strong><code>User-collision auto-serialize (TeamBanking)</code> check
+            runs</strong> — <code>find_user_collisions.py --fix</code> scans the domain's test-data CSVs,
+            sees <code>qa-savings-04@test.digibank.co.il</code> now shared by two in-scope tests with no
+            common lock, and adds a class-level <code>@ResourceLock("user:qa-savings-04@test.digibank.co.il")</code>
+            to <strong>both</strong> <code>SavingsAutoInvestOptInTest.kt</code> and
+            <code>SavingsWithdrawalLimitTest.kt</code>.</div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">3</div>
+            <div class="step-body"><strong>A new commit appears on her branch</strong> —
+            <code>chore(test): auto-serialize user collision via @ResourceLock [bot]</code>, pushed by
+            <code>github-actions[bot]</code>. Dana needs to <code>git pull</code> before pushing anything
+            else locally, or the next push will be rejected as non-fast-forward.</div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">4</div>
+            <div class="step-body"><strong>A PR comment shows up</strong>:
+            <em>"🤖 User-collision: <code>@ResourceLock</code> updated"</em>, listing the exact lines added,
+            and a link to the <a href="https://github.com/digibank-il/mobile-tests/wiki/Known-User-Collisions" target="_blank">Known
+            User Collisions</a> wiki page. It suggests a <strong>dedicated user</strong> as the alternative
+            fix if she'd rather not share identities.</div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">5</div>
+            <div class="step-body"><strong>Nothing else blocks the merge.</strong> There's no
+            <code>disabled-tests-registry</code> or <code>automation-coverage-registry</code> gate to satisfy —
+            that check was retired in #1986 (section 4). Dana gets a review and merges.</div>
+        </div>
+    </div>
+
+    <p>If Dana prefers a dedicated user over sharing one, she can revert the bot's lock, swap in a fresh test
+    user, and push again — the collision check simply won't find anything to fix on the next run.</p>
+
+    <h3>What happens behind the curtain — after she merges</h3>
+    <div class="section-block">
+        <div class="flow-step">
+            <div class="step-num">1</div>
+            <div class="step-body"><strong>~30 seconds later</strong> — <code>sync-test-registries</code> fires
+            on the push to <code>mobile_dev</code>:
+            <ul>
+                <li><code>DISABLED_TESTS.md</code> is regenerated — <code>OZ-100111</code>'s row disappears,
+                since its <code>@Test</code> is no longer commented out.</li>
+                <li><code>AUTOMATION_COVERAGE.md</code> is regenerated — <code>OZ-123456</code> flips from a
+                curated "not-yet-automated" backlog row to <strong>✅ Automated</strong>, with ✅ under
+                Android and iOS (assuming both run). <code>OZ-100111</code>'s ✅ marks return too.</li>
+                <li><code>Known-User-Collisions.md</code> is regenerated — the shared identity now shows up
+                as <strong>resolved via <code>@ResourceLock</code></strong>, not an open collision.</li>
+                <li>All three are pushed straight to the wiki — no PR, no review needed for this step.</li>
+            </ul></div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">2</div>
+            <div class="step-body"><strong>The pending Jira-sync note updates too</strong> —
+            <code>jira_done_sync.py --refresh-pending-note</code> notices <code>OZ-123456</code> is now
+            automated in code but still shows <code>Mobile / Candidate</code> in Jira, and adds it to the
+            <code>&lt;!-- JIRA-PENDING --&gt;</code> block at the top of the wiki's
+            <code>AUTOMATION_COVERAGE.md</code>. (<code>OZ-100111</code> was already Done in Jira from before
+            it was disabled, so it doesn't need a Jira update.)</div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">3</div>
+            <div class="step-body"><strong>Next Android/iOS/custom test run</strong> — whoever triggers it sees
+            <code>OZ-123456</code> listed in the Job Summary banner from <code>jira-sync-summary.yml</code>:
+            a nudge that Jira hasn't caught up yet.</div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">4</div>
+            <div class="step-body"><strong>A few days later</strong> — a maintainer runs
+            <code>/automation-coverage sync to jira</code> in Claude. It dry-runs <code>jira_done_sync.py</code>
+            against live Jira, confirms <code>OZ-123456</code> is genuinely running on both platforms, and
+            applies <code>editJiraIssue</code> to flip <code>customfield_11640</code> from
+            <code>Candidate</code> (13960) to <code>Done both platforms</code> (14046).</div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">5</div>
+            <div class="step-body"><strong>The note gets trimmed</strong> — the maintainer triggers
+            <code>clear-jira-pending-note.yml -f keys="OZ-123456"</code>, which opens a one-file bot PR against
+            the wiki removing just that key. A human approves it, it auto-merges, and the next test run's
+            banner no longer mentions <code>OZ-123456</code> — code, wiki, and the Jira dashboard all agree.</div>
+        </div>
+    </div>
+
+    <!-- ── 7. Other checks ── -->
+    <h2 id="other-checks">7. Other CI checks worth knowing about</h2>
     <ul>
         <li><strong>User-collision auto-serialize</strong> (<code>build-project.yml</code> → <code>user_collision_check</code>)
         — non-blocking, PR-time. If a PR introduces two tests sharing a login identity, it auto-adds
