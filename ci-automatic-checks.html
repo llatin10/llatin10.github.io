@@ -149,7 +149,8 @@
         <a href="#platform-type">5. Platform-type (<code>--check</code> / <code>--sync</code>)</a> ·
         <a href="#user-story">6. User story — a developer's PR, start to finish</a> ·
         <a href="#summary-sim">7. What the run-summary banners actually look like</a> ·
-        <a href="#other-checks">8. Other CI checks worth knowing</a>
+        <a href="#business-hours">8. Skipping tests by business hours (and vice versa)</a> ·
+        <a href="#other-checks">9. Other CI checks worth knowing</a>
     </div>
 
     <!-- ── 1. Wiki sync ── -->
@@ -524,8 +525,90 @@ python3 scripts/jira_done_sync.py     --jira-api --check   # exit 1 if any autom
             <td>Only the 2 scheduled develop-banking-uat runs</td></tr>
     </table>
 
-    <!-- ── 8. Other checks ── -->
-    <h2 id="other-checks">8. Other CI checks worth knowing about</h2>
+    <!-- ── 8. Business hours guard ── -->
+    <h2 id="business-hours">8. Skipping tests by business hours (and vice versa)</h2>
+    <p>Some savings flows behave differently depending on whether the backend is inside its
+    <strong>business-hours processing window</strong> or not. Rather than let those tests fail on a false
+    negative, they call a shared helper that turns the wall-clock check into a JUnit
+    <strong>assumption</strong> — the test is reported as <em>skipped/aborted</em>, not failed, when the clock
+    doesn't match what the flow needs.</p>
+
+    <div class="section-block">
+        <h3>The helper — <code>assumeAfterBusinessHours()</code></h3>
+        <p><code>src/main/kotlin/.../infrastructure/utils/helpers/MarketOpenMethods.kt</code></p>
+        <pre>fun assumeAfterBusinessHours(expectedAfterBusinessHours: Boolean = true) {
+    val israelTime = LocalTime.now(ZoneId.of("Asia/Jerusalem"))
+    val isAfterBusinessHours = israelTime.isAfter(LocalTime.of(18, 30)) ||
+                                israelTime.isBefore(LocalTime.of(0, 30))
+    if (expectedAfterBusinessHours) {
+        Assumptions.assumeTrue(isAfterBusinessHours, "…")
+    } else {
+        Assumptions.assumeFalse(isAfterBusinessHours, "…")
+    }
+}</pre>
+        <table>
+            <tr><th>Window (Israel time)</th><th>Backend behavior</th></tr>
+            <tr><td>00:30 – 18:30</td><td><strong>Business hours</strong> — immediate/breaking withdrawals are processed right away</td></tr>
+            <tr><td>18:30 – 00:30 (next day)</td><td><strong>After hours</strong> — immediate withdrawals aren't moved until the backend reopens</td></tr>
+        </table>
+    </div>
+
+    <h3>Direction 1 (existing) — run <em>only</em> after hours</h3>
+    <p>Tests suffixed <code>…AfterBusinessHoursTest</code> exist specifically to exercise the after-hours
+    path (e.g. creating a saving when the backend defers processing). They call the helper with its default:</p>
+    <pre>@BeforeEach
+fun preTest() {
+    assumeAfterBusinessHours()   // expectedAfterBusinessHours = true (default)
+    ...
+}</pre>
+    <p>If this runs during business hours (00:30–18:30), the assumption is false, and JUnit aborts the test as
+    <strong>skipped</strong> rather than running it against the wrong backend state. Classes using this today:
+    <code>MonthlySavingCreateAfterBusinessHoursTest</code>,
+    <code>YearlySavingsFlexInterestAfterBusinessHoursTest</code>,
+    <code>YearlySavingsFixedInterestAfterBusinessHoursTest</code>,
+    <code>DailySavingsCreateNewDailySavingWithoutRulesAfterBusinessHoursTest</code>.</p>
+
+    <h3>Direction 2 (your recent change, #2023) — skip <em>if</em> after hours</h3>
+    <p>The new case is the mirror image: tests that withdraw money <strong>immediately</strong> (breaking a
+    savings plan, full or partial, exit-day or not) only make sense to assert against <em>during</em> business
+    hours — the backend won't have moved the balance yet if run after hours, so the balance assertions would
+    fail for a reason that has nothing to do with the feature. The fix flips the boolean:</p>
+    <pre>@BeforeEach
+fun prepareTest() {
+    // Immediate (breaking) partial withdrawal moves money now, which the backend only processes during
+    // business hours. After hours the money isn't moved, so the balance assertions fail — skip rather
+    // than fail, matching the immediate full withdrawal sibling test (OZ-121425).
+    assumeAfterBusinessHours(expectedAfterBusinessHours = false)
+    ...
+}</pre>
+    <p>Applied across the sibling immediate-withdrawal tests in PR
+    <a href="https://github.com/digibank-il/mobile-tests/commit/67ea64b64e072f9c0d4070221cff64dae4a83d94" target="_blank">#2023</a>:</p>
+    <ul>
+        <li><code>MonthlySavingFullWithdrawalOnExitDateTest</code></li>
+        <li><code>MonthlySavingPartialWithdrawalOnExitDateTest</code></li>
+        <li><code>MonthlySavingImmediatePartialWithdrawalOnNonExitDateTest</code></li>
+        <li><code>MonthlySavingImmediateFullWithdrawalFlowOnNonExitDayTest</code> and
+        <code>MonthlySavingFutureFullWithdrawalFlowOnNonExitDayTest</code> (already had the guard, now the pattern others follow)</li>
+    </ul>
+
+    <div class="warn-block">
+        <strong>This does not show up in <code>DISABLED_TESTS.md</code>.</strong> The disabled-tests generator
+        only detects the platform-scoped form <code>assume{True,False}(isAndroid/isiOS, "…")</code> — a
+        business-hours assumption is a different call shape, so it's invisible to that registry. In Allure
+        it reports as a normal <strong>skipped</strong> test, on whichever runs land outside the required
+        window; nothing to fix, no ticket needed — it's an expected, time-of-day skip, not a broken test.
+    </div>
+
+    <table>
+        <tr><th></th><th><code>AfterBusinessHoursTest</code> suffix (existing)</th><th>Immediate withdrawal guard (new, #2023)</th></tr>
+        <tr><td>Call</td><td><code>assumeAfterBusinessHours()</code></td><td><code>assumeAfterBusinessHours(expectedAfterBusinessHours = false)</code></td></tr>
+        <tr><td>Runs when</td><td>After hours (18:30–00:30)</td><td>Business hours (00:30–18:30)</td></tr>
+        <tr><td>Skips when</td><td>Business hours</td><td>After hours</td></tr>
+        <tr><td>Why</td><td>Exercises the after-hours deferred-processing path</td><td>Immediate withdrawal needs the backend to move money right away to assert on</td></tr>
+    </table>
+
+    <!-- ── 9. Other checks ── -->
+    <h2 id="other-checks">9. Other CI checks worth knowing about</h2>
     <ul>
         <li><strong>User-collision auto-serialize</strong> (<code>build-project.yml</code> → <code>user_collision_check</code>)
         — non-blocking, PR-time. If a PR introduces two tests sharing a login identity, it auto-adds
