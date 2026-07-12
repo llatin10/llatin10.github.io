@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CI Automatic Checks — Wiki Registries &amp; Platform-Type Sync</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Helvetica Neue", Helvetica, -apple-system, Arial, sans-serif;
+            background: #faf9f7; padding: 24px; line-height: 1.65; color: #44403c;
+        }
+        .container {
+            max-width: 860px; margin: 0 auto; background: #fff;
+            border-radius: 12px; box-shadow: 0 2px 16px rgba(45, 42, 38, 0.06);
+            padding: 28px 32px 40px;
+        }
+        h1 { color: #1c1917; border-bottom: 2px solid #e7e5e0; font-weight: 700; padding-bottom: 12px; margin-bottom: 20px; }
+        h2 { color: #0d9488; border-bottom: 1px solid #e7e5e0; margin-top: 36px; padding-bottom: 10px; margin-bottom: 16px; }
+        h3 { color: #1c1917; margin-top: 20px; margin-bottom: 8px; font-size: 1em; }
+        p { margin: 10px 0; }
+        ul { margin: 10px 0 10px 20px; }
+        li { margin: 6px 0; }
+        .intro-block {
+            background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+            border: 1px solid #99f6e4; border-left: 4px solid #14b8a6;
+            padding: 18px; border-radius: 8px; margin: 20px 0;
+        }
+        .section-block {
+            background: #fafaf9; border: 1px solid #e7e5e0; border-left: 4px solid #14b8a6;
+            padding: 20px; border-radius: 8px; margin: 20px 0;
+        }
+        .warn-block {
+            background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #f59e0b;
+            padding: 16px 18px; border-radius: 8px; margin: 16px 0;
+        }
+        .highlight-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px; margin: 20px 0;
+        }
+        .highlight-card {
+            background: #fff; border: 1px solid #e7e5e0; border-radius: 8px;
+            padding: 18px; border-left: 3px solid #14b8a6;
+        }
+        .highlight-card h3 { margin-top: 0; color: #0f766e; font-size: 0.95em; }
+        .flow-badge {
+            display: inline-block; background: #0d9488; color: #fff;
+            border-radius: 6px; padding: 2px 10px; font-size: 0.78em;
+            font-weight: 600; margin-right: 8px; vertical-align: middle;
+        }
+        .flow-badge.manual { background: #7c3aed; }
+        .flow-badge.gone { background: #78716c; }
+        pre {
+            background: #1e293b; color: #e2e8f0; padding: 14px 18px; border-radius: 8px;
+            font-family: "SFMono-Regular", Consolas, ui-monospace, monospace;
+            border-left: 4px solid #14b8a6; line-height: 1.55; font-size: 13px;
+            overflow-x: auto; margin: 12px 0;
+        }
+        code {
+            background: #f5f5f4; color: #0f766e; padding: 0.2em 0.45em; border-radius: 4px;
+            font-family: ui-monospace, monospace; font-size: 0.9em; border: 1px solid #e7e5e0;
+        }
+        .flow-step { display: flex; gap: 14px; align-items: flex-start; margin: 12px 0; }
+        .step-num {
+            flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+            background: #14b8a6; color: #fff; display: flex; align-items: center;
+            justify-content: center; font-weight: 700; font-size: 0.85em; margin-top: 2px;
+        }
+        .step-body { flex: 1; }
+        .wiki-link {
+            display: inline-block; background: #f0fdfa; border: 1px solid #99f6e4;
+            border-radius: 6px; padding: 4px 12px; color: #0f766e; font-size: 0.9em;
+            text-decoration: none; font-family: ui-monospace, monospace;
+        }
+        .wiki-link:hover { background: #ccfbf1; }
+        table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13.5px; }
+        th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #e7e5e0; }
+        th { color: #0f766e; font-weight: 600; }
+        .tag { display: inline-block; background: #e0f2fe; color: #0369a1; border-radius: 4px;
+               padding: 1px 7px; font-size: 0.78em; font-weight: 600; }
+        .tag.trigger { background: #fef3c7; color: #92400e; }
+        .tag.manual { background: #ede9fe; color: #6d28d9; }
+        .toc { margin: 16px 0; }
+        .toc a { color: #0d9488; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        @media print {
+            body { padding: 0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .container { box-shadow: none !important; padding: 40px; max-width: 100%; border-radius: 0; }
+            h1, h2, h3 { page-break-after: avoid; }
+            .section-block, .intro-block, .highlight-card, pre { page-break-inside: avoid; }
+            @page { size: A4; margin: 15mm; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>CI Automatic Checks — Wiki Registries &amp; Platform-Type Sync</h1>
+
+    <div class="intro-block">
+        <strong>Two things happen automatically, and one thing happens on-demand.</strong>
+        After every merge to <code>mobile_dev</code>, CI regenerates the
+        <a href="https://github.com/digibank-il/mobile-tests/wiki/AUTOMATION_COVERAGE" target="_blank">Automation Coverage</a>
+        and
+        <a href="https://github.com/digibank-il/mobile-tests/wiki/DISABLED_TESTS" target="_blank">Disabled Tests</a>
+        wiki pages straight from the test code — no PR, no conflicts. Separately, keeping the Jira
+        <strong>Platform type</strong> field (<code>customfield_11640</code>) honest is a manual, Claude-driven
+        step, because a GitHub runner can't reach the Atlassian MCP.
+    </div>
+
+    <div class="toc">
+        <strong>On this page:</strong>
+        <a href="#wiki-sync">1. Wiki auto-sync (post-merge)</a> ·
+        <a href="#run-summaries">2. Run-summary banners</a> ·
+        <a href="#clear-note">3. Clearing the pending note</a> ·
+        <a href="#pr-gate">4. The PR gate that used to exist</a> ·
+        <a href="#platform-type">5. Platform-type (<code>--check</code> / <code>--sync</code>)</a> ·
+        <a href="#other-checks">6. Other CI checks worth knowing</a>
+    </div>
+
+    <!-- ── 1. Wiki sync ── -->
+    <h2 id="wiki-sync">1. Wiki auto-sync — <code>sync-test-registries.yml</code></h2>
+    <p><span class="tag trigger">trigger: push to mobile_dev</span></p>
+    <p>Runs after <strong>every merge</strong> to <code>mobile_dev</code>. It checks out the code, regenerates
+    the registries from the test source, and pushes the result straight to the repo's
+    <a href="https://github.com/digibank-il/mobile-tests/wiki" target="_blank">GitHub Wiki</a> — a separate,
+    unprotected git repo, so the default <code>GITHUB_TOKEN</code> can push with no PR and no admin rights.</p>
+
+    <div class="section-block">
+        <h3>What it regenerates and publishes</h3>
+        <ul>
+            <li><code>python3 scripts/disabled_tests_report.py</code> → wiki
+                <a href="https://github.com/digibank-il/mobile-tests/wiki/DISABLED_TESTS" target="_blank">DISABLED_TESTS</a></li>
+            <li><code>python3 scripts/automation_coverage_report.py</code> → wiki
+                <a href="https://github.com/digibank-il/mobile-tests/wiki/AUTOMATION_COVERAGE" target="_blank">AUTOMATION_COVERAGE</a></li>
+            <li><code>python3 scripts/find_user_collisions.py --scope teambanking</code> → wiki
+                <a href="https://github.com/digibank-il/mobile-tests/wiki/Known-User-Collisions" target="_blank">Known-User-Collisions</a></li>
+            <li><code>python3 scripts/jira_done_sync.py --refresh-pending-note</code> — recomputes the delta of
+                newly-automated tests since the last wiki snapshot and writes it into the
+                <code>&lt;!-- JIRA-PENDING --&gt;</code> block at the top of <code>AUTOMATION_COVERAGE.md</code></li>
+        </ul>
+    </div>
+
+    <div class="highlight-grid">
+        <div class="highlight-card">
+            <h3>📖 Mobile Banking (index)</h3>
+            <a class="wiki-link" href="https://github.com/digibank-il/mobile-tests/wiki/Mobile-Banking" target="_blank">
+                mobile-tests/wiki/Mobile-Banking
+            </a>
+        </div>
+        <div class="highlight-card">
+            <h3>📖 Automation Coverage</h3>
+            <a class="wiki-link" href="https://github.com/digibank-il/mobile-tests/wiki/AUTOMATION_COVERAGE" target="_blank">
+                mobile-tests/wiki/AUTOMATION_COVERAGE
+            </a>
+        </div>
+        <div class="highlight-card">
+            <h3>📖 Disabled Tests</h3>
+            <a class="wiki-link" href="https://github.com/digibank-il/mobile-tests/wiki/DISABLED_TESTS" target="_blank">
+                mobile-tests/wiki/DISABLED_TESTS
+            </a>
+        </div>
+    </div>
+
+    <p>Both generated files are <strong>gitignored in the repo</strong> — nobody commits them by hand, and
+    a developer never has to remember to regenerate anything. Concurrent PRs can no longer conflict over
+    these files because they don't live in the repo at all anymore.</p>
+
+    <table>
+        <tr><th></th><th>Before (repo-committed)</th><th>Now (wiki, auto-synced)</th></tr>
+        <tr><td>File location</td><td><code>mobile_dev</code> branch</td><td>GitHub Wiki</td></tr>
+        <tr><td>Updated by</td><td>Developer (manual regenerate + commit)</td><td>CI — automatic on every merge</td></tr>
+        <tr><td>PR conflicts</td><td>Every concurrent PR conflicted</td><td>Never — file isn't in the repo</td></tr>
+        <tr><td>Pending Jira-sync note</td><td>In the committed file's header</td><td>Same, carried over to the wiki copy</td></tr>
+    </table>
+
+    <div class="section-block">
+        <h3>Concurrency guard</h3>
+        <p>Both this workflow and <em>Clear pending note</em> (section 3) write to the same wiki repo, so they
+        share a concurrency group: <code>group: wiki-registries</code>, <code>cancel-in-progress: false</code>.
+        That serializes the two writers so two pushes can never race into a non-fast-forward conflict.</p>
+    </div>
+
+    <!-- ── 2. Run-summary banners ── -->
+    <h2 id="run-summaries">2. Run-summary banners (reusable, read-only)</h2>
+    <p>Two small reusable workflows never touch Jira or fail a run — they just print a reminder into the
+    calling workflow's <strong>Job Summary</strong> so whoever triggers a test run sees the current state at a glance.</p>
+
+    <div class="highlight-grid">
+        <div class="highlight-card">
+            <h3><span class="flow-badge">workflow_call</span>jira-sync-summary.yml</h3>
+            <p>Checks out the wiki and echoes the <code>&lt;!-- JIRA-PENDING --&gt;</code> block from
+            <code>AUTOMATION_COVERAGE.md</code> into <code>$GITHUB_STEP_SUMMARY</code> — capped at 15 rows
+            (the wiki has the full list). Wired into every Android/iOS/custom test run
+            (<code>ios-test-develop-banking-uat</code>, <code>android-test-develop-banking-uat</code>,
+            <code>custom-workflow</code>, <code>run-specific-tests</code>).</p>
+        </div>
+        <div class="highlight-card">
+            <h3><span class="flow-badge">workflow_call</span>candidate-sync-reminder.yml</h3>
+            <p>Appends a static nudge: <em>"Run <code>/automation-coverage sync from jira</code> to pull newly
+            flagged candidates."</em> Only wired into the two <code>develop-banking-uat</code> schedules
+            (Android + iOS), not every run.</p>
+        </div>
+    </div>
+
+    <p>Both are <code>continue-on-error: true</code> — a summary write failing never fails the test run.</p>
+
+    <!-- ── 3. Clear pending note ── -->
+    <h2 id="clear-note">3. Clearing the pending note — <code>clear-jira-pending-note.yml</code></h2>
+    <p><span class="tag manual">manually triggered (workflow_dispatch)</span></p>
+    <p>After you run <code>/automation-coverage sync to jira</code> in Claude (see section 5) and confirm which
+    tickets are now genuinely Done in Jira, this workflow trims those keys out of the wiki's pending-sync note
+    so the run-summary banner stops nagging about tickets that are already fixed.</p>
+
+    <pre>gh workflow run clear-jira-pending-note.yml --ref mobile_dev \
+  -f keys="OZ-111452,OZ-111095,OZ-117467"</pre>
+
+    <p>Evidence-based: only the keys you pass are removed from the note — anything omitted stays pending.
+    Leaving <code>keys</code> empty clears the whole note. Internally it runs:</p>
+    <pre>python3 scripts/jira_done_sync.py --clear-pending-note --keys "$KEYS" \
+  --coverage-file ../wiki/AUTOMATION_COVERAGE.md</pre>
+    <p>Shares the <code>wiki-registries</code> concurrency group with the post-merge sync workflow, so the two
+    can't race.</p>
+
+    <!-- ── 4. PR gate that used to exist ── -->
+    <h2 id="pr-gate">4. The PR <code>--check</code> gate — retired in PR #1986</h2>
+    <div class="warn-block">
+        <strong>Historical note, not a current gate.</strong> Before <a href="https://github.com/digibank-il/mobile-tests/pull/1986" target="_blank">#1986</a>,
+        <code>AUTOMATION_COVERAGE.md</code> and <code>DISABLED_TESTS.md</code> were committed to <code>mobile_dev</code>,
+        and <code>build-project.yml</code> ran two blocking jobs on every PR:
+    </div>
+    <pre>disabled-tests-registry:
+  run: python3 scripts/disabled_tests_report.py --check
+
+automation-coverage-registry:
+  run: python3 scripts/automation_coverage_report.py --check</pre>
+    <p>Since the files moved to the wiki and are now <code>.gitignore</code>d, there's <strong>nothing left to
+    check on a PR</strong> — the wiki simply catches up ~30s after merge. Both scripts still support
+    <code>--check</code> (exit 1 if the output would differ) — useful for a local pre-commit sanity check,
+    just no longer wired into any GitHub Actions job.</p>
+
+    <!-- ── 5. Platform type ── -->
+    <h2 id="platform-type">5. Platform-type field (<code>customfield_11640</code>) — <code>--check</code> / <code>--sync</code></h2>
+    <p>This is the piece that keeps the Jira <strong>"Mobile automation - banking"</strong> dashboard honest.
+    It is <strong>not</strong> a GitHub Actions job — Jira runners can't reach the Atlassian MCP — so it runs
+    manually via the <code>/automation-coverage</code> Claude command, backed by two scripts.</p>
+
+    <table>
+        <tr><th>Direction</th><th>Script</th><th>What it does</th></tr>
+        <tr>
+            <td>Inbound<br><span class="tag">Jira → CSV</span></td>
+            <td><code>jira_candidate_sync.py</code></td>
+            <td>Pulls Xray Tests flagged <code>Mobile / Candidate</code>, Testing Level = Sanity, in-scope Domain,
+            and reconciles them into <code>regression-suite.csv</code> so newly-flagged candidates can't stay off the backlog.</td>
+        </tr>
+        <tr>
+            <td>Outbound<br><span class="tag">code → Jira</span></td>
+            <td><code>jira_done_sync.py</code></td>
+            <td>Reads which OZ tests are automated and on which platform (from the same code scan the coverage
+            registry uses) and flips their Jira ticket from <code>Candidate</code> to the correct <code>Done …</code> value.</td>
+        </tr>
+    </table>
+
+    <h3>Mapping (outbound)</h3>
+    <table>
+        <tr><th>Code state</th><th>Platform type set in Jira</th><th>Child option id</th></tr>
+        <tr><td>Android ✅, iOS ✅</td><td>Mobile / Done both platforms</td><td><code>14046</code></td></tr>
+        <tr><td>Android ✅, iOS blank</td><td>Mobile / Done Android</td><td><code>13961</code></td></tr>
+        <tr><td>Android blank, iOS ✅</td><td>Mobile / Done iOS</td><td><code>14045</code></td></tr>
+        <tr><td>Both blank (disabled everywhere)</td><td>skip — don't touch</td><td>—</td></tr>
+    </table>
+    <p>Parent option is always <code>"Mobile "</code> (id <code>13959</code>, note the trailing space — that's
+    how Jira stores it). Only tickets currently at <code>Candidate</code> are touched; already-Done or Blocked
+    tickets are left alone.</p>
+
+    <h3>The <code>--check</code> flag (CI-style gate, run manually today)</h3>
+    <pre>python3 scripts/jira_candidate_sync.py --jira-api --check   # exit 1 if a Jira candidate is missing from the CSV
+python3 scripts/jira_done_sync.py     --jira-api --check   # exit 1 if any automated test is still "Candidate" in Jira</pre>
+    <p>Both scripts are dry-run by default; <code>--write</code> is the only flag that touches anything
+    (CSV or Jira). Neither <code>--check</code> is currently wired into a GitHub Actions workflow — they need
+    a live Jira token or the MCP, which a shared CI runner doesn't have — so today they're run by hand as a
+    pre-flight before <code>/automation-coverage sync from jira</code> / <code>sync to jira</code>.</p>
+
+    <div class="section-block">
+        <h3>End-to-end flow</h3>
+        <div class="flow-step">
+            <div class="step-num">1</div>
+            <div class="step-body"><strong>Merge lands on <code>mobile_dev</code></strong> — <code>sync-test-registries</code>
+            regenerates the wiki registries and refreshes the pending-sync note with any newly-automated tests.</div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">2</div>
+            <div class="step-body"><strong>Every test run</strong> echoes the pending note into its Job Summary
+            (<code>jira-sync-summary.yml</code>) and, on the two scheduled develop-banking-uat runs, a reminder
+            to pull new candidates (<code>candidate-sync-reminder.yml</code>).</div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">3</div>
+            <div class="step-body"><strong>Every few days, someone runs <code>/automation-coverage sync to jira</code>
+            in Claude</strong> — dry-runs <code>jira_done_sync.py</code> against live Jira status via the MCP, applies
+            the confirmed updates with <code>editJiraIssue</code>, then triggers <code>clear-jira-pending-note.yml</code>
+            with the verified keys.</div>
+        </div>
+        <div class="flow-step">
+            <div class="step-num">4</div>
+            <div class="step-body"><strong>The bot PR from step 3 gets human approval and merges</strong> — the
+            trimmed note shows up on the next test run, closing the loop.</div>
+        </div>
+    </div>
+
+    <!-- ── 6. Other checks ── -->
+    <h2 id="other-checks">6. Other CI checks worth knowing about</h2>
+    <ul>
+        <li><strong>User-collision auto-serialize</strong> (<code>build-project.yml</code> → <code>user_collision_check</code>)
+        — non-blocking, PR-time. If a PR introduces two tests sharing a login identity, it auto-adds
+        <code>@ResourceLock</code>, commits it to the PR branch, and comments. The
+        <a href="https://github.com/digibank-il/mobile-tests/wiki/Known-User-Collisions" target="_blank">Known-User-Collisions</a>
+        wiki page it reads from is refreshed post-merge by the same <code>sync-test-registries</code> workflow.</li>
+        <li><strong>Android / iOS locator impact check</strong> (<code>android-locator-impact-check.yml</code>,
+        <code>ios-locator-impact-check.yml</code>) — triggered by <code>repository_dispatch</code> from the app repos
+        when locator ids change; scans which tests are impacted and comments the report back on the app PR.</li>
+        <li><strong>Amazon Q PR skip</strong> (<code>build-project.yml</code> → <code>check-author</code>) — skips the
+        build job entirely for PRs authored by <code>amazon-q-developer[bot]</code> (auto-heal PRs get their own
+        validation via <code>validate-auto-heal-pr.yml</code> instead).</li>
+    </ul>
+
+    <p style="margin-top:28px;color:#78716c;font-size:0.85em;border-top:1px solid #e7e5e0;padding-top:14px;">
+        Source: <code>mobile_dev</code> branch,
+        <a href="https://github.com/digibank-il/mobile-tests/tree/mobile_dev/.github/workflows" target="_blank">.github/workflows</a>
+        and <a href="https://github.com/digibank-il/mobile-tests/tree/mobile_dev/scripts" target="_blank">scripts/</a>,
+        as of 2026-07-12.
+    </p>
+
+</div>
+</body>
+</html>
