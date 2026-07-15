@@ -64,12 +64,12 @@ def is_automation_alignment_page(title: str, filename: str) -> bool:
 
 
 def is_guides_page(title: str, filename: str) -> bool:
-    """Guides and documentation pages (on-demand tests, workflows, etc.)."""
+    """Guides and documentation pages (on-demand tests, workflows, CI checks, etc.)."""
     fn = filename.casefold()
-    if "on-demand" in fn or "firebender" in fn or "kiro-steering" in fn:
+    if "on-demand" in fn or "firebender" in fn or "kiro-steering" in fn or "ci-automatic-checks" in fn:
         return True
     tl = title.casefold()
-    if "on-demand" in tl or "firebender" in tl or "kiro" in tl:
+    if "on-demand" in tl or "firebender" in tl or "kiro" in tl or "ci automatic checks" in tl:
         return True
     return False
 
