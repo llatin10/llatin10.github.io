@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <title>R2P Sync — Test User &amp; Deep Links (temporary)</title>
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --card: #fff;
+      --text: #18181b;
+      --muted: #71717a;
+      --accent: #0d9488;
+      --border: #e4e4e7;
+      --link-bg: #ecfdf5;
+      --danger: #b91c1c;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #09090b;
+        --card: #18181b;
+        --text: #fafafa;
+        --muted: #a1a1aa;
+        --accent: #2dd4bf;
+        --border: #27272a;
+        --link-bg: #134e4a;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      padding: max(12px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 { font-size: 1.35rem; margin: 0 0 8px; font-weight: 700; }
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--danger);
+      border: 1px solid var(--danger);
+      border-radius: 999px;
+      padding: 2px 9px;
+      margin-bottom: 10px;
+    }
+    .lead { color: var(--muted); font-size: 0.9rem; margin: 0 0 16px; }
+    .lead a { color: var(--accent); }
+    h2 {
+      font-size: 1.05rem;
+      margin: 28px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--accent);
+      color: var(--accent);
+    }
+    h2:first-of-type { margin-top: 8px; }
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    dl.kv { margin: 0; }
+    dl.kv div { display: flex; flex-wrap: wrap; gap: 4px 8px; padding: 7px 0; border-bottom: 1px solid var(--border); }
+    dl.kv div:last-child { border-bottom: none; }
+    dl.kv dt {
+      flex: 0 0 auto;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      min-width: 8.5rem;
+    }
+    dl.kv dd { margin: 0; font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: 0.88rem; word-break: break-all; }
+    .link-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      background: var(--link-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      min-height: 48px;
+    }
+    .link-btn:active { opacity: 0.85; transform: scale(0.99); }
+    .link-btn small {
+      display: block;
+      font-weight: 400;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 6px;
+      word-break: break-all;
+    }
+    .warn { font-size: 0.85rem; color: var(--danger); margin-top: 8px; }
+    .note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <span class="badge">Temporary</span>
+  <h1>R2P Sync — Test User &amp; Deep Links</h1>
+  <p class="lead">For <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-131578">OZ-131578</a> — Android R2P Redirect (Synchronous), Display Payment Request. Staging (<code>stgfdb</code>). Tap a link below to open the app directly to a payment request.</p>
+
+  <h2>Reserved User</h2>
+  <div class="panel">
+    <dl class="kv">
+      <div><dt>Email</dt><dd>0542534040@mailinator.com</dd></div>
+      <div><dt>Password</dt><dd>Aa#11122233344</dd></div>
+      <div><dt>PSU-ID / National ID</dt><dd>297213738</dd></div>
+      <div><dt>Account</dt><dd>459146057 <span style="color:var(--muted)">(external 18001459146057, bank 18 / branch 001)</span></dd></div>
+      <div><dt>Portfolio UUID</dt><dd>bee10563-f2ac-4964-beaf-cb99e50b09db</dd></div>
+      <div><dt>Customer UUID</dt><dd>699deaf8-6edb-488b-8700-34c39419f1c1</dd></div>
+    </dl>
+  </div>
+
+  <h2>Sync R2P Deep Links</h2>
+  <p class="lead" style="margin-bottom:12px;">Five mocked requests with a far-out expiration date — they don't get consumed/burned by a Pay, Reject, or expiry action, so any of them can be reused across tests. The <code>id</code> query param must be uppercase with no dashes.</p>
+
+  <a class="link-btn" href="https://app.stgfdb.net/portfolio/payments/r2p-sync?id=76BFA529C60946E6B4F973D243D83AC2">Request 1
+    <small>id=76BFA529C60946E6B4F973D243D83AC2</small>
+  </a>
+  <a class="link-btn" href="https://app.stgfdb.net/portfolio/payments/r2p-sync?id=A0FDBC4B50A241B882AC6781E7C44037">Request 2
+    <small>id=A0FDBC4B50A241B882AC6781E7C44037</small>
+  </a>
+  <a class="link-btn" href="https://app.stgfdb.net/portfolio/payments/r2p-sync?id=BF7C588386FA4E4C850865F9FD9100A4">Request 3
+    <small>id=BF7C588386FA4E4C850865F9FD9100A4</small>
+  </a>
+  <a class="link-btn" href="https://app.stgfdb.net/portfolio/payments/r2p-sync?id=7873F310593149B1AAD4E980A6030891">Request 4
+    <small>id=7873F310593149B1AAD4E980A6030891</small>
+  </a>
+  <a class="link-btn" href="https://app.stgfdb.net/portfolio/payments/r2p-sync?id=18212173A78C42598FDAF98D61B30824">Request 5
+    <small>id=18212173A78C42598FDAF98D61B30824</small>
+  </a>
+
+  <p class="warn">Known issue: on Android, a request whose creation timestamp lacks milliseconds crashes the app on this screen — see <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-134599">OZ-134599</a>. Confirmed not reproducible on iOS.</p>
+
+  <p class="note">Temporary page — remove once OZ-131578 QA wraps up. Full QA plan lives in the repo at <code>aidlc-docs/ticket/OZ-131578-android-r2p-redirect-synchronous-display-payment-request/qa-plan.md</code>.</p>
+</body>
+</html>
