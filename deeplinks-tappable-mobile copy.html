@@ -165,6 +165,22 @@
       margin-top: 6px;
       word-break: break-all;
     }
+    .copy-chip {
+      display: inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.82rem;
+      padding: 8px 12px;
+      margin: -4px 0 14px;
+      background: var(--link-bg);
+      color: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: all;
+    }
+    .copy-chip:active { opacity: 0.8; }
     .warn {
       font-size: 0.85rem;
       color: var(--danger);
@@ -336,6 +352,37 @@
       return b + (path.startsWith("/") ? path : "/" + path);
     }
 
+    function makeCopyChip(labelText, copyText) {
+      const chip = document.createElement("div");
+      chip.className = "copy-chip";
+      chip.textContent = labelText;
+      chip.title = "Tap to copy";
+      chip.addEventListener("click", function () {
+        const restore = () => {
+          chip.textContent = "Copied!";
+          setTimeout(() => { chip.textContent = labelText; }, 1200);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(copyText).then(restore).catch(() => fallbackCopy(copyText, restore));
+        } else {
+          fallbackCopy(copyText, restore);
+        }
+      });
+      return chip;
+    }
+
+    function fallbackCopy(text, done) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      done();
+    }
+
     function render() {
       const b = base();
       const q = qs();
@@ -348,6 +395,9 @@
         const h2 = document.createElement("h2");
         h2.textContent = block.title || "";
         wrap.appendChild(h2);
+        if ((block.title || "").startsWith("Loans")) {
+          wrap.appendChild(makeCopyChip("Test user: 0522164534@mailinator.com", "0522164534@mailinator.com"));
+        }
         for (const item of block.items || []) {
           const url = itemHref(b, q, item.path || "");
           const a = document.createElement("a");
