@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>QA &amp; Pre-Flight Pipeline — 5 PRs</title>
+<meta name="description" content="Five PRs across mobile-tests, android-banking and ios-banking: a shared developer pre-flight checklist, a rebuilt QA-plan pipeline and one house style for PR descriptions, with interactive examples.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+Hebrew:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f6f3; --surface:#ffffff; --surface-2:#eef1ec; --ink:#1d2622; --ink-2:#4a5650; --ink-3:#77837c;
+  --line:#dde3dd; --accent:#0f766e; --accent-ink:#ffffff; --accent-soft:#dcefeb;
+  --pass:#1f7a3f; --pass-soft:#e1f2e6; --warn:#9a5b0b; --warn-soft:#fbeed7; --fail:#b3261e; --fail-soft:#f9e1de;
+  --na:#5f6b66; --na-soft:#eceeec; --code-bg:#eef1ec; --shadow:0 1px 2px rgba(20,40,30,.06),0 6px 24px rgba(20,40,30,.06);
+  --radius:12px; --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --he:"Noto Sans Hebrew","Arial Hebrew",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101614; --surface:#172019; --surface-2:#1e2a24; --ink:#e6ece8; --ink-2:#b4c0b9; --ink-3:#86938c;
+    --line:#2b3a33; --accent:#4fb8a9; --accent-ink:#0b1512; --accent-soft:#16332e;
+    --pass:#6fcf8f; --pass-soft:#16301f; --warn:#e8b35c; --warn-soft:#33270f; --fail:#f08a80; --fail-soft:#3a1a17;
+    --na:#9aa7a0; --na-soft:#222c27; --code-bg:#1e2a24; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.25);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101614; --surface:#172019; --surface-2:#1e2a24; --ink:#e6ece8; --ink-2:#b4c0b9; --ink-3:#86938c;
+  --line:#2b3a33; --accent:#4fb8a9; --accent-ink:#0b1512; --accent-soft:#16332e;
+  --pass:#6fcf8f; --pass-soft:#16301f; --warn:#e8b35c; --warn-soft:#33270f; --fail:#f08a80; --fail-soft:#3a1a17;
+  --na:#9aa7a0; --na-soft:#222c27; --code-bg:#1e2a24; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.25);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.6;font-size:15.5px;padding:0 16px 64px}
+bdi[lang="he"],.he{font-family:var(--he)}
+a{color:var(--accent);text-decoration:none;font-weight:500}
+a:hover{text-decoration:underline}
+code,.mono{font-family:var(--mono);font-size:.86em}
+code{background:var(--code-bg);padding:.08em .38em;border-radius:5px;overflow-wrap:anywhere}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1060px;margin:0 auto}
+/* nav */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -16px;padding:10px 16px}
+.topbar .wrap{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.brand{font-weight:600;font-size:.92rem;color:var(--ink);margin-right:auto}
+.brand a{color:inherit}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pills a{font-size:.8rem;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink-2);font-weight:500}
+.pills a:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+.theme-btn{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:4px 10px;font:inherit;font-size:.8rem;cursor:pointer}
+/* hero */
+header.hero{padding:44px 0 26px}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-size:clamp(1.7rem,4.2vw,2.5rem);line-height:1.15;letter-spacing:-.015em;font-weight:700;text-wrap:balance;max-width:22ch}
+.lede{color:var(--ink-2);font-size:1.06rem;max-width:66ch;margin-top:14px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:26px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+.stat b{display:block;font-size:1.45rem;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.stat span{font-size:.8rem;color:var(--ink-3)}
+section{margin-top:44px;scroll-margin-top:70px}
+h2{font-size:1.28rem;letter-spacing:-.01em;margin-bottom:6px;text-wrap:balance}
+.sub{color:var(--ink-2);max-width:68ch;margin-bottom:18px}
+/* pipeline */
+.pipeline{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;counter-reset:st}
+@media (max-width:760px){.pipeline{grid-template-columns:1fr 1fr}}
+@media (max-width:440px){.pipeline{grid-template-columns:1fr}}
+.stage{position:relative;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 14px 12px;cursor:pointer;font:inherit;color:inherit;transition:border-color .15s,box-shadow .15s,transform .15s}
+.stage:hover{border-color:var(--accent)}
+.stage[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.stage .n{font-family:var(--mono);font-size:.72rem;color:var(--ink-3)}
+.stage h3{font-size:.98rem;margin:2px 0 4px}
+.stage p{font-size:.84rem;color:var(--ink-2)}
+.stage .cmd{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:.74rem;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:1px 6px}
+.hint{font-size:.8rem;color:var(--ink-3);margin-top:10px}
+/* PR cards */
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:5px 12px;font:inherit;font-size:.82rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.prs{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.pr{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:8px;transition:opacity .2s,border-color .2s}
+.pr.dim{opacity:.35}
+.pr.hl{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.pr .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.76rem}
+.repo{font-family:var(--mono);padding:1px 7px;border-radius:6px;background:var(--surface-2);color:var(--ink-2)}
+.tag{font-family:var(--mono);font-size:.72rem;padding:1px 7px;border-radius:6px;border:1px solid var(--line);color:var(--ink-3)}
+.pr h3{font-size:1rem;line-height:1.35}
+.pr p{font-size:.88rem;color:var(--ink-2)}
+.pr ul{padding-left:18px;font-size:.86rem;color:var(--ink-2)}
+.pr ul li{margin:2px 0}
+.pr .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.8rem;padding-top:8px;border-top:1px dashed var(--line)}
+.pr .nums{font-family:var(--mono);color:var(--ink-3);font-size:.74rem}
+details.more summary{cursor:pointer;font-size:.82rem;color:var(--accent);font-weight:500;list-style:none}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:"+ "}
+details.more[open] summary::before{content:"− "}
+details.more[open] summary{margin-bottom:6px}
+/* examples */
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:0}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:9px 12px;font:inherit;font-size:.9rem;color:var(--ink-2);cursor:pointer;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+.panel{background:var(--surface);border:1px solid var(--line);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:18px;box-shadow:var(--shadow)}
+.panel[hidden]{display:none}
+.doc-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start;margin-bottom:14px}
+.doc-head h3{font-size:1.02rem}
+.doc-head .by{font-size:.8rem;color:var(--ink-3)}
+.links{display:flex;gap:10px;flex-wrap:wrap;font-size:.82rem}
+.links a{border:1px solid var(--line);padding:3px 9px;border-radius:8px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:16px}
+.scard{border-radius:10px;padding:10px 12px;border:1px solid transparent;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--surface-2)}
+.scard b{display:block;font-size:1.3rem;font-variant-numeric:tabular-nums}
+.scard span{font-size:.76rem;color:var(--ink-2)}
+.scard small{display:block;font-size:.74rem;color:var(--ink-3)}
+.scard.pass{background:var(--pass-soft)} .scard.pass b{color:var(--pass)}
+.scard.warn{background:var(--warn-soft)} .scard.warn b{color:var(--warn)}
+.scard.fail{background:var(--fail-soft)} .scard.fail b{color:var(--fail)}
+.scard.neutral b{color:var(--ink)}
+.scard:hover{border-color:var(--line)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:12px}
+.seg button{background:var(--surface);border:none;padding:6px 12px;font:inherit;font-size:.84rem;color:var(--ink-2);cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.cat{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin:14px 0 6px;display:flex;gap:8px;align-items:center}
+.cat .c{background:var(--surface-2);border-radius:999px;padding:0 7px}
+.item{border:1px solid var(--line);border-left-width:4px;border-radius:10px;padding:10px 12px;margin-bottom:8px;background:var(--surface)}
+.item.pass{border-left-color:var(--pass)} .item.warn{border-left-color:var(--warn)} .item.fail{border-left-color:var(--fail)} .item.na{border-left-color:var(--na)}
+.item .row{display:flex;gap:10px;align-items:flex-start}
+.check{flex:none;width:22px;height:22px;border-radius:6px;border:1.5px solid var(--ink-3);background:var(--surface);cursor:pointer;display:grid;place-items:center;font-size:.8rem;color:transparent;margin-top:1px}
+.check[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.item h4{font-size:.92rem;line-height:1.4}
+.item p{font-size:.84rem;color:var(--ink-2);margin-top:3px}
+.verdict{display:inline-block;font-size:.72rem;font-weight:600;padding:1px 8px;border-radius:999px;margin-top:6px}
+.verdict.pass{background:var(--pass-soft);color:var(--pass)} .verdict.warn{background:var(--warn-soft);color:var(--warn)} .verdict.fail{background:var(--fail-soft);color:var(--fail)} .verdict.na{background:var(--na-soft);color:var(--na)}
+.none{font-size:.84rem;color:var(--ink-3);font-style:italic;padding:4px 2px 8px}
+.fixcard{border:1px dashed var(--line);border-radius:10px;padding:12px;margin-top:10px;background:var(--surface-2)}
+.fixcard h4{font-size:.9rem}
+.fixcard .st{font-size:.76rem;font-family:var(--mono);color:var(--warn)}
+.fixcard p{font-size:.84rem;color:var(--ink-2);margin-top:4px}
+.oq{border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px}
+.oq h4{font-size:.9rem}
+.opts{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.opt{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 10px;font:inherit;font-size:.84rem;color:var(--ink);cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.opt b{font-family:var(--mono);margin-right:6px;color:var(--accent)}
+.copyline{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.copyline code{flex:1 1 260px;display:block;padding:7px 10px;border-radius:8px;white-space:pre-wrap}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:6px 12px;font:inherit;font-size:.82rem;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
+@media (max-width:820px){.two{grid-template-columns:1fr}}
+.mqa{display:grid;gap:6px}
+.mqa-row{display:grid;grid-template-columns:80px 1fr auto;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface);font-size:.85rem}
+.mqa-row .id{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
+.mqa-row .pri{font-size:.72rem;font-family:var(--mono);color:var(--ink-3)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle}
+.dot.pass{background:var(--pass)} .dot.warn{background:var(--warn)} .dot.fail{background:var(--fail)}
+.mqa-row[hidden]{display:none}
+.expand{grid-column:1/-1;font-size:.82rem;color:var(--ink-2);border-top:1px dashed var(--line);padding-top:6px}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.85rem;min-width:620px}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink)}
+th{font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);background:var(--surface-2)}
+tr:last-child td{border-bottom:none}
+.rtl-demo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media (max-width:640px){.rtl-demo{grid-template-columns:1fr}}
+.phone{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--surface-2)}
+.phone .lbl{font-size:.74rem;color:var(--ink-3);font-family:var(--mono);margin-bottom:8px}
+.phone .screen{direction:rtl;text-align:right;background:var(--surface);border-radius:10px;padding:12px 14px;font-family:var(--he);font-size:1.05rem;border:1px solid var(--line)}
+.phone .screen .name{font-weight:600}
+.phone .screen .sub{font-size:.92rem;color:var(--ink-2);margin:0}
+.phone .res{font-size:.8rem;margin-top:8px;font-weight:600}
+.res.ok{color:var(--pass)} .res.bad{color:var(--fail)}
+.field{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:.86rem}
+.field input{font:inherit;font-family:var(--mono);padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:14ch}
+textarea{width:100%;min-height:190px;font-family:var(--mono);font-size:.8rem;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);resize:vertical}
+.hits{list-style:none;margin-top:10px;display:grid;gap:5px}
+.hits li{font-size:.84rem;padding:6px 10px;border-radius:8px;background:var(--warn-soft);color:var(--ink)}
+.hits li.clean{background:var(--pass-soft)}
+.hits li span{font-family:var(--mono);font-size:.76rem;color:var(--ink-3);margin-right:8px}
+.core{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch}
+@media (max-width:760px){.core{grid-template-columns:1fr}}
+.core .box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.core .box h3{font-size:.95rem;margin-bottom:6px}
+.core .box ul{padding-left:18px;font-size:.84rem;color:var(--ink-2)}
+.core .mid{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;font-family:var(--mono);font-size:.76rem;color:var(--ink-3);text-align:center;padding:8px}
+.core .mid b{font-size:1.5rem;color:var(--accent);font-family:var(--sans)}
+footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-size:.82rem;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.note{font-size:.8rem;color:var(--ink-3);margin-top:12px}
+.toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:999px;font-size:.84rem;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<nav class="topbar" aria-label="Sections">
+  <div class="wrap">
+    <div class="brand"><a href="index.html">llatin10</a> / QA &amp; Pre-Flight</div>
+    <div class="pills">
+      <a href="#flow">Flow</a><a href="#prs">5 PRs</a><a href="#examples">Examples</a><a href="#core">Shared core</a><a href="#hygiene">Hygiene check</a>
+    </div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle dark theme">Theme</button>
+  </div>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <p class="eyebrow">mobile-tests · android-banking · ios-banking</p>
+  <h1>From ticket to tested: one pipeline, five PRs</h1>
+  <p class="lede">Developers get a self-check before handoff that proposes fixes but applies nothing without approval. QA gets a rebuilt test-plan pipeline with a dashboard, filters and answerable open questions. Every PR description follows one house style, checked by the same script in all three repos.</p>
+  <div class="stats" aria-label="Key numbers">
+    <div class="stat"><b>5</b><span>pull requests, 3 repos</span></div>
+    <div class="stat"><b id="statShared">64</b><span>pre-flight files identical in both apps</span></div>
+    <div class="stat"><b>54</b><span>pre-flight checker codes</span></div>
+    <div class="stat"><b>64</b><span>QA-plan checker codes</span></div>
+    <div class="stat"><b>v5</b><span>checklist &amp; QA-plan templates</span></div>
+  </div>
+</header>
+
+<section id="flow" aria-labelledby="flowH">
+  <h2 id="flowH">Where each piece runs</h2>
+  <p class="sub">A ticket passes four checkpoints. Pick one to see which PRs deliver it.</p>
+  <div class="pipeline" role="group" aria-label="Pipeline stages">
+    <button class="stage" type="button" data-stage="preflight" aria-pressed="false">
+      <span class="n">1 · Developer</span><h3>Pre-flight self-check</h3>
+      <p>Last step of AI-DLC Build and Test. Scores the change, flags likely breaks, proposes fixes.</p>
+      <span class="cmd">/tp-confidence</span>
+    </button>
+    <button class="stage" type="button" data-stage="describe" aria-pressed="false">
+      <span class="n">2 · PR</span><h3>Description in house style</h3>
+      <p>Current state only, every commit covered, keys linked, hygiene-checked.</p>
+      <span class="cmd">/pr-description</span>
+    </button>
+    <button class="stage" type="button" data-stage="qa" aria-pressed="false">
+      <span class="n">3 · QA</span><h3>Test plan &amp; dashboard</h3>
+      <p>Manual tests with AI confidence, a maturity score, top suspects and open questions for Dev/PO.</p>
+      <span class="cmd">/qa-plan · /qa-to-ios · /qa-to-html</span>
+    </button>
+    <button class="stage" type="button" data-stage="review" aria-pressed="false">
+      <span class="n">4 · Review</span><h3>Automation fixes</h3>
+      <p>Test hardening found while verifying the pipeline on real runs.</p>
+      <span class="cmd">on-demand CI runs</span>
+    </button>
+  </div>
+  <p class="hint" id="stageHint">No stage selected: all PRs shown.</p>
+</section>
+
+<section id="prs" aria-labelledby="prsH">
+  <h2 id="prsH">The five PRs</h2>
+  <p class="sub">All drafts. Stacking: <a href="https://github.com/digibank-il/android-banking/pull/8875">android-banking#8875</a> sits on <a href="https://github.com/digibank-il/android-banking/pull/8873">#8873</a>. Links need digibank-il access.</p>
+  <div class="filters" role="group" aria-label="Filter by repo">
+    <button class="chip" type="button" data-repo="all" aria-pressed="true">All</button>
+    <button class="chip" type="button" data-repo="mobile-tests" aria-pressed="false">mobile-tests</button>
+    <button class="chip" type="button" data-repo="android-banking" aria-pressed="false">android-banking</button>
+    <button class="chip" type="button" data-repo="ios-banking" aria-pressed="false">ios-banking</button>
+  </div>
+  <div class="prs" id="prList"></div>
+</section>
+
+<section id="examples" aria-labelledby="exH">
+  <h2 id="exH">See it working</h2>
+  <p class="sub">Excerpts of real plans, trimmed and with test-user details removed. The controls behave like the full pages: ticks, filters and the answer picker that builds the command line.</p>
+  <div class="tabs" role="tablist" aria-label="Examples">
+    <button class="tab" role="tab" id="t-pf" aria-controls="p-pf" aria-selected="true">Pre-flight checklist</button>
+    <button class="tab" role="tab" id="t-qa" aria-controls="p-qa" aria-selected="false" tabindex="-1">QA test plan</button>
+    <button class="tab" role="tab" id="t-vs" aria-controls="p-vs" aria-selected="false" tabindex="-1">Same ticket, two checks</button>
+    <button class="tab" role="tab" id="t-rtl" aria-controls="p-rtl" aria-selected="false" tabindex="-1">The RTL catch</button>
+  </div>
+
+  <!-- Pre-flight -->
+  <div class="panel" role="tabpanel" id="p-pf" aria-labelledby="t-pf">
+    <div class="doc-head">
+      <div>
+        <h3>Developer Pre-Flight Checklist — <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-135588">OZ-135588</a>: account number in the Dashboard header</h3>
+        <p class="by">iOS · a retroactive run at <a href="https://github.com/digibank-il/ios-banking/pull/8857">ios-banking#8857</a>'s merge commit · Figma and Jira unavailable, so items that need them are 🟡</p>
+      </div>
+      <div class="links">
+        <a href="https://claude.ai/artifact/Wm3GHeuCC349QhTEYcXGab">Full page (org)</a>
+        <a href="https://github.com/digibank-il/ios-banking/blob/chore/preflight-checklist/aidlc-docs/ticket/OZ-135588-dashboard-account-number/dev-preflight-checklist.md">Source md</a>
+      </div>
+    </div>
+    <div class="cards">
+      <button class="scard pass" type="button" data-jump="pf-list"><span>Self-check score</span><b>71</b><small>🟢 Nearly there</small></button>
+      <button class="scard fail" type="button" data-jump="pf-list" data-view="open"><span>Likely broken</span><b>2</b><small>🔴 in Top Suspects</small></button>
+      <button class="scard warn" type="button" data-jump="pf-list" data-view="open"><span>Uncertain</span><b>8</b><small>🟡 across the list</small></button>
+      <button class="scard neutral" type="button" data-jump="pf-fix"><span>Fix proposals</span><b>0</b><small>1 not eligible</small></button>
+      <button class="scard neutral" type="button" data-jump="pf-oq"><span>Open questions</span><b>4</b><small>answerable</small></button>
+    </div>
+    <div class="seg" role="group" aria-label="Which list">
+      <button type="button" data-pfview="open" aria-pressed="true">Top Suspects (open)</button>
+      <button type="button" data-pfview="cleared" aria-pressed="false">Checked and Cleared</button>
+    </div>
+    <div id="pf-list"></div>
+    <div class="fixcard" id="pf-fix">
+      <span class="st">FP-1 · Not eligible — judgment call</span>
+      <h4>Keep the two-line title inside the header row</h4>
+      <p>Two valid answers and nothing picks one: keep the row at 32pt and let the 36pt title overflow as the design draws it, or grow the row to 36pt. The design itself is open. A layout-only change is compile-verifiable only, so it's never applied automatically.</p>
+    </div>
+    <div class="oq" id="pf-oq">
+      <h4>Q3. Should the Dashboard header's content row stay 32pt with the 36pt two-line title overflowing it, or grow to 36pt?</h4>
+      <div class="opts" data-cmd="/tp-confidence OZ-135588 answers:" data-q="Q3">
+        <button class="opt" type="button" data-l="A" aria-pressed="false"><b>A</b>Stay 32pt, per the design and FR-7's 62pt</button>
+        <button class="opt" type="button" data-l="B" aria-pressed="false"><b>B</b>Grow to 36pt and update FR-7 to 66pt</button>
+        <button class="opt" type="button" data-l="C" aria-pressed="false"><b>C</b>Ask the designer first</button>
+      </div>
+      <div class="copyline"><code data-out>Pick an answer to build the command</code><button class="btn" type="button" data-copy disabled>Copy</button></div>
+      <p class="note">The page never writes anything: the developer pastes the line into <code>/tp-confidence</code>, which records the answer and re-checks the items it names. Fixes apply only on an explicit <code>apply FP-&lt;n&gt;</code>.</p>
+    </div>
+  </div>
+
+  <!-- QA plan -->
+  <div class="panel" role="tabpanel" id="p-qa" aria-labelledby="t-qa" hidden>
+    <div class="doc-head">
+      <div>
+        <h3>QA Plan — <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-133838">OZ-133838</a>: Quick Login forgot-password reset after a long background</h3>
+        <p class="by">Android · 16 manual tests with AI confidence against the merged code (<a href="https://github.com/digibank-il/android-banking/pull/8870">android-banking#8870</a>)</p>
+      </div>
+      <div class="links">
+        <a href="https://github.com/digibank-il/android-banking/blob/chore/pr-description-command/aidlc-docs/ticket/OZ-133838-quick-login-forgot-password-hang/qa-plan.md">Source md</a>
+        <a href="https://github.com/digibank-il/android-banking/pull/8873">Pipeline PR</a>
+      </div>
+    </div>
+    <div class="cards">
+      <button class="scard warn" type="button" data-qafilter="all"><span>Android score</span><b>68</b><small>🟡 Maturing · weighted</small></button>
+      <button class="scard fail" type="button" data-qafilter="fail"><span>Confirmed gaps</span><b>3</b><small>MQA-006 · 007 · 008</small></button>
+      <button class="scard warn" type="button" data-qafilter="warn"><span>Uncertain</span><b>4</b><small>🟡 to verify first</small></button>
+      <button class="scard neutral" type="button" data-jump="qa-oq"><span>Open questions</span><b>4</b><small>for Dev/PO</small></button>
+    </div>
+    <div class="two">
+      <div>
+        <div class="seg" role="group" aria-label="Filter by confidence">
+          <button type="button" data-qaf="all" aria-pressed="true">All 16</button>
+          <button type="button" data-qaf="fail" aria-pressed="false">🔴 3</button>
+          <button type="button" data-qaf="warn" aria-pressed="false">🟡 4</button>
+          <button type="button" data-qaf="pass" aria-pressed="false">🟢 9</button>
+        </div>
+        <div class="mqa" id="mqaList"></div>
+      </div>
+      <div>
+        <p class="cat">What the plan says, in plain English</p>
+        <p style="font-size:.88rem;color:var(--ink-2)">A password reset started from Quick Login and interrupted by a five-minute background used to send the user to the full login screen. The fix remembers where the reset started. The catch: the idle-logout cleanup that came with it also runs before login, and a few screens wait forever for the codes it clears. The plan targets those paths directly.</p>
+        <div class="oq" id="qa-oq">
+          <h4>Open question 2: the idle logout now empties the one-time codes before login too. Intended?</h4>
+          <div class="opts" data-cmd="/qa-plan OZ-133838 backfill answers:" data-q="Q2">
+            <button class="opt" type="button" data-l="A" aria-pressed="false"><b>A</b>Intended; the screens that read the codes must handle empty</button>
+            <button class="opt" type="button" data-l="B" aria-pressed="false"><b>B</b>Not intended; limit the cleanup to logged-in sessions</button>
+            <button class="opt" type="button" data-l="C" aria-pressed="false"><b>C</b>Not decided; keep the tests blocked</button>
+          </div>
+          <div class="copyline"><code data-out>Pick an answer to build the command</code><button class="btn" type="button" data-copy disabled>Copy</button></div>
+          <p class="note">Illustrative options; the plan's own question text lists the exact code paths. <code>/qa-plan</code> records the answer and re-scores the tests it touches.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VS -->
+  <div class="panel" role="tabpanel" id="p-vs" aria-labelledby="t-vs" hidden>
+    <div class="doc-head">
+      <div>
+        <h3>OZ-133838: what the developer's pre-flight would have flagged vs what QA found</h3>
+        <p class="by">The pre-flight ran retroactively at the fix's merge commit, blind to the QA plan written later.</p>
+      </div>
+      <div class="links"><a href="https://github.com/digibank-il/android-banking/blob/chore/preflight-overhaul/aidlc-docs/ticket/OZ-133838-quick-login-forgot-password-hang/dev-preflight-checklist.md">Pre-flight md</a></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>QA finding</th><th>QA marker</th><th>Pre-flight</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>MQA-006 · Full Login reset hangs after a long background</td><td><span class="dot fail"></span>🔴</td><td><span class="dot fail"></span>🔴 flagged</td><td>Same root cause: the idle-logout cleanup empties a code the next screen waits for</td></tr>
+          <tr><td>MQA-007 · Full Login fails on every tap after a long background</td><td><span class="dot fail"></span>🔴</td><td><span class="dot fail"></span>🔴 flagged</td><td>Same root cause</td></tr>
+          <tr><td>MQA-008 · Back from the identification screen goes to the wrong login</td><td><span class="dot fail"></span>🔴</td><td><span class="dot fail"></span>🔴 flagged</td><td>A read of shared login state the fix didn't cover</td></tr>
+          <tr><td>MQA-005 · Quick Login reset with background before the new-password screen</td><td><span class="dot warn"></span>🟡</td><td><span class="dot fail"></span>🔴 confirmed</td><td>Pre-flight's second pass settled it</td></tr>
+          <tr><td>MQA-012 · Process death on the new-password screen</td><td><span class="dot warn"></span>🟡</td><td><span class="dot fail"></span>🔴 confirmed</td><td></td></tr>
+          <tr><td>Flag-off recovery path</td><td>—</td><td><span class="dot fail"></span>🔴 added</td><td>Not in the QA plan's scope</td></tr>
+          <tr><td>MQA-013 · Registration after a long background</td><td><span class="dot warn"></span>🟡</td><td>missed</td><td>Led to the pre-flight's shared-state rule: list every reader of state a change clears</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Five of QA's six non-green findings were flagged before handoff. The miss became a rule, which is how the pre-flight improves: each gap found in a dry run lands in the shared rulebook for both apps.</p>
+  </div>
+
+  <!-- RTL -->
+  <div class="panel" role="tabpanel" id="p-rtl" aria-labelledby="t-rtl" hidden>
+    <div class="doc-head">
+      <div>
+        <h3>Why a digits-only line comes out reversed in a Hebrew app</h3>
+        <p class="by">The first iOS dry run missed <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-137622">OZ-137622</a>. The shared core gained a right-to-left order rule because of it.</p>
+      </div>
+    </div>
+    <p style="font-size:.9rem;color:var(--ink-2);max-width:70ch">A line's direction comes from its first strongly directional character. A branch and account number joined by a hyphen has no Hebrew letter at all, so the Unicode Bidirectional Algorithm lays it out left to right, even on a right-aligned Hebrew screen. A right-to-left mark (U+200F) around the value fixes it. Try it:</p>
+    <div class="field">
+      <label for="acct">Account number</label><input id="acct" value="123456789" inputmode="numeric" maxlength="12" aria-describedby="acctHelp">
+      <label for="branch">Branch</label><input id="branch" value="001" inputmode="numeric" maxlength="4">
+      <span id="acctHelp" class="note" style="margin:0">synthetic values</span>
+    </div>
+    <div class="rtl-demo">
+      <div class="phone">
+        <div class="lbl">copy "{{ACCOUNT_NUMBER}} - 001", no mark</div>
+        <div class="screen"><p class="name">שלום, דנה</p><p class="sub" id="rtlBad" dir="auto"></p></div>
+        <p class="res bad">Shows account first: parts reversed</p>
+      </div>
+      <div class="phone">
+        <div class="lbl">same copy, wrapped in U+200F</div>
+        <div class="screen"><p class="name">שלום, דנה</p><p class="sub" id="rtlGood" dir="auto"></p></div>
+        <p class="res ok">Branch first, as the design shows</p>
+      </div>
+    </div>
+    <p class="note">The rule now weighs every candidate copy (bundled strings, Lokalise, design samples). A line whose only Hebrew letter comes from copy delivered at runtime is 🟡 at best unless the code sets the direction, because the second dry run trusted a bundled string that lagged Lokalise.</p>
+  </div>
+</section>
+
+<section id="core" aria-labelledby="coreH">
+  <h2 id="coreH">One method, two apps</h2>
+  <p class="sub">The pre-flight is a shared core, byte-identical in android-banking and ios-banking, plus a small per-repo profile. A manifest of hashes and a CI job keep the copies honest.</p>
+  <div class="core">
+    <div class="box">
+      <h3>Shared core <span class="mono" style="color:var(--ink-3)">(identical bytes)</span></h3>
+      <ul>
+        <li>the rulebook <code>dev-preflight-checklist.md</code></li>
+        <li>the command <code>/tp-confidence</code></li>
+        <li>the page template and lessons log</li>
+        <li>checker, assembler, manifest, tests and fixtures</li>
+        <li>the <code>preflight-tooling</code> CI workflow</li>
+      </ul>
+    </div>
+    <div class="mid"><b>=</b>sha256 manifest<br>CI fails on drift</div>
+    <div class="box">
+      <h3>Per-repo profile</h3>
+      <ul>
+        <li>repo, ticket-key pattern, folder rule</li>
+        <li>build &amp; test commands (Gradle / xcodebuild)</li>
+        <li>string keys, accessibility ids, deep links</li>
+        <li>feature flags, analytics, shared state, lint</li>
+        <li>the directional helper for the RTL rule</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note">QA's full test plans stay Android-only; iOS developers get the self-check without the QA rulebook.</p>
+</section>
+
+<section id="hygiene" aria-labelledby="hyH">
+  <h2 id="hyH">Try the PR-description hygiene check</h2>
+  <p class="sub">The same rules <code>/pr-description</code> runs before every write-back, ported to this page. Paste a PR body, or edit the sample.</p>
+  <textarea id="hyIn" aria-label="PR description to check" spellcheck="false"></textarea>
+  <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+    <button class="btn" type="button" id="hyRun">Check</button>
+    <button class="btn ghost" type="button" id="hySample">Reset sample</button>
+  </div>
+  <ul class="hits" id="hyOut" aria-live="polite"></ul>
+</section>
+
+<footer>
+  <span>Built with Claude Code · data from the five PRs' descriptions and sample plans</span>
+  <a href="index.html">← All pages</a>
+</footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById("themeBtn");
+  var saved = null;
+  try { saved = localStorage.getItem("qa-pf-theme"); } catch (e) {}
+  if (saved === "dark" || saved === "light") root.setAttribute("data-theme", saved);
+  function current() {
+    var t = root.getAttribute("data-theme");
+    if (t === "dark" || t === "light") return t;
+    try { return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } catch (e) { return "light"; }
+  }
+  function label() { btn.textContent = current() === "dark" ? "Light" : "Dark"; btn.setAttribute("aria-pressed", current() === "dark" ? "true" : "false"); }
+  btn.addEventListener("click", function () {
+    var next = current() === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("qa-pf-theme", next); } catch (e) {}
+    label();
+  });
+  label();
+
+  var toastEl = document.getElementById("toast"), toastT;
+  function toast(msg) { toastEl.textContent = msg; toastEl.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove("show"); }, 1600); }
+
+  /* ---------- PRs ---------- */
+  var PRS = [
+    { repo: "mobile-tests", n: 2158, stages: ["describe", "review"], title: "/pr-description redesign + follow-up fixes",
+      lede: "The shared description style for all three repos, plus automation fixes found while testing it on real runs.",
+      bullets: ["Sections 1–5 of the command are a shared core, identical in all three repos", "A hygiene script flags unlinked Jira keys and PRs, time-relative wording and orphan links", "Affected Tests reads the TeamBanking domain list from the build file", "Fixes: a checkpoint race on the unfreeze popup, a longer OD-limit success poll, a fresh user per run for the quick-login lockout test"],
+      nums: "3+ commits · 8 files" },
+    { repo: "android-banking", n: 8873, stages: ["describe", "qa"], title: "QA-plan pipeline overhaul + /pr-description",
+      lede: "The QA rulebook split into a short hub and topic files, and /qa-plan, /qa-to-ios and /qa-to-html rewritten as step-by-step procedures.",
+      bullets: ["A checker with 64 codes and an assembler that copies the page chrome, so the model writes only content", "The dashboard design the owner approved: tinted, clickable status cards, wrapping section pills, filters that show only tests", "Confirmed gaps count MQA tests and UI-checklist items alike", "Test-user contact details replaced by where they live"],
+      nums: "21+ commits · 61 files" },
+    { repo: "ios-banking", n: 8900, stages: ["describe"], title: "/pr-description for iOS",
+      lede: "The same shared description core, with iOS rules: a table only for 3+ similar items, before/after screenshots for UI changes.",
+      bullets: ["Sections 1–5 byte-identical to the other two repos", "The hygiene script reports an unreadable body with a one-line error"],
+      nums: "3 commits · 1 file" },
+    { repo: "android-banking", n: 8875, stages: ["preflight", "qa"], title: "Pre-flight overhaul, shared with iOS",
+      lede: "The developer self-check rebuilt: investigate every 🟡, propose a fix per 🔴 root cause, apply only on an explicit apply FP-<n>.",
+      bullets: ["Stops on protected branches or dirty files; runs the module's build and tests before and after each fix; undo reverses only its own hunk", "Top Suspects holds only open items; checked ones move to Checked and Cleared", "A right-to-left order rule, a shared-state rule, and a documented dry-run mode", "QA plans get multiple-choice open questions with a copy-paste answer line"],
+      nums: "15+ commits · 107 files" },
+    { repo: "ios-banking", n: 8902, stages: ["preflight"], title: "Pre-flight in the iOS AI-DLC flow",
+      lede: "The shared core plus an iOS profile, wired into Build and Test so every ticket ends with the self-check.",
+      bullets: ["iOS profile: xcodebuild build-for-testing once, then test the package; compile-only for targets outside the test plan", "The base rule file's Build and Test step runs the pre-flight before the stage closes", "Two dry runs on OZ-135588 shaped the right-to-left rule"],
+      nums: "7+ commits · 73 files" }
+  ];
+  var list = document.getElementById("prList");
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  PRS.forEach(function (p) {
+    var el = document.createElement("article");
+    el.className = "pr"; el.dataset.repo = p.repo; el.dataset.stages = p.stages.join(" ");
+    var url = "https://github.com/digibank-il/" + p.repo + "/pull/" + p.n;
+    el.innerHTML =
+      '<div class="meta"><span class="repo">' + esc(p.repo) + '</span><span class="tag">#' + p.n + '</span><span class="tag">draft</span></div>' +
+      '<h3>' + esc(p.title) + '</h3><p>' + esc(p.lede) + '</p>' +
+      '<details class="more"><summary>What it contains</summary><ul>' + p.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + '</ul></details>' +
+      '<div class="foot"><span class="nums">' + esc(p.nums) + '</span><a href="' + url + '">Open PR →</a></div>';
+    list.appendChild(el);
+  });
+  var repoFilter = "all", stageFilter = null;
+  function applyPr() {
+    list.querySelectorAll(".pr").forEach(function (el) {
+      var repoOk = repoFilter === "all" || el.dataset.repo === repoFilter;
+      var stageOk = !stageFilter || el.dataset.stages.split(" ").indexOf(stageFilter) >= 0;
+      el.hidden = !repoOk;
+      el.classList.toggle("dim", repoOk && !stageOk);
+      el.classList.toggle("hl", !!stageFilter && repoOk && stageOk);
+    });
+  }
+  document.querySelectorAll(".chip").forEach(function (c) {
+    c.addEventListener("click", function () {
+      repoFilter = c.dataset.repo;
+      document.querySelectorAll(".chip").forEach(function (o) { o.setAttribute("aria-pressed", o === c ? "true" : "false"); });
+      applyPr();
+    });
+  });
+  var hint = document.getElementById("stageHint");
+  var stageNames = { preflight: "Pre-flight self-check", describe: "Description in house style", qa: "Test plan & dashboard", review: "Automation fixes" };
+  document.querySelectorAll(".stage").forEach(function (s) {
+    s.addEventListener("click", function () {
+      stageFilter = stageFilter === s.dataset.stage ? null : s.dataset.stage;
+      document.querySelectorAll(".stage").forEach(function (o) { o.setAttribute("aria-pressed", o.dataset.stage === stageFilter ? "true" : "false"); });
+      hint.textContent = stageFilter ? "Highlighting the PRs that deliver: " + stageNames[stageFilter] + ". Click again to clear." : "No stage selected: all PRs shown.";
+      applyPr();
+      if (stageFilter) document.getElementById("prs").scrollIntoView({ block: "start" });
+    });
+  });
+
+  /* ---------- tabs ---------- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  function selectTab(t, focus) {
+    tabs.forEach(function (o) {
+      var on = o === t;
+      o.setAttribute("aria-selected", on ? "true" : "false");
+      o.tabIndex = on ? 0 : -1;
+      document.getElementById(o.getAttribute("aria-controls")).hidden = !on;
+    });
+    if (focus) t.focus();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { selectTab(t); });
+    t.addEventListener("keydown", function (e) {
+      var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (d) { e.preventDefault(); selectTab(tabs[(i + d + tabs.length) % tabs.length], true); }
+    });
+  });
+
+  /* ---------- pre-flight list ---------- */
+  var PF = {
+    open: [
+      { cat: "Broken/incomplete paths", items: [
+        { m: "fail", t: "Header row: 36pt of text against 32pt icon buttons", d: "The two-line title needs 36pt; the icon buttons require 32pt in a stack that stretches its children, so the constraints can't all hold. See FP-1." } ] },
+      { cat: "Analytics", none: "None — every check here cleared (see Checked and Cleared)" },
+      { cat: "Accessibility", items: [
+        { m: "warn", t: "VoiceOver on the account-number line", d: "Static-text trait and a digit-by-digit label are in place; the reading order is left to VoiceOver's geometry, so the line may be read after the icons." } ] },
+      { cat: "Lokalise keys", items: [
+        { m: "warn", t: "Right-to-left order of the account line", d: "Nothing in the code sets the direction, and the only Hebrew letter comes from runtime copy. The design's own sample has none, and with that copy the line reverses." },
+        { m: "warn", t: "Key audit: the accessibility label key", d: "Missing from the bundled strings and no fallback text, so VoiceOver reads the raw key until Lokalise delivers it." } ] },
+      { cat: "Gaps vs. the story", items: [
+        { m: "fail", t: "FR-7: header block height", d: "The block comes out at 22 + 36 + 8 = 66pt; the requirement says 62pt. See FP-1." } ] }
+    ],
+    cleared: [
+      { cat: "Broken/incomplete paths", items: [
+        { m: "pass", t: "Shared component: the other screen using the header is unchanged", d: "It passes no subtitle and no theme, so its layout and collapse behavior stay as they were." },
+        { m: "pass", t: "New read of session state is safe", d: "The header reads the name and account once, but its screen is rebuilt on every login, so a second customer never sees the first one's details." } ] },
+      { cat: "Analytics", items: [
+        { m: "pass", t: "No new event, and no account number in analytics or logs", d: "The screen's events are unchanged and no analytics or logger call receives the account number." } ] },
+      { cat: "Accessibility", items: [
+        { m: "pass", t: "Automation ids on the header", d: "One id added (HeaderSubtitle_UILabel), none removed or renamed: the locator check shows no automation impact." } ] }
+    ]
+  };
+  var pfView = "open", ticks = {};
+  var verdictWord = { pass: "🟢 Likely pass", warn: "🟡 Uncertain", fail: "🔴 Likely fail", na: "➖ Not applicable" };
+  function renderPf() {
+    var host = document.getElementById("pf-list");
+    host.innerHTML = "";
+    PF[pfView].forEach(function (c, ci) {
+      var n = c.items ? c.items.length : 0;
+      var h = document.createElement("p");
+      h.className = "cat"; h.innerHTML = esc(c.cat) + ' <span class="c">' + n + "</span>";
+      host.appendChild(h);
+      if (!c.items) { var p = document.createElement("p"); p.className = "none"; p.textContent = c.none; host.appendChild(p); return; }
+      c.items.forEach(function (it, ii) {
+        var key = pfView + ci + "-" + ii;
+        var d = document.createElement("div");
+        d.className = "item " + it.m;
+        d.innerHTML = '<div class="row"><button class="check" type="button" aria-label="Mark checked: ' + esc(it.t) + '" aria-pressed="' + (ticks[key] ? "true" : "false") + '">✓</button><div><h4>' + esc(it.t) + "</h4><p>" + esc(it.d) + '</p><span class="verdict ' + it.m + '">' + verdictWord[it.m] + "</span></div></div>";
+        d.querySelector(".check").addEventListener("click", function (e) {
+          ticks[key] = !ticks[key]; e.currentTarget.setAttribute("aria-pressed", ticks[key] ? "true" : "false");
+        });
+        host.appendChild(d);
+      });
+    });
+  }
+  document.querySelectorAll("[data-pfview]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      pfView = b.dataset.pfview;
+      document.querySelectorAll("[data-pfview]").forEach(function (o) { o.setAttribute("aria-pressed", o === b ? "true" : "false"); });
+      renderPf();
+    });
+  });
+  renderPf();
+
+  document.querySelectorAll("[data-jump]").forEach(function (c) {
+    c.addEventListener("click", function () {
+      if (c.dataset.view) { var b = document.querySelector('[data-pfview="' + c.dataset.view + '"]'); if (b) b.click(); }
+      var t = document.getElementById(c.dataset.jump); if (t) t.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  });
+
+  /* ---------- QA plan ---------- */
+  var MQA = [
+    ["001", "Critical", "pass", "Quick Login reset with a 6-minute background on New Password returns to Quick Login"],
+    ["002", "High", "pass", "Dismissing the success sheet without confirming also returns to Quick Login"],
+    ["003", "High", "pass", "Quick Login reset without backgrounding returns to Quick Login"],
+    ["004", "High", "pass", "Full Login reset returns to Full Login and the new password logs in"],
+    ["005", "Critical", "warn", "Quick Login reset with a 6-minute background before New Password"],
+    ["006", "Critical", "fail", "Full Login reset with a 6-minute background before New Password"],
+    ["007", "High", "fail", "Full Login after a 6-minute background on the Full Login screen"],
+    ["008", "Medium", "fail", "Back from the identification screen after a 6-minute background"],
+    ["009", "High", "pass", "Exit popup on New Password after a 6-minute background routes to the entry screen"],
+    ["010", "Medium", "pass", "Session-expired popup on New Password routes to the entry screen"],
+    ["011", "Medium", "pass", "Short background and rotation on New Password keep state and routing"],
+    ["012", "Medium", "warn", "Process death on New Password"],
+    ["013", "High", "warn", "Registration Add Password after a 6-minute background"],
+    ["014", "Medium", "pass", "Request/response timing on the continue button"],
+    ["015", "Low", "warn", "Screen reader across the reset flow"],
+    ["016", "High", "pass", "Logged-in idle logout and explicit logout still lead to a working Quick Login"]
+  ];
+  var WHY = {
+    "006": "Expected: the new-password screen opens within ~3s. Code path: the idle logout empties a one-time code, and the next request waits for it forever: an endless loader.",
+    "007": "Expected: login succeeds, or the app routes to re-verify the phone. Code path: the emptied code makes every login tap show a general error; only a restart recovers.",
+    "008": "Expected: back returns to Quick Login. Code path: the back handler still reads the shared login state that the idle logout overwrites.",
+    "005": "The identification screen still routes by the live login state; whether the idle logout overwrites it before this point needs a device run.",
+    "012": "An in-memory token would be gone after a process restore; whether the screen is ever restored there needs a device run.",
+    "013": "No hang, but empty codes are sent; the server's response isn't known from the code.",
+    "015": "The show/hide password icon labels aren't confirmed in code."
+  };
+  var mqaHost = document.getElementById("mqaList");
+  MQA.forEach(function (r) {
+    var row = document.createElement("div");
+    row.className = "mqa-row"; row.dataset.m = r[2];
+    var word = { pass: "🟢", warn: "🟡", fail: "🔴" }[r[2]];
+    row.innerHTML = '<span class="id">MQA-' + r[0] + '</span><span><span class="dot ' + r[2] + '"></span>' + esc(r[3]) + '</span><span class="pri">' + r[1] + " " + word + "</span>" +
+      (WHY[r[0]] ? '<div class="expand">' + esc(WHY[r[0]]) + "</div>" : "");
+    mqaHost.appendChild(row);
+  });
+  function qaFilter(f) {
+    document.querySelectorAll("[data-qaf]").forEach(function (o) { o.setAttribute("aria-pressed", o.dataset.qaf === f ? "true" : "false"); });
+    mqaHost.querySelectorAll(".mqa-row").forEach(function (r) { r.hidden = !(f === "all" || r.dataset.m === f); });
+  }
+  document.querySelectorAll("[data-qaf]").forEach(function (b) { b.addEventListener("click", function () { qaFilter(b.dataset.qaf); }); });
+  document.querySelectorAll("[data-qafilter]").forEach(function (b) { b.addEventListener("click", function () { qaFilter(b.dataset.qafilter); mqaHost.scrollIntoView({ behavior: "smooth", block: "nearest" }); }); });
+
+  /* ---------- answer pickers ---------- */
+  document.querySelectorAll(".opts").forEach(function (group) {
+    var box = group.parentElement, out = box.querySelector("[data-out]"), copy = box.querySelector("[data-copy]");
+    group.querySelectorAll(".opt").forEach(function (o) {
+      o.addEventListener("click", function () {
+        var was = o.getAttribute("aria-pressed") === "true";
+        group.querySelectorAll(".opt").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+        if (was) { out.textContent = "Pick an answer to build the command"; copy.disabled = true; return; }
+        o.setAttribute("aria-pressed", "true");
+        out.textContent = group.dataset.cmd + " " + group.dataset.q + "=" + o.dataset.l;
+        copy.disabled = false;
+      });
+    });
+    copy.addEventListener("click", function () {
+      var text = out.textContent;
+      function fallback() {
+        var r = document.createRange(); r.selectNodeContents(out);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); toast("Selected; press Ctrl/⌘+C");
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { toast("Copied"); }, fallback);
+      else fallback();
+    });
+  });
+
+  /* ---------- RTL demo ---------- */
+  var RLM = "‏";
+  var acct = document.getElementById("acct"), branch = document.getElementById("branch");
+  function rtl() {
+    var a = (acct.value || "").replace(/\D/g, "") || "123456789";
+    var b = (branch.value || "").replace(/\D/g, "") || "001";
+    var line = a + " - " + b;
+    document.getElementById("rtlBad").textContent = line;
+    document.getElementById("rtlGood").textContent = RLM + line + RLM;
+  }
+  acct.addEventListener("input", rtl); branch.addEventListener("input", rtl); rtl();
+
+  /* ---------- hygiene check (ported from /pr-description section 4) ---------- */
+  var SAMPLE = [
+    "**TL;DR** — Fixes the checkpoint race from #2140 and OZ-117131.",
+    "",
+    "## What & why",
+    "- Earlier the test used a fixed user; it now uses a fresh one per run.",
+    "- See [the ticket](https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-117454) and `OZ-110939`.",
+    "",
+    "[old]: https://example.com/unused",
+    ""
+  ].join("\n");
+  var hyIn = document.getElementById("hyIn"), hyOut = document.getElementById("hyOut");
+  function hygiene(text) {
+    var hits = [], lines = text.split("\n"), used = {};
+    var re = /\]\[([^\]]+)\]|\[([^\]]+)\](?![(:])/g, m;
+    while ((m = re.exec(text))) used[m[1] || m[2]] = true;
+    lines.forEach(function (l, i) {
+      var n = i + 1, d = /^\[([^\]]+)\]:\s/.exec(l);
+      if (d && l.indexOf("atlOrigin=") >= 0) return;
+      if (d && !used[d[1]]) { hits.push([n, "orphan link definition [" + d[1] + "]"]); return; }
+      var bt = l.match(/`(?:OZ-\d+|#\d{3,})`/g) || [];
+      bt.forEach(function (x) { hits.push([n, x + " (key in backticks, not a link)"]); });
+      var s = l.replace(/\[[^\]]*\]\([^)]*\)|`[^`]*`|https?:\/\/\S+|<[^>]+>/g, "");
+      var re2 = /\bOZ-\d+\b|(?:^|[^\w&])#\d{3,}\b|\b(?:today|this session|earlier|yesterday|so far|previously|initially|originally|at first|no longer|now also|once again)\b/gi, h;
+      while ((h = re2.exec(s))) {
+        var w = h[0].replace(/^[^\w#]/, "");
+        var kind = /^OZ-/i.test(w) ? "unlinked Jira key" : /^#/.test(w) ? "unlinked PR number" : "time-relative wording";
+        hits.push([n, w + " — " + kind]);
+      }
+    });
+    if (text !== text.replace(/\s+$/, "") + "\n") hits.push(["end", "trailing blank lines or whitespace"]);
+    return hits;
+  }
+  function runHy() {
+    var hits = hygiene(hyIn.value);
+    hyOut.innerHTML = "";
+    if (!hits.length) { var li = document.createElement("li"); li.className = "clean"; li.textContent = "Clean: nothing to fix."; hyOut.appendChild(li); return; }
+    hits.forEach(function (h) { var li = document.createElement("li"); li.innerHTML = "<span>line " + esc(h[0]) + "</span>" + esc(h[1]); hyOut.appendChild(li); });
+  }
+  hyIn.value = SAMPLE;
+  document.getElementById("hyRun").addEventListener("click", runHy);
+  document.getElementById("hySample").addEventListener("click", function () { hyIn.value = SAMPLE; runHy(); });
+  var hyT; hyIn.addEventListener("input", function () { clearTimeout(hyT); hyT = setTimeout(runHy, 300); });
+  runHy();
+})();
+</script>
+</body>
+</html>
