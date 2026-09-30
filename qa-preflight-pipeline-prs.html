@@ -729,7 +729,10 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
     var hits = [], lines = text.split("\n"), used = {};
     var re = /\]\[([^\]]+)\]|\[([^\]]+)\](?![(:])/g, m;
     while ((m = re.exec(text))) used[m[1] || m[2]] = true;
+    var fence = false;
     lines.forEach(function (l, i) {
+      if (/^\s*(```|~~~)/.test(l)) { fence = !fence; return; }
+      if (fence) return;
       var n = i + 1, d = /^\[([^\]]+)\]:\s/.exec(l);
       if (d && l.indexOf("atlOrigin=") >= 0) return;
       if (d && !used[d[1]]) { hits.push([n, "orphan link definition [" + d[1] + "]"]); return; }
