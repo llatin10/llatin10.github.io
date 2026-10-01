@@ -245,8 +245,8 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
     </button>
     <button class="stage" type="button" data-stage="fix" aria-pressed="false">
       <span class="n">4 · QA</span><h3>Fixed-bug check</h3>
-      <p>Before a retest: does the fix hit the root cause, is it complete, and what might it break? Each possible regression is pinned to a line of code.</p>
-      <span class="cmd">/fix-confidence</span>
+      <p>Before a retest, or before the fix PR merges: does the fix hit the root cause, is it complete, and what might it break? Each possible regression is pinned to a line of code.</p>
+      <span class="cmd">/fix-confidence OZ-… · /fix-confidence repo#PR</span>
     </button>
     <button class="stage" type="button" data-stage="review" aria-pressed="false">
       <span class="n">5 · Review</span><h3>Automation fixes</h3>
@@ -493,7 +493,8 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
       <p><b>From the fix:</b> the new clear the PR adds to every soft logout</p>
       <span class="verdict fail">🔴 Likely break</span>
     </div></div></div>
-    <p class="note">Each report is published as a private page and never committed. The Jira comment (score, an incomplete-fix line when there is one, possible regressions with their links, retest steps) is posted on the bug only after the QA owner approves its text. Only behavior that worked before the fix counts as a regression; other issues in the area are left out. In a QA-plan PR, each Fixed bug in the bug snapshot gets a chip such as <code>AI 🟡 44 · 2🔴 2🟡 · fix incomplete</code>.</p>
+    <p class="note">Run it with a bug key (<code>/fix-confidence OZ-…</code>) or a fix PR (<code>/fix-confidence android-banking#…</code>, open or merged, one report per bug key it names). A fix always lives in the bug's own platform repo. An open PR is read at its latest commit, so a check before merge can catch a regression while it's still cheap to fix.</p>
+    <p class="note">Each report is published as a page and never committed. The Jira comment (score, an incomplete-fix line when there is one, possible regressions with their links, retest steps) is posted on the bug only after the QA owner approves its text; for an open fix PR, a short developer comment can go on the PR the same way. Only behavior that worked before the fix counts as a regression; other issues in the area are left out. In a QA-plan PR, each Fixed bug in the bug snapshot gets a chip such as <code>AI 🟡 44 · 2🔴 2🟡 · fix incomplete</code>.</p>
   </div>
 </section>
 
@@ -596,12 +597,12 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
       nums: "2 commits · 28 files" },
     { repo: "android-banking", n: 8880, stages: ["fix", "describe"], title: "/fix-confidence: an AI check of a bug fix",
       lede: "For any bug with a fix PR, QA plan or not: an AI confidence, possible regressions pinned to exact lines, and a retest list.",
-      bullets: ["A second report kind on the shared pre-flight core, with 16 new checker codes and 45 tests", "Acceptance test: a blind run on a fixed bug found both regressions its QA plan had confirmed, each tied to a line, plus a variant the fix leaves broken", "/pr-description scans every Fixed bug in a QA PR's bug snapshot and adds a chip; Jira comments only after approval", "Corrects the shared right-to-left rule (digits after a Latin name flip)"],
-      nums: "4 commits · 84 files" },
+      bullets: ["A second report kind on the shared pre-flight core, with 16 new checker codes and 45 tests", "Acceptance test: a blind run on a fixed bug found both regressions its QA plan had confirmed, each tied to a line, plus a variant the fix leaves broken", "Takes a bug key or a fix PR (open or merged); /pr-description scans every Fixed bug in a QA PR's bug snapshot and adds a chip; Jira and PR comments only after approval", "Corrects the shared right-to-left rule (digits after a Latin name flip)"],
+      nums: "7 commits · 90+ files" },
     { repo: "ios-banking", n: 8906, stages: ["fix"], title: "/fix-confidence for iOS",
       lede: "The same shared core, byte-identical, plus an iOS fix-lookup profile.",
       bullets: ["iOS profile: real fix-branch patterns and Swift caller search", "A real iOS run scored 100 with no possible regressions, and flagged a fix not yet on develop"],
-      nums: "1 commit · 81 files" }
+      nums: "4 commits · 85+ files" }
   ];
   var list = document.getElementById("prList");
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
