@@ -593,11 +593,11 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
     { repo: "mobile-tests", n: 2158, stages: ["describe", "review"], title: "/pr-description redesign + follow-up fixes",
       lede: "The shared description style for all three repos, plus automation fixes found while testing it on real runs.",
       bullets: ["Sections 1–5 of the command are a shared core, identical in all three repos", "A hygiene script flags unlinked Jira keys and PRs, time-relative wording and orphan links", "Affected Tests reads the TeamBanking domain list from the build file", "Fixes: a checkpoint race on the unfreeze popup, a longer OD-limit success poll, a fresh user per run for the quick-login lockout test"],
-      nums: "6 commits · 8 files" },
+      nums: "7 commits · 8 files" },
     { repo: "android-banking", n: 8873, stages: ["describe", "qa"], title: "QA-plan pipeline overhaul + /pr-description",
       lede: "The QA rulebook split into a short hub and topic files, and /qa-plan, /qa-to-ios and /qa-to-html rewritten as step-by-step procedures.",
       bullets: ["A checker with 64 codes and an assembler that copies the page chrome, so the model writes only content", "The dashboard design the owner approved: tinted, clickable status cards, wrapping section pills, filters that show only tests", "Confirmed gaps count MQA tests and UI-checklist items alike", "A per-feature bug snapshot built from live Jira: health, status counts and worst open severity, plus the bugs not closed"],
-      nums: "27 commits · 68 files" },
+      nums: "28 commits · 68 files" },
     { repo: "ios-banking", n: 8900, stages: ["describe"], title: "/pr-description for iOS",
       lede: "The same shared description core, with iOS rules: a table only for 3+ similar items, before/after screenshots for UI changes.",
       bullets: ["Sections 1–5 byte-identical to the other two repos", "The hygiene script reports an unreadable body with a one-line error"],
@@ -605,7 +605,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
     { repo: "android-banking", n: 8875, stages: ["preflight", "qa"], title: "Pre-flight overhaul, shared with iOS",
       lede: "The developer self-check rebuilt: investigate every 🟡, propose a fix per 🔴 root cause, apply only on an explicit apply FP-<n>.",
       bullets: ["Stops on protected branches or dirty files; runs the module's build and tests before and after each fix; undo reverses only its own hunk", "Top Suspects holds only open items; checked ones move to Checked and Cleared", "A right-to-left order rule, a shared-state rule, and a documented dry-run mode", "QA plans get multiple-choice open questions with a copy-paste answer line"],
-      nums: "20 commits · 107 files" },
+      nums: "21 commits · 107 files" },
     { repo: "ios-banking", n: 8902, stages: ["preflight"], title: "Pre-flight in the iOS AI-DLC flow",
       lede: "The shared core plus an iOS profile, wired into Build and Test so every ticket ends with the self-check.",
       bullets: ["iOS profile: xcodebuild build-for-testing once, then test the package; compile-only for targets outside the test plan", "The base rule file's Build and Test step runs the pre-flight before the stage closes", "Two dry runs on OZ-135588 shaped the right-to-left rule"],
@@ -613,15 +613,15 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
     { repo: "android-banking", n: 8878, stages: ["qa", "describe"], title: "The new rules applied: 8 QA plans upgraded",
       lede: "The worked example: the 8 plans an earlier QA PR touched, brought up to the current rules with no re-test.",
       bullets: ["57 open questions get answer options, rendered as buttons with a copy-paste answer line", "Complete Links & Artifacts on every plan, and one row per plan in the QA Plan Status table (the earlier PR's table had 6 of 8)", "A bug-filter JQL over all 26 story and QA tickets, ordered by status then newest", "A bug snapshot on the PR: 3 features red, 4 amber, 1 green, 21 of 59 bugs not closed; each plan re-rendered on template v5 and republished"],
-      nums: "4 commits · 28 files" },
+      nums: "5 commits · 28 files" },
     { repo: "android-banking", n: 8880, stages: ["fix", "describe"], title: "/fix-confidence: an AI check of a bug fix",
       lede: "For any bug with a fix PR, QA plan or not: an AI confidence, possible regressions pinned to exact lines, and a retest list.",
       bullets: ["A second report kind on the shared pre-flight core, with 16 new checker codes and 45 tests", "Acceptance test: a blind run on a fixed bug found both regressions its QA plan had confirmed, each tied to a line, plus a variant the fix leaves broken", "Takes a bug key or a fix PR (open or merged); /pr-description scans every Fixed bug in a QA PR's bug snapshot and adds a chip; Jira and PR comments only after approval", "Corrects the shared right-to-left rule (digits after a Latin name flip)"],
-      nums: "8 commits · 90 files" },
+      nums: "10 commits · 90 files" },
     { repo: "ios-banking", n: 8906, stages: ["fix"], title: "/fix-confidence for iOS",
       lede: "The same shared core, byte-identical, plus an iOS fix-lookup profile.",
       bullets: ["iOS profile: real fix-branch patterns and Swift caller search", "A real iOS run scored 100 with no possible regressions, and flagged a fix not yet on develop"],
-      nums: "6 commits · 87 files" }
+      nums: "7 commits · 87 files" }
   ];
   var list = document.getElementById("prList");
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
