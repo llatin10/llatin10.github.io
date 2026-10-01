@@ -278,7 +278,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
     <button class="tab" role="tab" id="t-vs" aria-controls="p-vs" aria-selected="false" tabindex="-1">Same ticket, two checks</button>
     <button class="tab" role="tab" id="t-rtl" aria-controls="p-rtl" aria-selected="false" tabindex="-1">The RTL catch</button>
     <button class="tab" role="tab" id="t-st" aria-controls="p-st" aria-selected="false" tabindex="-1">A QA-plan PR, end to end</button>
-    <button class="tab" role="tab" id="t-fx" aria-controls="p-fx" aria-selected="false" tabindex="-1">A fix check</button>
+    <button class="tab" role="tab" id="t-fx" aria-controls="p-fx" aria-selected="false" tabindex="-1">Fix checks</button>
   </div>
 
   <!-- Pre-flight -->
@@ -492,6 +492,25 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
       <p><b>Line:</b> <code>SessionStore.kt:42</code>: <code>tokens.clear()</code>, a permalink at the fix PR's pinned sha</p>
       <p><b>From the fix:</b> the new clear the PR adds to every soft logout</p>
       <span class="verdict fail">🔴 Likely break</span>
+    </div></div></div>
+    <div class="doc-head" style="margin-top:22px;padding-top:16px;border-top:1px solid var(--line)">
+      <div>
+        <h3><code>/fix-confidence android-banking#8864</code>: a check before merge</h3>
+        <p class="by">Started from an open fix PR, not a ticket · <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-137292">OZ-137292</a> · read at the PR's latest commit</p>
+      </div>
+      <div class="links"><a href="https://github.com/digibank-il/android-banking/pull/8864">The fix PR</a></div>
+    </div>
+    <div class="cards">
+      <div class="scard pass" style="cursor:default"><span>AI confidence</span><b>91</b><small>🟢 Solid</small></div>
+      <div class="scard warn" style="cursor:default"><span>Possible regressions</span><b>1</b><small>🟡 pinned to a line</small></div>
+      <div class="scard pass" style="cursor:default"><span>Fix incomplete</span><b>0</b><small>every repro path covered</small></div>
+      <div class="scard neutral" style="cursor:default"><span>Fix PRs found</span><b>2</b><small><a href="https://github.com/digibank-il/android-banking/pull/8845">#8845</a> merged · <a href="https://github.com/digibank-il/android-banking/pull/8864">#8864</a> open</small></div>
+    </div>
+    <p class="note">The PR named one bug key, so the run wrote one report. It also found the bug's earlier, already-merged half (<a href="https://github.com/digibank-il/android-banking/pull/8845">#8845</a>) and checked both PRs together. The retest line names the build to test, a build of the open PR's head, and says which existing builds have only half the fix. The PR comment for the developer leaves out the retest steps; those go on the Jira bug for QA. Neither comment is posted until the QA owner approves it.</p>
+    <div class="item warn"><div class="row"><div>
+      <h4>What the developer would see on the PR <span class="c">shape only</span></h4>
+      <p><b>AI fix check for OZ-137292</b>: 🟢 91/100 Solid, read at the PR's latest commit · one sentence on what the fix does · <b>Possible regressions</b>: 🟡 one item, with a link to the exact line · a link to the full report</p>
+      <span class="verdict warn">Draft, posted only after approval</span>
     </div></div></div>
     <p class="note">Run it with a bug key (<code>/fix-confidence OZ-…</code>) or a fix PR (<code>/fix-confidence android-banking#…</code>, open or merged, one report per bug key it names). A fix always lives in the bug's own platform repo. An open PR is read at its latest commit, so a check before merge can catch a regression while it's still cheap to fix.</p>
     <p class="note">Each report is published as a page and never committed. The Jira comment (score, an incomplete-fix line when there is one, possible regressions with their links, retest steps) is posted on the bug only after the QA owner approves its text; for an open fix PR, a short developer comment can go on the PR the same way. Only behavior that worked before the fix counts as a regression; other issues in the area are left out. In a QA-plan PR, each Fixed bug in the bug snapshot gets a chip such as <code>AI 🟡 44 · 2🔴 2🟡 · fix incomplete</code>.</p>
