@@ -268,7 +268,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
 
 <section id="prs" aria-labelledby="prsH">
   <h2 id="prsH">The eight PRs</h2>
-  <p class="sub">7 of 8 are merged; the last (ios-banking#8902, which now carries #8906) is approved and waiting on CI. See <a href="#merge">Merge status</a>. Links need digibank-il access.</p>
+  <p class="sub">All 8 are merged. See <a href="#merge">Merge status</a>. Links need digibank-il access.</p>
   <div class="filters" role="group" aria-label="Filter by repo">
     <button class="chip" type="button" data-repo="all" aria-pressed="true">All</button>
     <button class="chip" type="button" data-repo="mobile-tests" aria-pressed="false">mobile-tests</button>
@@ -288,7 +288,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
     <li><span class="ix">4</span><span class="what"><a href="https://github.com/digibank-il/android-banking/pull/8880">#8880</a> and <a href="https://github.com/digibank-il/android-banking/pull/8878">#8878</a> → <a href="https://github.com/digibank-il/android-banking/pull/8875">#8875</a><small>/fix-confidence and the 8 upgraded QA plans, folded into the pre-flight PR</small></span><span class="tag st-merged">merged</span></li>
     <li><span class="ix">5</span><span class="what"><a href="https://github.com/digibank-il/android-banking/pull/8875">android-banking#8875</a><small>Pre-flight + /fix-confidence + QA plans → develop (Bitrise green)</small></span><span class="tag st-merged">merged</span></li>
     <li><span class="ix">6</span><span class="what"><a href="https://github.com/digibank-il/ios-banking/pull/8906">ios-banking#8906</a> → <a href="https://github.com/digibank-il/ios-banking/pull/8902">#8902</a><small>/fix-confidence for iOS, folded into the iOS pre-flight PR</small></span><span class="tag st-merged">merged</span></li>
-    <li><span class="ix">7</span><span class="what"><a href="https://github.com/digibank-il/ios-banking/pull/8902">ios-banking#8902</a><small>Pre-flight + /fix-confidence → develop; approved, waiting on Bitrise</small></span><span class="tag st-open">waiting on CI</span></li>
+    <li><span class="ix">7</span><span class="what"><a href="https://github.com/digibank-il/ios-banking/pull/8902">ios-banking#8902</a><small>Pre-flight + /fix-confidence → develop (Bitrise green)</small></span><span class="tag st-merged">merged</span></li>
   </ol>
 </section>
 
@@ -632,7 +632,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
     { repo: "ios-banking", n: 8902, stages: ["preflight"], title: "Pre-flight in the iOS AI-DLC flow",
       lede: "The shared core plus an iOS profile, wired into Build and Test so every ticket ends with the self-check.",
       bullets: ["iOS profile: xcodebuild build-for-testing once, then test the package; compile-only for targets outside the test plan", "The base rule file's Build and Test step runs the pre-flight before the stage closes", "Two dry runs on OZ-135588 shaped the right-to-left rule"],
-      nums: "21 commits · 78 files (with #8906)", state: "open" },
+      nums: "21 commits · 78 files (with #8906)", state: "merged" },
     { repo: "android-banking", n: 8878, stages: ["qa", "describe"], title: "The new rules applied: 8 QA plans upgraded",
       lede: "The worked example: the 8 plans an earlier QA PR touched, brought up to the current rules with no re-test.",
       bullets: ["57 open questions get answer options, rendered as buttons with a copy-paste answer line", "Complete Links & Artifacts on every plan, and one row per plan in the QA Plan Status table (the earlier PR's table had 6 of 8)", "A bug-filter JQL over all 26 story and QA tickets, ordered by status then newest", "A bug snapshot on the PR: 3 features red, 4 amber, 1 green, 21 of 59 bugs not closed; each plan re-rendered on template v5 and republished"],
