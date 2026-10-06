@@ -91,6 +91,15 @@ h2{font-size:1.28rem;letter-spacing:-.01em;margin-bottom:6px;text-wrap:balance}
 .pr .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.76rem}
 .repo{font-family:var(--mono);padding:1px 7px;border-radius:6px;background:var(--surface-2);color:var(--ink-2)}
 .tag{font-family:var(--mono);font-size:.72rem;padding:1px 7px;border-radius:6px;border:1px solid var(--line);color:var(--ink-3)}
+.tag.st-merged{color:var(--pass);background:var(--pass-soft);border-color:transparent}
+.tag.st-via{color:var(--accent);background:var(--accent-soft);border-color:transparent}
+.tag.st-open{color:var(--warn);background:var(--warn-soft);border-color:transparent}
+.merge-steps{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.merge-steps li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:10px 14px;font-size:.9rem}
+.merge-steps .ix{font-family:var(--mono);font-size:.74rem;color:var(--ink-3)}
+.merge-steps .what{min-width:0;overflow-wrap:anywhere}
+.merge-steps .what small{display:block;color:var(--ink-3);font-size:.78rem}
+@media (max-width:560px){.merge-steps li{grid-template-columns:1fr auto}.merge-steps .ix{display:none}}
 .pr h3{font-size:1rem;line-height:1.35}
 .pr p{font-size:.88rem;color:var(--ink-2)}
 .pr ul{padding-left:18px;font-size:.86rem;color:var(--ink-2)}
@@ -204,7 +213,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
   <div class="wrap">
     <div class="brand"><a href="index.html">llatin10</a> / QA &amp; Pre-Flight</div>
     <div class="pills">
-      <a href="#flow">Flow</a><a href="#prs">8 PRs</a><a href="#examples">Examples</a><a href="#core">Shared core</a><a href="#hygiene">Hygiene check</a>
+      <a href="#flow">Flow</a><a href="#prs">8 PRs</a><a href="#merge">Merge status</a><a href="#examples">Examples</a><a href="#core">Shared core</a><a href="#hygiene">Hygiene check</a>
     </div>
     <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle dark theme">Theme</button>
   </div>
@@ -217,7 +226,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
   <p class="lede">Developers get a self-check before handoff that proposes fixes but applies nothing without approval. QA gets a rebuilt test-plan pipeline with a dashboard, filters and answerable open questions. Every PR description follows one house style, checked by the same script in all three repos.</p>
   <div class="stats" aria-label="Key numbers">
     <div class="stat"><b>8</b><span>pull requests, 3 repos</span></div>
-    <div class="stat"><b id="statShared">135</b><span>shared-core files identical in both apps</span></div>
+    <div class="stat"><b id="statShared">69</b><span>shared-core files identical in both apps</span></div>
     <div class="stat"><b>54</b><span>pre-flight checker codes</span></div>
     <div class="stat"><b>64</b><span>QA-plan checker codes</span></div>
     <div class="stat"><b>v5</b><span>checklist &amp; QA-plan templates</span></div>
@@ -259,7 +268,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
 
 <section id="prs" aria-labelledby="prsH">
   <h2 id="prsH">The eight PRs</h2>
-  <p class="sub">All drafts. Stacking: <a href="https://github.com/digibank-il/android-banking/pull/8878">android-banking#8878</a> and <a href="https://github.com/digibank-il/android-banking/pull/8880">#8880</a> sit on <a href="https://github.com/digibank-il/android-banking/pull/8875">#8875</a>, which sits on <a href="https://github.com/digibank-il/android-banking/pull/8873">#8873</a>; <a href="https://github.com/digibank-il/ios-banking/pull/8906">ios-banking#8906</a> sits on <a href="https://github.com/digibank-il/ios-banking/pull/8902">#8902</a>. Links need digibank-il access.</p>
+  <p class="sub">7 of 8 are merged; the last (ios-banking#8902, which now carries #8906) is approved and waiting on CI. See <a href="#merge">Merge status</a>. Links need digibank-il access.</p>
   <div class="filters" role="group" aria-label="Filter by repo">
     <button class="chip" type="button" data-repo="all" aria-pressed="true">All</button>
     <button class="chip" type="button" data-repo="mobile-tests" aria-pressed="false">mobile-tests</button>
@@ -267,6 +276,20 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
     <button class="chip" type="button" data-repo="ios-banking" aria-pressed="false">ios-banking</button>
   </div>
   <div class="prs" id="prList"></div>
+</section>
+
+<section id="merge" aria-labelledby="mergeH">
+  <h2 id="mergeH">Merge status</h2>
+  <p class="sub">Updated 6 Oct 2026. Stacked PRs were folded into their base PR before it merged, so one approval and one CI run covered each stack.</p>
+  <ol class="merge-steps">
+    <li><span class="ix">1</span><span class="what"><a href="https://github.com/digibank-il/mobile-tests/pull/2158">mobile-tests#2158</a><small>/pr-description + automation fixes → mobile_dev</small></span><span class="tag st-merged">merged</span></li>
+    <li><span class="ix">2</span><span class="what"><a href="https://github.com/digibank-il/android-banking/pull/8873">android-banking#8873</a><small>/pr-description + QA-plan pipeline, tooling only → develop</small></span><span class="tag st-merged">merged</span></li>
+    <li><span class="ix">3</span><span class="what"><a href="https://github.com/digibank-il/ios-banking/pull/8900">ios-banking#8900</a><small>/pr-description for iOS → develop</small></span><span class="tag st-merged">merged</span></li>
+    <li><span class="ix">4</span><span class="what"><a href="https://github.com/digibank-il/android-banking/pull/8880">#8880</a> and <a href="https://github.com/digibank-il/android-banking/pull/8878">#8878</a> → <a href="https://github.com/digibank-il/android-banking/pull/8875">#8875</a><small>/fix-confidence and the 8 upgraded QA plans, folded into the pre-flight PR</small></span><span class="tag st-merged">merged</span></li>
+    <li><span class="ix">5</span><span class="what"><a href="https://github.com/digibank-il/android-banking/pull/8875">android-banking#8875</a><small>Pre-flight + /fix-confidence + QA plans → develop (Bitrise green)</small></span><span class="tag st-merged">merged</span></li>
+    <li><span class="ix">6</span><span class="what"><a href="https://github.com/digibank-il/ios-banking/pull/8906">ios-banking#8906</a> → <a href="https://github.com/digibank-il/ios-banking/pull/8902">#8902</a><small>/fix-confidence for iOS, folded into the iOS pre-flight PR</small></span><span class="tag st-merged">merged</span></li>
+    <li><span class="ix">7</span><span class="what"><a href="https://github.com/digibank-il/ios-banking/pull/8902">ios-banking#8902</a><small>Pre-flight + /fix-confidence → develop; approved, waiting on Bitrise</small></span><span class="tag st-open">waiting on CI</span></li>
+  </ol>
 </section>
 
 <section id="examples" aria-labelledby="exH">
@@ -593,36 +616,41 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
     { repo: "mobile-tests", n: 2158, stages: ["describe", "review"], title: "/pr-description redesign + follow-up fixes",
       lede: "The shared description style for all three repos, plus automation fixes found while testing it on real runs.",
       bullets: ["Sections 1–5 of the command are a shared core, identical in all three repos", "A hygiene script flags unlinked Jira keys and PRs, time-relative wording and orphan links", "Affected Tests reads the TeamBanking domain list from the build file", "Fixes: a checkpoint race on the unfreeze popup, a longer OD-limit success poll, a fresh user per run for the quick-login lockout test"],
-      nums: "7 commits · 8 files" },
+      nums: "7 commits · 8 files", state: "merged" },
     { repo: "android-banking", n: 8873, stages: ["describe", "qa"], title: "QA-plan pipeline overhaul + /pr-description",
       lede: "The QA rulebook split into a short hub and topic files, and /qa-plan, /qa-to-ios and /qa-to-html rewritten as step-by-step procedures.",
-      bullets: ["A checker with 64 codes and an assembler that copies the page chrome, so the model writes only content", "The dashboard design the owner approved: tinted, clickable status cards, wrapping section pills, filters that show only tests", "Confirmed gaps count MQA tests and UI-checklist items alike", "A per-feature bug snapshot built from live Jira: health, status counts and worst open severity, plus the bugs not closed"],
-      nums: "28 commits · 68 files" },
+      bullets: ["Tooling only (20 files): the re-rendered plans and the QA checker's tests moved to #8878", "A checker with 64 codes and an assembler that copies the page chrome, so the model writes only content", "The dashboard design the owner approved: tinted, clickable status cards, wrapping section pills, filters that show only tests", "Confirmed gaps count MQA tests and UI-checklist items alike", "A per-feature bug snapshot built from live Jira: health, status counts and worst open severity, plus the bugs not closed"],
+      nums: "30 commits · 20 files", state: "merged" },
     { repo: "ios-banking", n: 8900, stages: ["describe"], title: "/pr-description for iOS",
       lede: "The same shared description core, with iOS rules: a table only for 3+ similar items, before/after screenshots for UI changes.",
       bullets: ["Sections 1–5 byte-identical to the other two repos", "The hygiene script reports an unreadable body with a one-line error"],
-      nums: "5 commits · 1 file" },
+      nums: "6 commits · 1 file", state: "merged" },
     { repo: "android-banking", n: 8875, stages: ["preflight", "qa"], title: "Pre-flight overhaul, shared with iOS",
       lede: "The developer self-check rebuilt: investigate every 🟡, propose a fix per 🔴 root cause, apply only on an explicit apply FP-<n>.",
       bullets: ["Stops on protected branches or dirty files; runs the module's build and tests before and after each fix; undo reverses only its own hunk", "Top Suspects holds only open items; checked ones move to Checked and Cleared", "A right-to-left order rule, a shared-state rule, and a documented dry-run mode", "QA plans get multiple-choice open questions with a copy-paste answer line"],
-      nums: "21 commits · 107 files" },
+      nums: "24 commits · 80 files (141 with #8878 and #8880)", state: "merged" },
     { repo: "ios-banking", n: 8902, stages: ["preflight"], title: "Pre-flight in the iOS AI-DLC flow",
       lede: "The shared core plus an iOS profile, wired into Build and Test so every ticket ends with the self-check.",
       bullets: ["iOS profile: xcodebuild build-for-testing once, then test the package; compile-only for targets outside the test plan", "The base rule file's Build and Test step runs the pre-flight before the stage closes", "Two dry runs on OZ-135588 shaped the right-to-left rule"],
-      nums: "9 commits · 74 files" },
+      nums: "21 commits · 78 files (with #8906)", state: "open" },
     { repo: "android-banking", n: 8878, stages: ["qa", "describe"], title: "The new rules applied: 8 QA plans upgraded",
       lede: "The worked example: the 8 plans an earlier QA PR touched, brought up to the current rules with no re-test.",
       bullets: ["57 open questions get answer options, rendered as buttons with a copy-paste answer line", "Complete Links & Artifacts on every plan, and one row per plan in the QA Plan Status table (the earlier PR's table had 6 of 8)", "A bug-filter JQL over all 26 story and QA tickets, ordered by status then newest", "A bug snapshot on the PR: 3 features red, 4 amber, 1 green, 21 of 59 bugs not closed; each plan re-rendered on template v5 and republished"],
-      nums: "5 commits · 28 files" },
+      nums: "8 commits · 56 files", state: "via:8875" },
     { repo: "android-banking", n: 8880, stages: ["fix", "describe"], title: "/fix-confidence: an AI check of a bug fix",
       lede: "For any bug with a fix PR, QA plan or not: an AI confidence, possible regressions pinned to exact lines, and a retest list.",
-      bullets: ["A second report kind on the shared pre-flight core, with 16 new checker codes and 45 tests", "Acceptance test: a blind run on a fixed bug found both regressions its QA plan had confirmed, each tied to a line, plus a variant the fix leaves broken", "Takes a bug key or a fix PR (open or merged); /pr-description scans every Fixed bug in a QA PR's bug snapshot and adds a chip; Jira and PR comments only after approval", "Corrects the shared right-to-left rule (digits after a Latin name flip)"],
-      nums: "10 commits · 90 files" },
+      bullets: ["A second report kind on the shared pre-flight core, with 18 checker codes; reports stay on the QA machine, nothing per-ticket is committed", "Acceptance test: a blind run on a fixed bug found both regressions its QA plan had confirmed, each tied to a line, plus a variant the fix leaves broken", "Takes a bug key or a fix PR (open or merged); /pr-description scans every Fixed bug in a QA PR's bug snapshot and adds a chip; Jira and PR comments only after approval", "Corrects the shared right-to-left rule (digits after a Latin name flip)"],
+      nums: "15 commits · 18 files", state: "via:8875" },
     { repo: "ios-banking", n: 8906, stages: ["fix"], title: "/fix-confidence for iOS",
       lede: "The same shared core, byte-identical, plus an iOS fix-lookup profile.",
       bullets: ["iOS profile: real fix-branch patterns and Swift caller search", "A real iOS run scored 100 with no possible regressions, and flagged a fix not yet on develop"],
-      nums: "7 commits · 87 files" }
+      nums: "10 commits · 15 files", state: "via:8902" }
   ];
+  function stateTag(st) {
+    if (st === "merged") return '<span class="tag st-merged">merged</span>';
+    if (st && st.indexOf("via:") === 0) return '<span class="tag st-via">merged into #' + st.slice(4) + '</span>';
+    return '<span class="tag st-open">approved · waiting on CI</span>';
+  }
   var list = document.getElementById("prList");
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   PRS.forEach(function (p) {
@@ -630,7 +658,7 @@ footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-si
     el.className = "pr"; el.dataset.repo = p.repo; el.dataset.stages = p.stages.join(" ");
     var url = "https://github.com/digibank-il/" + p.repo + "/pull/" + p.n;
     el.innerHTML =
-      '<div class="meta"><span class="repo">' + esc(p.repo) + '</span><span class="tag">#' + p.n + '</span><span class="tag">draft</span></div>' +
+      '<div class="meta"><span class="repo">' + esc(p.repo) + '</span><span class="tag">#' + p.n + '</span>' + stateTag(p.state) + '</div>' +
       '<h3>' + esc(p.title) + '</h3><p>' + esc(p.lede) + '</p>' +
       '<details class="more"><summary>What it contains</summary><ul>' + p.bullets.map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + '</ul></details>' +
       '<div class="foot"><span class="nums">' + esc(p.nums) + '</span><a href="' + url + '">Open PR →</a></div>';
