@@ -143,6 +143,22 @@
   </div>
   <p class="src">The closure string also exists in the Android strings file, but I found no code that uses it; the Android closing summary uses the withdrawal disclaimer. On iOS I matched the text to the closure string, but did not trace which code selects it. I did not check Figma for this screen.</p>
 
+  <h2>Opening a second daily saving: "already exists" popup</h2>
+  <figure style="max-width:520px"><img src="savings-amount-caption-parity/daily-second-saving-popup.jpg" alt="Popup when opening a second daily saving, Android and iOS">
+    <figcaption><strong>"פתיחת חיסכון יומי חדש"</strong> popup: <span class="he">אפשר לפתוח חיסכון אוטומטי יומי אחד בלבד</span>. Same title and message, different secondary button.</figcaption></figure>
+  <div class="tablewrap" style="margin-top:12px">
+  <table>
+    <thead><tr><th></th><th>Android</th><th>iOS</th><th>Match?</th></tr></thead>
+    <tbody>
+      <tr><td>Title and message</td><td colspan="2">Same text on both</td><td><span class="tag yes">Yes</span></td></tr>
+      <tr><td>Primary button</td><td class="he">לחיסכון הקיים</td><td class="he">לחיסכון הקיים</td><td><span class="tag yes">Yes</span></td></tr>
+      <tr><td>Secondary button</td><td class="he">סגירה</td><td class="he">ביטול</td><td><span class="tag no">No</span></td></tr>
+      <tr><td>Dialog style</td><td>Material dialog, buttons side by side, left-aligned text</td><td>iOS system alert, buttons stacked, centered text</td><td><span class="tag unk">Native styles</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">iOS takes its secondary button from the general "cancel" string; I did not trace which string Android uses. The dialog style difference is probably the native alert look, not a bug.</p>
+
   <h2>Why they differ (from the code)</h2>
   <ul>
     <li><strong>Android:</strong> the first message depends on the plan (monthly shows the "initial deposit" text, fixed yearly shows the maximum). As soon as the user types, the caption switches to the <em>minimum-amount</em> message for every plan.</li>
@@ -225,7 +241,16 @@
     </div>
     <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q8">
   </div>
-  <div class="q" data-q="Q9"><strong>Q9.</strong> Is there a Figma frame for the "הפקדה לשנה" / "הפקדה חד פעמית" amount screens that defines this? Please paste the link.
+  <div class="q" data-q="Q9"><strong>Q9.</strong> Popup when the user tries to open a second daily saving: what should the secondary button say?
+    <div class="opts">
+      <button class="opt" type="button" data-l="A" data-t="\"סגירה\" on both" aria-pressed="false"><b>A</b>"סגירה" on both</button>
+      <button class="opt" type="button" data-l="B" data-t="\"ביטול\" on both" aria-pressed="false"><b>B</b>"ביטול" on both</button>
+      <button class="opt" type="button" data-l="C" data-t="Keep them different per platform" aria-pressed="false"><b>C</b>Keep them different per platform</button>
+      <button class="opt" type="button" data-l="D" data-t="Other (see note)" aria-pressed="false"><b>D</b>Other (write it in the note)</button>
+    </div>
+    <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q9">
+  </div>
+  <div class="q" data-q="Q10"><strong>Q10.</strong> Is there a Figma frame for the "הפקדה לשנה" / "הפקדה חד פעמית" amount screens that defines this? Please paste the link.
     <input class="qnote" type="text" placeholder="Figma link or 'none'" aria-label="Figma link">
   </div>
   </div>
