@@ -94,6 +94,30 @@
   </table>
   </div>
 
+  <h2>What Figma says</h2>
+  <p>Design file: <a href="https://www.figma.com/design/jpVG8He3NLxF9QmFuT36wL/Savings?node-id=4737-71057&amp;p=f&amp;m=dev">Savings — Automatic Saving canvas</a>. Relevant frames:</p>
+  <ul>
+    <li><a href="https://www.figma.com/design/jpVG8He3NLxF9QmFuT36wL/Savings?node-id=4737-77513&amp;p=f&amp;m=dev">"Input Number" section</a> — daily rules: salary percentage ("חיסכון מהמשכורת") and ceiling savings ("חיסכון תקרה"), iOS and Android variants, all states.</li>
+    <li><a href="https://www.figma.com/design/jpVG8He3NLxF9QmFuT36wL/Savings?node-id=4737-77403&amp;p=f&amp;m=dev">"Input Number (automatic)" section</a> — withdrawal amount ("כמה למשוך מהחיסכון?") with its captions.</li>
+    <li><a href="https://www.figma.com/design/jpVG8He3NLxF9QmFuT36wL/Savings?node-id=5117-81497&amp;p=f&amp;m=dev">Fixed Yearly Saving canvas</a>, including the <a href="https://www.figma.com/design/jpVG8He3NLxF9QmFuT36wL/Savings?node-id=5342-115996&amp;p=f&amp;m=dev">Create Fixed Yearly Saving amount screen</a>. The caption slot is empty in the design.</li>
+  </ul>
+  <div class="shots">
+    <figure><img src="savings-amount-caption-parity/figma-limit-saving.jpg" alt="Figma: ceiling savings, filled">
+      <figcaption><strong>Figma: ceiling savings ("חיסכון תקרה"), filled.</strong> Bottom sheet, caption <span class="he">כל סכום מעל ₪5,000 בעו״ש ייכנס לחיסכון בסוף יום העסקים</span>, button <span class="he">אישור</span>.</figcaption></figure>
+    <figure><img src="savings-amount-caption-parity/figma-income-percentage.jpg" alt="Figma: salary percentage, filled">
+      <figcaption><strong>Figma: salary savings percentage, filled.</strong> Bottom sheet, no caption, button <span class="he">אישור</span>.</figcaption></figure>
+  </div>
+  <div class="tablewrap" style="margin-top:12px">
+  <table>
+    <thead><tr><th>Daily rules screen</th><th>Figma</th><th>Android</th><th>iOS</th></tr></thead>
+    <tbody>
+      <tr><td>Salary percentage</td><td>Bottom sheet, button <span class="he">אישור</span>, no caption</td><td><span class="tag no">Differs</span> full screen, <span class="he">המשך</span></td><td><span class="tag yes">Matches</span> as far as seen</td></tr>
+      <tr><td>Ceiling savings</td><td>Bottom sheet, button <span class="he">אישור</span>; caption "any amount above ₪X in checking goes to savings at end of business day" once filled</td><td><span class="tag no">Differs</span> full screen, <span class="he">המשך</span>; empty shows <span class="he">יש להקליד סכום מעל ₪1</span></td><td>Bottom sheet and button match; caption not observed (only the empty state was captured)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">The Figma file has separate "Filled iOS" and "Filled Android" frames. Both are bottom sheets with an <span class="he">אישור</span> button (the Android frame uses the Android keyboard), so Figma does not call for a platform difference here.</p>
+
   <h2>Why they differ (from the code)</h2>
   <ul>
     <li><strong>Android:</strong> the first message depends on the plan (monthly shows the "initial deposit" text, fixed yearly shows the maximum). As soon as the user types, the caption switches to the <em>minimum-amount</em> message for every plan.</li>
