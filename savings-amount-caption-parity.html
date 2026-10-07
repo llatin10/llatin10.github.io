@@ -6,7 +6,9 @@
 <title>Savings Amount Screen — Caption Parity (Android vs iOS)</title>
 <style>
   :root { --bg:#fafaf9; --fg:#1c1917; --muted:#78716c; --card:#fff; --line:#e7e5e4; --accent:#0071eb; --bad:#b91c1c; --badbg:#fee2e2; --ok:#15803d; --okbg:#dcfce7; --warn:#a16207; --warnbg:#fef9c3; }
-  @media (prefers-color-scheme: dark) { :root { --bg:#1c1917; --fg:#f5f5f4; --muted:#a8a29e; --card:#292524; --line:#44403c; --badbg:#450a0a; --bad:#fca5a5; --okbg:#052e16; --ok:#86efac; --warnbg:#422006; --warn:#fde047; } }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#1c1917; --fg:#f5f5f4; --muted:#a8a29e; --card:#292524; --line:#44403c; --badbg:#450a0a; --bad:#fca5a5; --okbg:#052e16; --ok:#86efac; --warnbg:#422006; --warn:#fde047; } }
+  :root[data-theme="dark"] { --bg:#1c1917; --fg:#f5f5f4; --muted:#a8a29e; --card:#292524; --line:#44403c; --badbg:#450a0a; --bad:#fca5a5; --okbg:#052e16; --ok:#86efac; --warnbg:#422006; --warn:#fde047; }
+  .themebtn { position:fixed; top:12px; right:12px; z-index:10; padding:6px 12px; border:1px solid var(--line); border-radius:999px; background:var(--card); color:var(--fg); font:inherit; font-size:.82rem; cursor:pointer; }
   * { box-sizing: border-box; }
   body { margin:0; background:var(--bg); color:var(--fg); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; line-height:1.5; }
   .wrap { max-width:980px; margin:0 auto; padding:24px 16px 64px; }
@@ -43,6 +45,7 @@
 </style>
 </head>
 <body>
+<button class="themebtn" type="button" id="themebtn" aria-label="Toggle dark or light mode">Dark / Light</button>
 <div class="wrap">
   <h1>Savings amount screens — caption and button text differ between Android and iOS</h1>
   <p class="sub">Prepared for Product · Android release 4.7.0 vs iOS 4.7.0 · Savings → deposit amount entry (one-time, monthly recurring, yearly) · 2026-10-07</p>
@@ -269,6 +272,22 @@
   <p><strong>Likely, not confirmed:</strong> closing a yearly floating saving shows the withdrawal disclaimer on <strong>Android</strong>, while iOS shows the closure disclaimer. The closure text already exists in Android's strings but is not used. No Figma frame or Product answer yet (see Q8).</p>
   <p><strong>Waiting on Product:</strong> the caption differences on the amount screens (Q1–Q6), the second-daily-saving popup button (Q9), and the ceiling-savings caption once filled (not yet seen on iOS).</p>
 </div>
+<script>
+(function () {
+  var root = document.documentElement, btn = document.getElementById("themebtn");
+  function current() {
+    var t = root.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  try { var saved = localStorage.getItem("parity-theme"); if (saved) root.setAttribute("data-theme", saved); } catch (e) {}
+  btn.addEventListener("click", function () {
+    var next = current() === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("parity-theme", next); } catch (e) {}
+  });
+})();
+</script>
 <script>
 (function () {
   var qs = document.querySelectorAll("#qs .q");
