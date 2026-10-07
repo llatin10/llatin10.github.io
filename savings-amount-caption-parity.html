@@ -34,7 +34,7 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>Savings amount screen — caption text differs between Android and iOS</h1>
+  <h1>Savings amount screens — caption and button text differ between Android and iOS</h1>
   <p class="sub">Prepared for Product · Android release 4.7.0 vs iOS 4.7.0 · Savings → deposit amount entry (one-time, monthly recurring, yearly) · 2026-10-07</p>
 
   <p>The caption under the amount on the savings deposit screens (daily, monthly, yearly) shows different text on Android and iOS, and it behaves differently once the user starts typing. We need Product to confirm the <strong>intended</strong> behavior so we can file the right bugs.</p>
@@ -53,6 +53,8 @@
       <figcaption><strong>Monthly recurring deposit ("כמה להפקיד בכל חודש?"), ₪1,000 typed.</strong> Android: <span class="he">אפשר להיכנס לעמוד החיסכון ולהקפיא את ההפקדות החודשיות או חלקן לאחר הקמת החיסכון</span>. iOS: no caption.</figcaption></figure>
     <figure><img src="savings-amount-caption-parity/daily-ceiling-empty.jpg" alt="Daily ceiling savings, empty amount">
       <figcaption><strong>Daily "חיסכון תקרה" (ceiling savings): "מעל איזה סכום בעו״ש להפקיד לחיסכון?", empty ₪0.</strong> Android: <span class="he">יש להקליד סכום מעל ₪1</span>, button "המשך", full screen. iOS: no caption, button "אישור", shown as a bottom sheet.</figcaption></figure>
+    <figure><img src="savings-amount-caption-parity/daily-salary-percent.jpg" alt="Daily salary savings percentage">
+      <figcaption><strong>Daily rules: "חיסכון מהמשכורת" (savings from salary), "איזה אחוז מהמשכורת לחסוך?", 1% typed.</strong> No caption on either platform. <strong>CTA differs:</strong> Android <span class="he">המשך</span>, iOS <span class="he">אישור</span>. iOS is a bottom sheet, Android a full screen.</figcaption></figure>
   </div>
   <p class="src">Different test accounts were used (Android balance ₪434,479.39, iOS ₪60,000), so the plan type on each device was not identical in every shot.</p>
 
@@ -80,6 +82,18 @@
 
   <div class="note" style="margin-top:12px">Plan type per screenshot is inferred from the code, not confirmed on the device. The one-time deposit with an empty amount is most likely the daily plan; the one with ₪100 typed is most likely the monthly plan.</div>
 
+  <h2>Button (CTA) text and presentation on the daily rules screens</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Screen</th><th>Android</th><th>iOS</th><th>Match?</th></tr></thead>
+    <tbody>
+      <tr><td>Ceiling savings threshold ("חיסכון תקרה")</td><td><span class="he">המשך</span>, full screen <span class="src">(screenshot)</span></td><td><span class="he">אישור</span>, bottom sheet <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td></tr>
+      <tr><td>Salary savings percentage ("חיסכון מהמשכורת")</td><td><span class="he">המשך</span>, full screen <span class="src">(screenshot)</span></td><td><span class="he">אישור</span>, bottom sheet <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td></tr>
+      <tr><td>Salary savings percentage: caption under the amount</td><td>None <span class="src">(screenshot)</span></td><td>None <span class="src">(screenshot)</span></td><td><span class="tag yes">Yes</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
   <h2>Why they differ (from the code)</h2>
   <ul>
     <li><strong>Android:</strong> the first message depends on the plan (monthly shows the "initial deposit" text, fixed yearly shows the maximum). As soon as the user types, the caption switches to the <em>minimum-amount</em> message for every plan.</li>
@@ -95,7 +109,8 @@
   <div class="q"><strong>4.</strong> For fixed yearly: show the maximum ("אפשר להפקיד עד …") throughout, or the minimum once the user types?</div>
   <div class="q"><strong>5.</strong> Monthly recurring amount screen ("כמה להפקיד בכל חודש?"): should it show the "you can freeze the monthly deposits from the savings page" note (Android) or nothing (iOS)? On Android it stays visible while typing; validation errors replace it.</div>
   <div class="q"><strong>6.</strong> Daily ceiling-savings threshold screen ("חיסכון תקרה"): should it show the "enter an amount above ₪1" hint (Android) or nothing (iOS)? Also, Android shows it as a full screen with a "המשך" button while iOS shows a bottom sheet with an "אישור" button. Is that intended?</div>
-  <div class="q"><strong>7.</strong> Is there a Figma frame for the "הפקדה לשנה" / "הפקדה חד פעמית" amount screens that defines this? If so, please share the link.</div>
+  <div class="q"><strong>7.</strong> On the daily rules screens (ceiling savings, salary percentage) the button reads "המשך" on Android and "אישור" on iOS, and Android is full screen while iOS is a bottom sheet. Which label and presentation is correct?</div>
+  <div class="q"><strong>8.</strong> Is there a Figma frame for the "הפקדה לשנה" / "הפקדה חד פעמית" amount screens that defines this? If so, please share the link.</div>
 </div>
 </body>
 </html>
