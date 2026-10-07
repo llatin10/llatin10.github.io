@@ -255,6 +255,19 @@
   </div>
   </div>
   <div class="copyline"><code id="out">Pick an answer to build the text</code><button class="btn" type="button" id="copy" disabled>Copy answers</button></div>
+  <h2>TL;DR: what we already know is a bug</h2>
+  <p>Only two items are confirmed, with the platform known. Everything else waits for Product's answers above.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>#</th><th>Issue</th><th>Platform</th><th>Basis</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>The minimum-deposit message is missing on the one-time deposit amount screen (daily, floating yearly).</td><td><span class="tag no">iOS</span></td><td>Already noted as finding #4 in OZ-134109: Android and the design show it.</td></tr>
+      <tr><td>2</td><td>Daily rules screens (salary percentage, ceiling savings) are a full screen with a <span class="he">המשך</span> button. Figma has a bottom sheet with <span class="he">אישור</span> on both platforms.</td><td><span class="tag no">Android</span></td><td>Figma has explicit iOS and Android frames, both bottom sheets with <span class="he">אישור</span>; iOS matches them.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>Likely, not confirmed:</strong> closing a yearly floating saving shows the withdrawal disclaimer on <strong>Android</strong>, while iOS shows the closure disclaimer. The closure text already exists in Android's strings but is not used. No Figma frame or Product answer yet (see Q8).</p>
+  <p><strong>Waiting on Product:</strong> the caption differences on the amount screens (Q1–Q6), the second-daily-saving popup button (Q9), and the ceiling-savings caption once filled (not yet seen on iOS).</p>
 </div>
 <script>
 (function () {
