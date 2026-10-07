@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Savings Amount Screen — Caption Parity (Android vs iOS)</title>
+<style>
+  :root { --bg:#fafaf9; --fg:#1c1917; --muted:#78716c; --card:#fff; --line:#e7e5e4; --accent:#0071eb; --bad:#b91c1c; --badbg:#fee2e2; --ok:#15803d; --okbg:#dcfce7; --warn:#a16207; --warnbg:#fef9c3; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1c1917; --fg:#f5f5f4; --muted:#a8a29e; --card:#292524; --line:#44403c; --badbg:#450a0a; --bad:#fca5a5; --okbg:#052e16; --ok:#86efac; --warnbg:#422006; --warn:#fde047; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; line-height:1.5; }
+  .wrap { max-width:980px; margin:0 auto; padding:24px 16px 64px; }
+  h1 { font-size:1.6rem; margin:0 0 4px; }
+  h2 { font-size:1.15rem; margin:32px 0 8px; border-bottom:1px solid var(--line); padding-bottom:4px; }
+  p, li { font-size:.95rem; }
+  .sub { color:var(--muted); font-size:.875rem; margin-bottom:16px; }
+  .tablewrap { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; background:var(--card); font-size:.88rem; }
+  th, td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+  th { background:var(--bg); }
+  .he { direction:rtl; unicode-bidi:isolate; font-weight:600; }
+  .tag { display:inline-block; padding:1px 8px; border-radius:10px; font-size:.78rem; font-weight:600; white-space:nowrap; }
+  .no { background:var(--badbg); color:var(--bad); }
+  .yes { background:var(--okbg); color:var(--ok); }
+  .unk { background:var(--warnbg); color:var(--warn); }
+  .src { color:var(--muted); font-size:.78rem; }
+  .shots { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+  figure { margin:0; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px; }
+  figure img { width:100%; height:auto; border-radius:6px; display:block; }
+  figcaption { font-size:.85rem; margin-top:8px; }
+  .q { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:6px; padding:10px 14px; margin:8px 0; }
+  .note { background:var(--warnbg); color:var(--fg); border-radius:6px; padding:10px 14px; font-size:.88rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Savings amount screen — caption text differs between Android and iOS</h1>
+  <p class="sub">Prepared for Product · Android release 4.7.0 vs iOS 4.7.0 · Savings → deposit amount entry · 2026-10-07</p>
+
+  <p>The caption under the amount on the savings deposit screens (daily, monthly, yearly) shows different text on Android and iOS, and it behaves differently once the user starts typing. We need Product to confirm the <strong>intended</strong> behavior so we can file the right bugs.</p>
+
+  <h2>Screenshots (Android left, iOS right)</h2>
+  <div class="shots">
+    <figure><img src="savings-amount-caption-parity/onetime-empty.jpg" alt="One-time deposit, empty amount">
+      <figcaption><strong>One-time deposit, empty ₪0.</strong> Android: <span class="he">הסכום המינימלי להפקדה הוא ₪1</span>. iOS: no caption.</figcaption></figure>
+    <figure><img src="savings-amount-caption-parity/onetime-100.jpg" alt="One-time deposit, ₪100 typed">
+      <figcaption><strong>One-time deposit, ₪100 typed.</strong> Android: <span class="he">הסכום המינימלי להפקדה הוא ₪100</span>. iOS: <span class="he">יש להפקיד סכום התחלתי כדי לפתוח את החיסכון</span>.</figcaption></figure>
+    <figure><img src="savings-amount-caption-parity/yearly-empty.jpg" alt="Yearly deposit, empty amount">
+      <figcaption><strong>Yearly deposit, empty ₪0.</strong> Android: <span class="he">הסכום המינימלי להפקדה הוא ₪100</span>. iOS: no caption.</figcaption></figure>
+    <figure><img src="savings-amount-caption-parity/yearly-1000.jpg" alt="Yearly deposit, ₪1,000 typed">
+      <figcaption><strong>Yearly deposit, ₪1,000 typed.</strong> Android: <span class="he">הסכום המינימלי להפקדה הוא ₪100</span>. iOS: <span class="he">אפשר להפקיד עד ₪100,000</span>.</figcaption></figure>
+  </div>
+  <p class="src">Different test accounts were used (Android balance ₪434,479.39, iOS ₪60,000), so the plan type on each device was not identical in every shot.</p>
+
+  <h2>Behavior by plan and state</h2>
+  <p class="src"><strong>Screenshot</strong> = observed in the images above. <strong>Code</strong> = read from the app source, not observed on a device.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Plan / screen</th><th>State</th><th>Android</th><th>iOS</th><th>Match?</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="2"><strong>Daily</strong> one-time deposit</td><td>Empty</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪1</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td></tr>
+      <tr><td>Valid amount</td><td>Minimum-amount message <span class="src">(code)</span></td><td>No caption <span class="src">(code)</span></td><td><span class="tag no">No</span></td></tr>
+      <tr><td rowspan="2"><strong>Monthly</strong> one-time deposit</td><td>Empty</td><td><span class="he">יש להפקיד סכום התחלתי כדי לפתוח את החיסכון</span> <span class="src">(code)</span></td><td>Same text <span class="src">(code)</span></td><td><span class="tag yes">Yes</span></td></tr>
+      <tr><td>₪100 typed</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span> <span class="src">(screenshot)</span></td><td><span class="he">יש להפקיד סכום התחלתי כדי לפתוח את החיסכון</span> <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td></tr>
+      <tr><td rowspan="2"><strong>Yearly, fixed interest</strong></td><td>Empty</td><td><span class="he">אפשר להפקיד עד ₪X</span> (max) <span class="src">(code)</span></td><td>Max message <span class="src">(code; not observed)</span></td><td><span class="tag unk">Unverified</span></td></tr>
+      <tr><td>₪1,000 typed</td><td>Minimum-amount message <span class="src">(code)</span></td><td><span class="he">אפשר להפקיד עד ₪100,000</span> <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td></tr>
+      <tr><td rowspan="2"><strong>Yearly, floating interest</strong></td><td>Empty</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td></tr>
+      <tr><td>₪1,000 typed</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(code)</span></td><td><span class="tag no">No</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note" style="margin-top:12px">Plan type per screenshot is inferred from the code, not confirmed on the device. The one-time deposit with an empty amount is most likely the daily plan; the one with ₪100 typed is most likely the monthly plan.</div>
+
+  <h2>Why they differ (from the code)</h2>
+  <ul>
+    <li><strong>Android:</strong> the first message depends on the plan (monthly shows the "initial deposit" text, fixed yearly shows the maximum). As soon as the user types, the caption switches to the <em>minimum-amount</em> message for every plan.</li>
+    <li><strong>iOS:</strong> the caption is whatever the plan's flow passes in and it never changes while typing. Daily and floating yearly pass nothing, monthly passes the "initial deposit" text, fixed yearly passes the maximum.</li>
+    <li>An existing open iOS ticket, <strong>OZ-134109</strong> (finding #4), already notes that iOS does not show the minimum amount on the one-time deposit screen while Android does.</li>
+    <li>The Figma frame for "Create Fixed Yearly Saving" amount entry (title "סכום הפקדה") has an <strong>empty</strong> caption, so it does not settle the question.</li>
+  </ul>
+
+  <h2>Questions for Product</h2>
+  <div class="q"><strong>1.</strong> Should the amount screen show a caption at all, and should it differ by plan type (daily / monthly / yearly fixed / yearly floating)?</div>
+  <div class="q"><strong>2.</strong> Should the caption stay fixed while the user types (iOS today), or switch to the minimum-amount message once they type (Android today)?</div>
+  <div class="q"><strong>3.</strong> For daily and floating yearly: show the minimum-amount message (Android) or nothing (iOS)?</div>
+  <div class="q"><strong>4.</strong> For fixed yearly: show the maximum ("אפשר להפקיד עד …") throughout, or the minimum once the user types?</div>
+  <div class="q"><strong>5.</strong> Is there a Figma frame for the "הפקדה לשנה" / "הפקדה חד פעמית" amount screens that defines this? If so, please share the link.</div>
+</div>
+</body>
+</html>
