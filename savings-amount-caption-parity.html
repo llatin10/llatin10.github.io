@@ -30,6 +30,16 @@
   figcaption { font-size:.85rem; margin-top:8px; }
   .q { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:6px; padding:10px 14px; margin:8px 0; }
   .note { background:var(--warnbg); color:var(--fg); border-radius:6px; padding:10px 14px; font-size:.88rem; }
+  .opts { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+  .opt { text-align:left; border:1px solid var(--line); background:var(--card); color:var(--fg); border-radius:8px; padding:7px 10px; font:inherit; font-size:.88rem; cursor:pointer; }
+  .opt:hover { border-color:var(--accent); }
+  .opt[aria-pressed="true"] { border-color:var(--accent); background:rgba(0,113,235,.12); }
+  .opt b { font-family:ui-monospace,Menlo,monospace; margin-right:8px; color:var(--accent); }
+  .qnote { width:100%; margin-top:8px; padding:7px 10px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--fg); font:inherit; font-size:.88rem; }
+  .copyline { display:flex; gap:8px; align-items:flex-start; margin-top:14px; flex-wrap:wrap; }
+  .copyline code { flex:1 1 280px; display:block; padding:8px 10px; border-radius:8px; background:var(--card); border:1px solid var(--line); white-space:pre-wrap; font-size:.85rem; }
+  .btn { padding:8px 14px; border:0; border-radius:8px; background:var(--accent); color:#fff; font:inherit; font-weight:600; cursor:pointer; }
+  .btn:disabled { opacity:.45; cursor:default; }
 </style>
 </head>
 <body>
@@ -127,14 +137,113 @@
   </ul>
 
   <h2>Questions for Product</h2>
-  <div class="q"><strong>1.</strong> Should the amount screen show a caption at all, and should it differ by plan type (daily / monthly / yearly fixed / yearly floating)?</div>
-  <div class="q"><strong>2.</strong> Should the caption stay fixed while the user types (iOS today), or switch to the minimum-amount message once they type (Android today)?</div>
-  <div class="q"><strong>3.</strong> For daily and floating yearly: show the minimum-amount message (Android) or nothing (iOS)?</div>
-  <div class="q"><strong>4.</strong> For fixed yearly: show the maximum ("אפשר להפקיד עד …") throughout, or the minimum once the user types?</div>
-  <div class="q"><strong>5.</strong> Monthly recurring amount screen ("כמה להפקיד בכל חודש?"): should it show the "you can freeze the monthly deposits from the savings page" note (Android) or nothing (iOS)? On Android it stays visible while typing; validation errors replace it.</div>
-  <div class="q"><strong>6.</strong> Daily ceiling-savings threshold screen ("חיסכון תקרה"): should it show the "enter an amount above ₪1" hint (Android) or nothing (iOS)? Also, Android shows it as a full screen with a "המשך" button while iOS shows a bottom sheet with an "אישור" button. Is that intended?</div>
-  <div class="q"><strong>7.</strong> On the daily rules screens (ceiling savings, salary percentage) the button reads "המשך" on Android and "אישור" on iOS, and Android is full screen while iOS is a bottom sheet. Which label and presentation is correct?</div>
-  <div class="q"><strong>8.</strong> Is there a Figma frame for the "הפקדה לשנה" / "הפקדה חד פעמית" amount screens that defines this? If so, please share the link.</div>
+  <p class="src">Pick one answer per question, add a note if you like, then press <strong>Copy answers</strong> and send the text back. The page stores nothing.</p>
+  <div id="qs">
+  <div class="q" data-q="Q1"><strong>Q1.</strong> Should the amount screen show a caption at all, and should it differ by plan type (daily / monthly / yearly fixed / yearly floating)?
+    <div class="opts">
+      <button class="opt" type="button" data-l="A" data-t="Caption depends on plan type, same on both platforms (closest to Android today)" aria-pressed="false"><b>A</b>Caption depends on plan type, same on both platforms (closest to Android today)</button>
+      <button class="opt" type="button" data-l="B" data-t="Caption only where iOS shows one today (monthly one-time and fixed yearly)" aria-pressed="false"><b>B</b>Caption only where iOS shows one today (monthly one-time and fixed yearly)</button>
+      <button class="opt" type="button" data-l="C" data-t="No caption on any amount screen (as in the Figma amount frame)" aria-pressed="false"><b>C</b>No caption on any amount screen (as in the Figma amount frame)</button>
+      <button class="opt" type="button" data-l="D" data-t="Other (see note)" aria-pressed="false"><b>D</b>Other (write it in the note)</button>
+    </div>
+    <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q1">
+  </div>
+  <div class="q" data-q="Q2"><strong>Q2.</strong> Should the caption stay fixed while the user types (iOS today), or switch to the minimum-amount message once they type (Android today)?
+    <div class="opts">
+      <button class="opt" type="button" data-l="A" data-t="Stay fixed while typing" aria-pressed="false"><b>A</b>Stay fixed while typing</button>
+      <button class="opt" type="button" data-l="B" data-t="Switch to the minimum-amount message when typing starts" aria-pressed="false"><b>B</b>Switch to the minimum-amount message when typing starts</button>
+      <button class="opt" type="button" data-l="C" data-t="Show the minimum only as a validation error, below the minimum" aria-pressed="false"><b>C</b>Show the minimum only as a validation error, below the minimum</button>
+      <button class="opt" type="button" data-l="D" data-t="Other (see note)" aria-pressed="false"><b>D</b>Other (write it in the note)</button>
+    </div>
+    <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q2">
+  </div>
+  <div class="q" data-q="Q3"><strong>Q3.</strong> Daily one-time and floating yearly deposit: minimum-amount message (Android) or nothing (iOS)?
+    <div class="opts">
+      <button class="opt" type="button" data-l="A" data-t="Show the minimum-amount message" aria-pressed="false"><b>A</b>Show the minimum-amount message</button>
+      <button class="opt" type="button" data-l="B" data-t="Show nothing" aria-pressed="false"><b>B</b>Show nothing</button>
+      <button class="opt" type="button" data-l="C" data-t="Other (see note)" aria-pressed="false"><b>C</b>Other (write it in the note)</button>
+    </div>
+    <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q3">
+  </div>
+  <div class="q" data-q="Q4"><strong>Q4.</strong> Fixed yearly deposit: which message?
+    <div class="opts">
+      <button class="opt" type="button" data-l="A" data-t="Maximum (אפשר להפקיד עד …) throughout" aria-pressed="false"><b>A</b>Maximum (אפשר להפקיד עד …) throughout</button>
+      <button class="opt" type="button" data-l="B" data-t="Maximum when empty, minimum once typing" aria-pressed="false"><b>B</b>Maximum when empty, minimum once typing</button>
+      <button class="opt" type="button" data-l="C" data-t="Maximum only as an error when exceeded" aria-pressed="false"><b>C</b>Maximum only as an error when exceeded</button>
+      <button class="opt" type="button" data-l="D" data-t="Other (see note)" aria-pressed="false"><b>D</b>Other (write it in the note)</button>
+    </div>
+    <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q4">
+  </div>
+  <div class="q" data-q="Q5"><strong>Q5.</strong> Monthly recurring amount screen (כמה להפקיד בכל חודש?): the note about freezing monthly deposits from the savings page (Android shows it, iOS does not).
+    <div class="opts">
+      <button class="opt" type="button" data-l="A" data-t="Show the note on both platforms" aria-pressed="false"><b>A</b>Show the note on both platforms</button>
+      <button class="opt" type="button" data-l="B" data-t="Show it on neither" aria-pressed="false"><b>B</b>Show it on neither</button>
+      <button class="opt" type="button" data-l="C" data-t="Show it on iOS only" aria-pressed="false"><b>C</b>Show it on iOS only</button>
+      <button class="opt" type="button" data-l="D" data-t="Other (see note)" aria-pressed="false"><b>D</b>Other (write it in the note)</button>
+    </div>
+    <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q5">
+  </div>
+  <div class="q" data-q="Q6"><strong>Q6.</strong> Daily ceiling savings (חיסכון תקרה): the hint under an empty amount, "enter an amount above ₪1" (Android shows it, iOS does not).
+    <div class="opts">
+      <button class="opt" type="button" data-l="A" data-t="Show the hint on both platforms" aria-pressed="false"><b>A</b>Show the hint on both platforms</button>
+      <button class="opt" type="button" data-l="B" data-t="Show it on neither (Figma shows only the 'amount above ₪X goes to savings' caption once filled)" aria-pressed="false"><b>B</b>Show it on neither (Figma shows only the 'amount above ₪X goes to savings' caption once filled)</button>
+      <button class="opt" type="button" data-l="C" data-t="Show it only as a validation error" aria-pressed="false"><b>C</b>Show it only as a validation error</button>
+      <button class="opt" type="button" data-l="D" data-t="Other (see note)" aria-pressed="false"><b>D</b>Other (write it in the note)</button>
+    </div>
+    <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q6">
+  </div>
+  <div class="q" data-q="Q7"><strong>Q7.</strong> Daily rules screens (ceiling savings, salary percentage): button label and presentation.
+    <div class="opts">
+      <button class="opt" type="button" data-l="A" data-t="Bottom sheet with \"אישור\" on both (as in Figma and iOS today)" aria-pressed="false"><b>A</b>Bottom sheet with "אישור" on both (as in Figma and iOS today)</button>
+      <button class="opt" type="button" data-l="B" data-t="Full screen with \"המשך\" on both (as Android today)" aria-pressed="false"><b>B</b>Full screen with "המשך" on both (as Android today)</button>
+      <button class="opt" type="button" data-l="C" data-t="Keep them different per platform" aria-pressed="false"><b>C</b>Keep them different per platform</button>
+      <button class="opt" type="button" data-l="D" data-t="Other (see note)" aria-pressed="false"><b>D</b>Other (write it in the note)</button>
+    </div>
+    <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q7">
+  </div>
+  <div class="q" data-q="Q8"><strong>Q8.</strong> Is there a Figma frame for the "הפקדה לשנה" / "הפקדה חד פעמית" amount screens that defines this? Please paste the link.
+    <input class="qnote" type="text" placeholder="Figma link or 'none'" aria-label="Figma link">
+  </div>
+  </div>
+  <div class="copyline"><code id="out">Pick an answer to build the text</code><button class="btn" type="button" id="copy" disabled>Copy answers</button></div>
 </div>
+<script>
+(function () {
+  var qs = document.querySelectorAll("#qs .q");
+  var out = document.getElementById("out"), btn = document.getElementById("copy");
+  var title = "Savings amount screens (caption parity) answers:";
+  function build() {
+    var lines = [];
+    qs.forEach(function (q) {
+      var id = q.getAttribute("data-q");
+      var sel = q.querySelector('.opt[aria-pressed="true"]');
+      var note = q.querySelector(".qnote").value.trim();
+      if (!sel && !note) return;
+      var line = id + ": " + (sel ? sel.getAttribute("data-l") + " (" + sel.getAttribute("data-t") + ")" : "");
+      if (note) line += (sel ? " | " : "") + note;
+      lines.push(line);
+    });
+    out.textContent = lines.length ? title + "\n" + lines.join("\n") : "Pick an answer to build the text";
+    btn.disabled = !lines.length;
+  }
+  qs.forEach(function (q) {
+    q.querySelectorAll(".opt").forEach(function (o) {
+      o.addEventListener("click", function () {
+        var on = o.getAttribute("aria-pressed") === "true";
+        q.querySelectorAll(".opt").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+        if (!on) o.setAttribute("aria-pressed", "true");
+        build();
+      });
+    });
+    q.querySelector(".qnote").addEventListener("input", build);
+  });
+  btn.addEventListener("click", function () {
+    var t = out.textContent;
+    function done() { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy answers"; }, 1500); }
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, function () {});
+    else { var r = document.createRange(); r.selectNode(out); getSelection().removeAllRanges(); getSelection().addRange(r); document.execCommand("copy"); done(); }
+  });
+})();
+</script>
 </body>
 </html>
