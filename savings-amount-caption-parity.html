@@ -128,6 +128,21 @@
   </div>
   <p class="src">The Figma file has separate "Filled iOS" and "Filled Android" frames. Both are bottom sheets with an <span class="he">אישור</span> button (the Android frame uses the Android keyboard), so Figma does not call for a platform difference here.</p>
 
+  <h2>Closing a yearly floating-interest saving: summary disclaimer</h2>
+  <figure style="max-width:520px"><img src="savings-amount-caption-parity/close-yearly-floating-disclaimer.jpg" alt="Close yearly floating saving summary, Android and iOS">
+    <figcaption><strong>"סיכום סגירת החיסכון" (closing summary), yearly floating interest.</strong> Same rows and amounts, but the blue disclaimer box has different text.</figcaption></figure>
+  <div class="tablewrap" style="margin-top:12px">
+  <table>
+    <thead><tr><th></th><th>Android</th><th>iOS</th></tr></thead>
+    <tbody>
+      <tr><td>Disclaimer text</td><td class="he">בשל משיכה שלא בנקודת יציאה, סכום הריבית החלקית הוא 10% מסכום הריבית שנצברה על סכום המשיכה. לקבלת מלוא הריבית על הפירעון (₪0) יש להמתין לנקודת היציאה הקרובה או למועד הפירעון</td><td class="he">לתשומת לבך: משיכה של חיסכון שלא בתחנת המשיכה מהווה שבירה של החיסכון. במקרה כזה, הריבית שתתקבל תהיה בשיעור של 10% בלבד משיעור הריבית שנצברה בחיסכון (מהשיעור הנותר, ינוכה מס על פי חוק). לסכום המשיכה תתווסף ריבית (לאחר הפחתת קנס מסכום הריבית הצבורה וניכוי מס על פי חוק)</td></tr>
+      <tr><td>Text key (code)</td><td><code>Savings_immediate_withdrawal_info_disclaimer_yearly_floating</code> (the "withdrawal" disclaimer)</td><td>Matches <code>savings_immediate_closure_floating_interest_disclaimer_yearly</code> word for word (the "closure" disclaimer)</td></tr>
+      <tr><td>Message</td><td>Partial interest is 10% of the accrued interest; wait for the exit point to get the full interest</td><td>Closing early is a "break" of the saving; only 10% of the accrued interest is paid, with a penalty and tax deducted</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">The closure string also exists in the Android strings file, but I found no code that uses it; the Android closing summary uses the withdrawal disclaimer. On iOS I matched the text to the closure string, but did not trace which code selects it. I did not check Figma for this screen.</p>
+
   <h2>Why they differ (from the code)</h2>
   <ul>
     <li><strong>Android:</strong> the first message depends on the plan (monthly shows the "initial deposit" text, fixed yearly shows the maximum). As soon as the user types, the caption switches to the <em>minimum-amount</em> message for every plan.</li>
@@ -201,7 +216,16 @@
     </div>
     <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q7">
   </div>
-  <div class="q" data-q="Q8"><strong>Q8.</strong> Is there a Figma frame for the "הפקדה לשנה" / "הפקדה חד פעמית" amount screens that defines this? Please paste the link.
+  <div class="q" data-q="Q8"><strong>Q8.</strong> Closing a yearly floating-interest saving (summary screen): which disclaimer is correct?
+    <div class="opts">
+      <button class="opt" type="button" data-l="A" data-t="Android text (partial interest 10%, wait for the exit point)" aria-pressed="false"><b>A</b>Android text (partial interest 10%, wait for the exit point)</button>
+      <button class="opt" type="button" data-l="B" data-t="iOS text (early closing is a break of the saving; 10% interest, penalty and tax)" aria-pressed="false"><b>B</b>iOS text (early closing is a break of the saving; 10% interest, penalty and tax)</button>
+      <button class="opt" type="button" data-l="C" data-t="Different texts are intended per platform" aria-pressed="false"><b>C</b>Different texts are intended per platform</button>
+      <button class="opt" type="button" data-l="D" data-t="Other (see note)" aria-pressed="false"><b>D</b>Other (write it in the note)</button>
+    </div>
+    <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q8">
+  </div>
+  <div class="q" data-q="Q9"><strong>Q9.</strong> Is there a Figma frame for the "הפקדה לשנה" / "הפקדה חד פעמית" amount screens that defines this? Please paste the link.
     <input class="qnote" type="text" placeholder="Figma link or 'none'" aria-label="Figma link">
   </div>
   </div>
