@@ -48,7 +48,7 @@
 <button class="themebtn" type="button" id="themebtn" aria-label="Toggle dark or light mode">Dark / Light</button>
 <div class="wrap">
   <h1>Savings amount screens — caption and button text differ between Android and iOS</h1>
-  <p class="sub">Prepared for Product · Android release 4.7.0 vs iOS 4.7.0 · Savings → deposit amount entry (one-time, monthly recurring, yearly) · 2026-10-07</p>
+  <p class="sub">Prepared for Product · Android release 4.7.0 vs iOS 4.7.0 · Savings → deposit amount entry (one-time, monthly recurring, yearly) · 2026-10-07 · updated 2026-11-02 with the filed tickets</p>
 
   <p>The caption under the amount on the savings deposit screens (daily, monthly, yearly) shows different text on Android and iOS, and it behaves differently once the user starts typing. We need Product to confirm the <strong>intended</strong> behavior so we can file the right bugs.</p>
 
@@ -75,25 +75,25 @@
   <p class="src"><strong>Screenshot</strong> = observed in the images above. <strong>Code</strong> = read from the app source, not observed on a device.</p>
   <div class="tablewrap">
   <table>
-    <thead><tr><th>Plan / screen</th><th>State</th><th>Android</th><th>iOS</th><th>Match?</th></tr></thead>
+    <thead><tr><th>Plan / screen</th><th>State</th><th>Android</th><th>iOS</th><th>Match?</th><th>Open question</th></tr></thead>
     <tbody>
-      <tr><td rowspan="2"><strong>Daily</strong> one-time deposit</td><td>Empty</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪1</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td></tr>
-      <tr><td>Valid amount</td><td>Minimum-amount message <span class="src">(code)</span></td><td>No caption <span class="src">(code)</span></td><td><span class="tag no">No</span></td></tr>
-      <tr><td rowspan="2"><strong>Daily</strong> ceiling savings ("חיסכון תקרה", threshold amount)</td><td>Empty</td><td><span class="he">יש להקליד סכום מעל ₪1</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td></tr>
-      <tr><td>Valid amount</td><td>Rule-calculation message (account-balance threshold) <span class="src">(code)</span></td><td>Not observed</td><td><span class="tag unk">Unverified</span></td></tr>
-      <tr><td rowspan="2"><strong>Monthly</strong> one-time deposit</td><td>Empty</td><td><span class="he">יש להפקיד סכום התחלתי כדי לפתוח את החיסכון</span> <span class="src">(code)</span></td><td>Same text <span class="src">(code)</span></td><td><span class="tag yes">Yes</span></td></tr>
-      <tr><td>₪100 typed</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span> <span class="src">(screenshot)</span></td><td><span class="he">יש להפקיד סכום התחלתי כדי לפתוח את החיסכון</span> <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td></tr>
-      <tr><td rowspan="2"><strong>Monthly</strong> recurring deposit ("כמה להפקיד בכל חודש?")</td><td>Empty</td><td><span class="he">אפשר להיכנס לעמוד החיסכון ולהקפיא את ההפקדות החודשיות או חלקן לאחר הקמת החיסכון</span> <span class="src">(code)</span></td><td>No caption <span class="src">(code)</span></td><td><span class="tag no">No</span></td></tr>
-      <tr><td>₪1,000 typed</td><td>Same freeze-deposits text <span class="src">(screenshot)</span></td><td>No caption <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td></tr>
-      <tr><td rowspan="2"><strong>Yearly, fixed interest</strong></td><td>Empty</td><td><span class="he">אפשר להפקיד עד ₪X</span> (max) <span class="src">(code)</span></td><td>Max message <span class="src">(code; not observed)</span></td><td><span class="tag unk">Unverified</span></td></tr>
-      <tr><td>₪1,000 typed</td><td>Minimum-amount message <span class="src">(code)</span></td><td><span class="he">אפשר להפקיד עד ₪100,000</span> <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td></tr>
-      <tr><td rowspan="2"><strong>Yearly, floating interest</strong></td><td>Empty</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td></tr>
-      <tr><td>₪1,000 typed</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(code)</span></td><td><span class="tag no">No</span></td></tr>
+      <tr><td rowspan="2"><strong>Daily</strong> one-time deposit</td><td>Empty</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪1</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td><td><a href="#q1">Q1</a>, <a href="#q3">Q3</a></td></tr>
+      <tr><td>Valid amount</td><td>Minimum-amount message <span class="src">(code)</span></td><td>No caption <span class="src">(code)</span></td><td><span class="tag no">No</span></td><td><a href="#q2">Q2</a>, <a href="#q3">Q3</a></td></tr>
+      <tr><td rowspan="2"><strong>Daily</strong> ceiling savings ("חיסכון תקרה", threshold amount)</td><td>Empty</td><td><span class="he">יש להקליד סכום מעל ₪1</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td><td><a href="#q6">Q6</a></td></tr>
+      <tr><td>Valid amount</td><td>Rule-calculation message (account-balance threshold) <span class="src">(code)</span></td><td>Not observed</td><td><span class="tag unk">Unverified</span></td><td><a href="#q6">Q6</a></td></tr>
+      <tr><td rowspan="2"><strong>Monthly</strong> one-time deposit</td><td>Empty</td><td><span class="he">יש להפקיד סכום התחלתי כדי לפתוח את החיסכון</span> <span class="src">(code)</span></td><td>Same text <span class="src">(code)</span></td><td><span class="tag yes">Yes</span></td><td><a href="#q1">Q1</a></td></tr>
+      <tr><td>₪100 typed</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span> <span class="src">(screenshot)</span></td><td><span class="he">יש להפקיד סכום התחלתי כדי לפתוח את החיסכון</span> <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td><td><a href="#q2">Q2</a></td></tr>
+      <tr><td rowspan="2"><strong>Monthly</strong> recurring deposit ("כמה להפקיד בכל חודש?")</td><td>Empty</td><td><span class="he">אפשר להיכנס לעמוד החיסכון ולהקפיא את ההפקדות החודשיות או חלקן לאחר הקמת החיסכון</span> <span class="src">(code)</span></td><td>No caption <span class="src">(code)</span></td><td><span class="tag no">No</span></td><td><a href="#q5">Q5</a></td></tr>
+      <tr><td>₪1,000 typed</td><td>Same freeze-deposits text <span class="src">(screenshot)</span></td><td>No caption <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td><td><a href="#q5">Q5</a></td></tr>
+      <tr><td rowspan="2"><strong>Yearly, fixed interest</strong></td><td>Empty</td><td><span class="he">אפשר להפקיד עד ₪X</span> (max) <span class="src">(code)</span></td><td>Max message <span class="src">(code; not observed)</span></td><td><span class="tag unk">Unverified</span></td><td><a href="#q4">Q4</a></td></tr>
+      <tr><td>₪1,000 typed</td><td>Minimum-amount message <span class="src">(code)</span></td><td><span class="he">אפשר להפקיד עד ₪100,000</span> <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td><td><a href="#q2">Q2</a>, <a href="#q4">Q4</a></td></tr>
+      <tr><td rowspan="2"><strong>Yearly, floating interest</strong></td><td>Empty</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td><td><a href="#q3">Q3</a></td></tr>
+      <tr><td>₪1,000 typed</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(code)</span></td><td><span class="tag no">No</span></td><td><a href="#q2">Q2</a>, <a href="#q3">Q3</a></td></tr>
     </tbody>
   </table>
   </div>
 
-  <div class="note" style="margin-top:12px">Plan type per screenshot is inferred from the code, not confirmed on the device. The one-time deposit with an empty amount is most likely the daily plan; the one with ₪100 typed is most likely the monthly plan.</div>
+  <div class="note" style="margin-top:12px"><strong>Open question</strong> links to the matching question for Product below. Plan type per screenshot is inferred from the code, not confirmed on the device. The one-time deposit with an empty amount is most likely the daily plan; the one with ₪100 typed is most likely the monthly plan.</div>
 
   <h2>Button (CTA) text and presentation on the daily rules screens</h2>
   <div class="tablewrap">
@@ -106,6 +106,7 @@
     </tbody>
   </table>
   </div>
+  <p><strong>Filed:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141325">OZ-141325</a> (Android). Figma has a bottom sheet with <span class="he">אישור</span> on both platforms; see below.</p>
 
   <h2>What Figma says</h2>
   <p>Design file: <a href="https://www.figma.com/design/jpVG8He3NLxF9QmFuT36wL/Savings?node-id=4737-71057&amp;p=f&amp;m=dev">Savings — Automatic Saving canvas</a>. Relevant frames:</p>
@@ -144,7 +145,8 @@
     </tbody>
   </table>
   </div>
-  <p class="src">The closure string also exists in the Android strings file, but I found no code that uses it; the Android closing summary uses the withdrawal disclaimer. On iOS I matched the text to the closure string, but did not trace which code selects it. I did not check Figma for this screen.</p>
+  <p class="src">The closure string also exists in the Android strings file, but no code uses it: the Android closing summary (<code>CloseSavingSummaryViewModel</code>) reuses the partial-withdrawal content and its disclaimer. On iOS the closing summary selects the closure string (<code>savingsClosureDisclaimerYearly</code>), and only the partial-withdrawal summary uses the withdrawal string. I did not find a Figma frame for this screen.</p>
+  <p><strong>Filed:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141326">OZ-141326</a> (Android).</p>
 
   <h2>Opening a second daily saving: "already exists" popup</h2>
   <figure style="max-width:520px"><img src="savings-amount-caption-parity/daily-second-saving-popup.jpg" alt="Popup when opening a second daily saving, Android and iOS">
@@ -166,14 +168,14 @@
   <ul>
     <li><strong>Android:</strong> the first message depends on the plan (monthly shows the "initial deposit" text, fixed yearly shows the maximum). As soon as the user types, the caption switches to the <em>minimum-amount</em> message for every plan.</li>
     <li><strong>iOS:</strong> the caption is whatever the plan's flow passes in and it never changes while typing. Daily and floating yearly pass nothing, monthly passes the "initial deposit" text, fixed yearly passes the maximum.</li>
-    <li>An existing open iOS ticket, <strong>OZ-134109</strong> (finding #4), already notes that iOS does not show the minimum amount on the one-time deposit screen while Android does.</li>
+    <li>An existing open iOS ticket, <strong><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-134109">OZ-134109</a></strong> (finding #4), already notes that iOS does not show the minimum amount on the one-time deposit screen while Android does.</li>
     <li>The Figma frame for "Create Fixed Yearly Saving" amount entry (title "סכום הפקדה") has an <strong>empty</strong> caption, so it does not settle the question.</li>
   </ul>
 
   <h2>Questions for Product</h2>
   <p class="src">Pick one answer per question, add a note if you like, then press <strong>Copy answers</strong> and send the text back. The page stores nothing.</p>
   <div id="qs">
-  <div class="q" data-q="Q1"><strong>Q1.</strong> Should the amount screen show a caption at all, and should it differ by plan type (daily / monthly / yearly fixed / yearly floating)?
+  <div class="q" id="q1" data-q="Q1"><strong>Q1.</strong> Should the amount screen show a caption at all, and should it differ by plan type (daily / monthly / yearly fixed / yearly floating)?
     <div class="opts">
       <button class="opt" type="button" data-l="A" data-t="Caption depends on plan type, same on both platforms (closest to Android today)" aria-pressed="false"><b>A</b>Caption depends on plan type, same on both platforms (closest to Android today)</button>
       <button class="opt" type="button" data-l="B" data-t="Caption only where iOS shows one today (monthly one-time and fixed yearly)" aria-pressed="false"><b>B</b>Caption only where iOS shows one today (monthly one-time and fixed yearly)</button>
@@ -182,7 +184,7 @@
     </div>
     <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q1">
   </div>
-  <div class="q" data-q="Q2"><strong>Q2.</strong> Should the caption stay fixed while the user types (iOS today), or switch to the minimum-amount message once they type (Android today)?
+  <div class="q" id="q2" data-q="Q2"><strong>Q2.</strong> Should the caption stay fixed while the user types (iOS today), or switch to the minimum-amount message once they type (Android today)?
     <div class="opts">
       <button class="opt" type="button" data-l="A" data-t="Stay fixed while typing" aria-pressed="false"><b>A</b>Stay fixed while typing</button>
       <button class="opt" type="button" data-l="B" data-t="Switch to the minimum-amount message when typing starts" aria-pressed="false"><b>B</b>Switch to the minimum-amount message when typing starts</button>
@@ -191,7 +193,7 @@
     </div>
     <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q2">
   </div>
-  <div class="q" data-q="Q3"><strong>Q3.</strong> Daily one-time and floating yearly deposit: minimum-amount message (Android) or nothing (iOS)?
+  <div class="q" id="q3" data-q="Q3"><strong>Q3.</strong> Daily one-time and floating yearly deposit: minimum-amount message (Android) or nothing (iOS)?
     <div class="opts">
       <button class="opt" type="button" data-l="A" data-t="Show the minimum-amount message" aria-pressed="false"><b>A</b>Show the minimum-amount message</button>
       <button class="opt" type="button" data-l="B" data-t="Show nothing" aria-pressed="false"><b>B</b>Show nothing</button>
@@ -199,7 +201,7 @@
     </div>
     <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q3">
   </div>
-  <div class="q" data-q="Q4"><strong>Q4.</strong> Fixed yearly deposit: which message?
+  <div class="q" id="q4" data-q="Q4"><strong>Q4.</strong> Fixed yearly deposit: which message?
     <div class="opts">
       <button class="opt" type="button" data-l="A" data-t="Maximum (אפשר להפקיד עד …) throughout" aria-pressed="false"><b>A</b>Maximum (אפשר להפקיד עד …) throughout</button>
       <button class="opt" type="button" data-l="B" data-t="Maximum when empty, minimum once typing" aria-pressed="false"><b>B</b>Maximum when empty, minimum once typing</button>
@@ -208,7 +210,7 @@
     </div>
     <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q4">
   </div>
-  <div class="q" data-q="Q5"><strong>Q5.</strong> Monthly recurring amount screen (כמה להפקיד בכל חודש?): the note about freezing monthly deposits from the savings page (Android shows it, iOS does not).
+  <div class="q" id="q5" data-q="Q5"><strong>Q5.</strong> Monthly recurring amount screen (כמה להפקיד בכל חודש?): the note about freezing monthly deposits from the savings page (Android shows it, iOS does not).
     <div class="opts">
       <button class="opt" type="button" data-l="A" data-t="Show the note on both platforms" aria-pressed="false"><b>A</b>Show the note on both platforms</button>
       <button class="opt" type="button" data-l="B" data-t="Show it on neither" aria-pressed="false"><b>B</b>Show it on neither</button>
@@ -217,7 +219,7 @@
     </div>
     <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q5">
   </div>
-  <div class="q" data-q="Q6"><strong>Q6.</strong> Daily ceiling savings (חיסכון תקרה): the hint under an empty amount, "enter an amount above ₪1" (Android shows it, iOS does not).
+  <div class="q" id="q6" data-q="Q6"><strong>Q6.</strong> Daily ceiling savings (חיסכון תקרה): the hint under an empty amount, "enter an amount above ₪1" (Android shows it, iOS does not).
     <div class="opts">
       <button class="opt" type="button" data-l="A" data-t="Show the hint on both platforms" aria-pressed="false"><b>A</b>Show the hint on both platforms</button>
       <button class="opt" type="button" data-l="B" data-t="Show it on neither (Figma shows only the 'amount above ₪X goes to savings' caption once filled)" aria-pressed="false"><b>B</b>Show it on neither (Figma shows only the 'amount above ₪X goes to savings' caption once filled)</button>
@@ -226,7 +228,7 @@
     </div>
     <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q6">
   </div>
-  <div class="q" data-q="Q7"><strong>Q7.</strong> Daily rules screens (ceiling savings, salary percentage): button label and presentation.
+  <div class="q" id="q7" data-q="Q7"><strong>Q7.</strong> Daily rules screens (ceiling savings, salary percentage): button label and presentation.
     <div class="opts">
       <button class="opt" type="button" data-l="A" data-t="Bottom sheet with \"אישור\" on both (as in Figma and iOS today)" aria-pressed="false"><b>A</b>Bottom sheet with "אישור" on both (as in Figma and iOS today)</button>
       <button class="opt" type="button" data-l="B" data-t="Full screen with \"המשך\" on both (as Android today)" aria-pressed="false"><b>B</b>Full screen with "המשך" on both (as Android today)</button>
@@ -234,8 +236,9 @@
       <button class="opt" type="button" data-l="D" data-t="Other (see note)" aria-pressed="false"><b>D</b>Other (write it in the note)</button>
     </div>
     <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q7">
+    <p class="src">Filed as <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141325">OZ-141325</a>. Answer only if Product disagrees.</p>
   </div>
-  <div class="q" data-q="Q8"><strong>Q8.</strong> Closing a yearly floating-interest saving (summary screen): which disclaimer is correct?
+  <div class="q" id="q8" data-q="Q8"><strong>Q8.</strong> Closing a yearly floating-interest saving (summary screen): which disclaimer is correct?
     <div class="opts">
       <button class="opt" type="button" data-l="A" data-t="Android text (partial interest 10%, wait for the exit point)" aria-pressed="false"><b>A</b>Android text (partial interest 10%, wait for the exit point)</button>
       <button class="opt" type="button" data-l="B" data-t="iOS text (early closing is a break of the saving; 10% interest, penalty and tax)" aria-pressed="false"><b>B</b>iOS text (early closing is a break of the saving; 10% interest, penalty and tax)</button>
@@ -243,8 +246,9 @@
       <button class="opt" type="button" data-l="D" data-t="Other (see note)" aria-pressed="false"><b>D</b>Other (write it in the note)</button>
     </div>
     <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q8">
+    <p class="src">Filed as <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141326">OZ-141326</a>. Answer only if Product disagrees.</p>
   </div>
-  <div class="q" data-q="Q9"><strong>Q9.</strong> Popup when the user tries to open a second daily saving: what should the secondary button say?
+  <div class="q" id="q9" data-q="Q9"><strong>Q9.</strong> Popup when the user tries to open a second daily saving: what should the secondary button say?
     <div class="opts">
       <button class="opt" type="button" data-l="A" data-t="\"סגירה\" on both" aria-pressed="false"><b>A</b>"סגירה" on both</button>
       <button class="opt" type="button" data-l="B" data-t="\"ביטול\" on both" aria-pressed="false"><b>B</b>"ביטול" on both</button>
@@ -253,24 +257,24 @@
     </div>
     <input class="qnote" type="text" placeholder="Note (optional)" aria-label="Note for Q9">
   </div>
-  <div class="q" data-q="Q10"><strong>Q10.</strong> Is there a Figma frame for the "הפקדה לשנה" / "הפקדה חד פעמית" amount screens that defines this? Please paste the link.
+  <div class="q" id="q10" data-q="Q10"><strong>Q10.</strong> Is there a Figma frame for the "הפקדה לשנה" / "הפקדה חד פעמית" amount screens that defines this? Please paste the link.
     <input class="qnote" type="text" placeholder="Figma link or 'none'" aria-label="Figma link">
   </div>
   </div>
   <div class="copyline"><code id="out">Pick an answer to build the text</code><button class="btn" type="button" id="copy" disabled>Copy answers</button></div>
   <h2>TL;DR: what we already know is a bug</h2>
-  <p>Only two items are confirmed, with the platform known. Everything else waits for Product's answers above.</p>
+  <p>Three items are confirmed, with the platform known, and each has a ticket. Everything else waits for Product's answers above.</p>
   <div class="tablewrap">
   <table>
-    <thead><tr><th>#</th><th>Issue</th><th>Platform</th><th>Basis</th></tr></thead>
+    <thead><tr><th>#</th><th>Issue</th><th>Platform</th><th>Basis</th><th>Ticket</th></tr></thead>
     <tbody>
-      <tr><td>1</td><td>The minimum-deposit message is missing on the one-time deposit amount screen (daily, floating yearly).</td><td><span class="tag no">iOS</span></td><td>Already noted as finding #4 in OZ-134109: Android and the design show it.</td></tr>
-      <tr><td>2</td><td>Daily rules screens (salary percentage, ceiling savings) are a full screen with a <span class="he">המשך</span> button. Figma has a bottom sheet with <span class="he">אישור</span> on both platforms.</td><td><span class="tag no">Android</span></td><td>Figma has explicit iOS and Android frames, both bottom sheets with <span class="he">אישור</span>; iOS matches them.</td></tr>
+      <tr><td>1</td><td>The minimum-deposit message is missing on the one-time deposit amount screen (daily, floating yearly).</td><td><span class="tag no">iOS</span></td><td>Already noted as finding #4 in OZ-134109: Android and the design show it.</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-134109">OZ-134109</a> (comment added)</td></tr>
+      <tr><td>2</td><td>Daily rules screens (salary percentage, ceiling savings) are a full screen with a <span class="he">המשך</span> button. Figma has a bottom sheet with <span class="he">אישור</span> on both platforms.</td><td><span class="tag no">Android</span></td><td>Figma has explicit iOS and Android frames, both bottom sheets with <span class="he">אישור</span>; iOS matches them.</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141325">OZ-141325</a></td></tr>
+      <tr><td>3</td><td>Closing a yearly floating-interest saving shows the partial-withdrawal disclaimer instead of the closing ("break of the saving") one.</td><td><span class="tag no">Android</span></td><td>The dedicated closing string exists in Android but no code uses it; iOS uses it on the closing summary.</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141326">OZ-141326</a></td></tr>
     </tbody>
   </table>
   </div>
-  <p><strong>Likely, not confirmed:</strong> closing a yearly floating saving shows the withdrawal disclaimer on <strong>Android</strong>, while iOS shows the closure disclaimer. The closure text already exists in Android's strings but is not used. No Figma frame or Product answer yet (see Q8).</p>
-  <p><strong>Waiting on Product:</strong> the caption differences on the amount screens (Q1–Q6), the second-daily-saving popup button (Q9), and the ceiling-savings caption once filled (not yet seen on iOS).</p>
+  <p><strong>Waiting on Product:</strong> the caption differences on the amount screens (Q1–Q6), the second-daily-saving popup button (Q9), the Figma frame for the one-time and yearly amount screens (Q10), and the ceiling-savings caption once filled (not yet seen on iOS).</p>
 </div>
 <script>
 (function () {
