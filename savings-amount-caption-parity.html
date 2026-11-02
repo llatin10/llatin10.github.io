@@ -182,6 +182,25 @@
   </div>
   <p class="src">iOS takes its secondary button from the general "cancel" string; I did not trace which string Android uses. The dialog style difference is probably the native alert look, not a bug.</p>
 
+  <h2>Opening a saving: endless spinner on the confirm button</h2>
+  <p>On the summary screen <span class="he">סיכום פרטי החיסכון</span> (shared by daily, monthly and yearly savings), tapping <span class="he">אישור ויצירת החיסכון</span> turns the button into a spinner. On each platform there is a case where the spinner never stops. The two causes are different.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Platform</th><th>When it happens</th><th>What the customer sees</th><th>Cause (code)</th><th>Ticket</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag no">iOS</span></td><td>The server rejects the request (seen with <code>confirmOpenSavingsAccountV2</code> returning <code>NO_DATA_FOUND … FLEXI_DEPOSIT</code>)</td><td>Error snackbar, but the button keeps spinning</td><td>The failure branch shows the snackbar directly instead of calling <code>showSnackBar()</code>, the helper that resets the button</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141376">OZ-141376</a> · Medium</td></tr>
+      <tr><td><span class="tag no">Android</span></td><td>The customer leaves the app (Home) right after tapping, before the server answers</td><td>On return, the button keeps spinning; no success sheet, no error. In the reproduction the saving <strong>was created</strong>.</td><td>The result is a one-time event, dropped while the screen isn't visible; the spinner stays in a screen field</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141377">OZ-141377</a> · High</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">Android handles the server-error case correctly (every error path stops the spinner). iOS wasn't checked for the leave-the-app case. Neither is a regression: both have behaved this way since the screen was built.</p>
+  <div class="shots">
+    <figure><img src="savings-amount-caption-parity/android-confirm-spinner.jpg" alt="Android summary screen with the confirm button still spinning">
+      <figcaption><strong>Android, two minutes after returning to the app.</strong> Terms ticked, button still spinning; the saving had been created.</figcaption></figure>
+    <figure><img src="savings-amount-caption-parity/ios-open-saving-success.jpg" alt="iOS success sheet after a later attempt">
+      <figcaption><strong>iOS, a later attempt.</strong> After the stuck spinner, opening the same saving again succeeded: <span class="he">החיסכון ייפתח ביום העסקים הבא</span>.</figcaption></figure>
+  </div>
+
   <h2>Why they differ (from the code)</h2>
   <ul>
     <li><strong>Android:</strong> the first message depends on the plan (monthly shows the "initial deposit" text, fixed yearly shows the maximum). As soon as the user types, the caption switches to the <em>minimum-amount</em> message for every plan.</li>
@@ -281,7 +300,7 @@
   </div>
   <div class="copyline"><code id="out">Pick an answer to build the text</code><button class="btn" type="button" id="copy" disabled>Copy answers</button></div>
   <h2>TL;DR: what we already know is a bug</h2>
-  <p>Four items are confirmed, with the platform known, and each has a ticket. Everything else waits for Product's answers above.</p>
+  <p>Six items are confirmed, with the platform known, and each has a ticket. Everything else waits for Product's answers above.</p>
   <div class="tablewrap">
   <table>
     <thead><tr><th>#</th><th>Issue</th><th>Platform</th><th>Basis</th><th>Ticket</th></tr></thead>
@@ -290,6 +309,8 @@
       <tr><td>2</td><td>Daily rules screens (salary percentage, ceiling savings) are a full screen with a <span class="he">המשך</span> button. Figma has a bottom sheet with <span class="he">אישור</span> on both platforms.</td><td><span class="tag no">Android</span></td><td>Figma has explicit iOS and Android frames, both bottom sheets with <span class="he">אישור</span>; iOS matches them.</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141325">OZ-141325</a></td></tr>
       <tr><td>3</td><td>Closing a yearly floating-interest saving shows the partial-withdrawal disclaimer instead of the closing ("break of the saving") one.</td><td><span class="tag no">Android</span></td><td>The dedicated closing string exists in Android but no code uses it; iOS uses it on the closing summary.</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141326">OZ-141326</a></td></tr>
       <tr><td>4</td><td>One-time deposit, yearly fixed interest and monthly: after the amount is typed and deleted, the caption stays on the minimum message instead of returning to the opening caption (e.g. <span class="he">אפשר להפקיד עד ₪100,000</span>).</td><td><span class="tag no">Android</span></td><td>Both platforms open with the same caption; iOS returns to it when the field is cleared (screenshots above).</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141359">OZ-141359</a></td></tr>
+      <tr><td>5</td><td>Opening a saving: when the server rejects <span class="he">אישור ויצירת החיסכון</span>, the error snackbar shows but the button keeps spinning.</td><td><span class="tag no">iOS</span></td><td>Seen on 4.7.2; the failure branch skips the helper that resets the button.</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141376">OZ-141376</a></td></tr>
+      <tr><td>6</td><td>Opening a saving: if the app goes to the background right after tapping <span class="he">אישור ויצירת החיסכון</span>, the button spins forever and the result is lost (the saving was created).</td><td><span class="tag no">Android</span></td><td>Reproduced on 4.7.2; the result event is dropped while the screen is in the background.</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141377">OZ-141377</a></td></tr>
     </tbody>
   </table>
   </div>
