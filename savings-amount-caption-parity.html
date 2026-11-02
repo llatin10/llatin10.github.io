@@ -85,8 +85,10 @@
       <tr><td>₪100 typed</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span> <span class="src">(screenshot)</span></td><td><span class="he">יש להפקיד סכום התחלתי כדי לפתוח את החיסכון</span> <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td><td><a href="#q2">Q2</a></td></tr>
       <tr><td rowspan="2"><strong>Monthly</strong> recurring deposit ("כמה להפקיד בכל חודש?")</td><td>Empty</td><td><span class="he">אפשר להיכנס לעמוד החיסכון ולהקפיא את ההפקדות החודשיות או חלקן לאחר הקמת החיסכון</span> <span class="src">(code)</span></td><td>No caption <span class="src">(code)</span></td><td><span class="tag no">No</span></td><td><a href="#q5">Q5</a></td></tr>
       <tr><td>₪1,000 typed</td><td>Same freeze-deposits text <span class="src">(screenshot)</span></td><td>No caption <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td><td><a href="#q5">Q5</a></td></tr>
-      <tr><td rowspan="2"><strong>Yearly, fixed interest</strong></td><td>Empty</td><td><span class="he">אפשר להפקיד עד ₪X</span> (max) <span class="src">(code)</span></td><td>Max message <span class="src">(code; not observed)</span></td><td><span class="tag unk">Unverified</span></td><td><a href="#q4">Q4</a></td></tr>
-      <tr><td>₪1,000 typed</td><td>Minimum-amount message <span class="src">(code)</span></td><td><span class="he">אפשר להפקיד עד ₪100,000</span> <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td><td><a href="#q2">Q2</a>, <a href="#q4">Q4</a></td></tr>
+      <tr><td rowspan="4"><strong>Yearly, fixed interest</strong> ("הפקדה לשנה")</td><td>Empty, screen just opened</td><td><span class="he">אפשר להפקיד עד ₪100,000</span> <span class="src">(screenshot)</span></td><td><span class="he">אפשר להפקיד עד ₪100,000</span> <span class="src">(screenshot)</span></td><td><span class="tag yes">Yes</span></td><td><a href="#q4">Q4</a></td></tr>
+      <tr><td>₪1 typed (below the minimum)</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span>, red error <span class="src">(screenshot)</span></td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span>, red error <span class="src">(screenshot)</span></td><td><span class="tag yes">Yes</span></td><td>—</td></tr>
+      <tr><td>₪1,000 typed (valid)</td><td>Minimum-amount message <span class="src">(code)</span></td><td><span class="he">אפשר להפקיד עד ₪100,000</span> <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td><td><a href="#q2">Q2</a>, <a href="#q4">Q4</a></td></tr>
+      <tr><td>Amount deleted, empty again</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span>, grey <span class="src">(screenshot)</span></td><td><span class="he">אפשר להפקיד עד ₪100,000</span> <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td><td>Filed: <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141359">OZ-141359</a></td></tr>
       <tr><td rowspan="2"><strong>Yearly, floating interest</strong></td><td>Empty</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(screenshot)</span></td><td><span class="tag no">No</span></td><td><a href="#q3">Q3</a></td></tr>
       <tr><td>₪1,000 typed</td><td><span class="he">הסכום המינימלי להפקדה הוא ₪100</span> <span class="src">(screenshot)</span></td><td>No caption <span class="src">(code)</span></td><td><span class="tag no">No</span></td><td><a href="#q2">Q2</a>, <a href="#q3">Q3</a></td></tr>
     </tbody>
@@ -94,6 +96,19 @@
   </div>
 
   <div class="note" style="margin-top:12px"><strong>Open question</strong> links to the matching question for Product below. Plan type per screenshot is inferred from the code, not confirmed on the device. The one-time deposit with an empty amount is most likely the daily plan; the one with ₪100 typed is most likely the monthly plan.</div>
+
+  <h2>Yearly fixed interest: deleting the amount</h2>
+  <p>Both platforms open the screen with the maximum caption and show the red minimum error for ₪1. After the ₪1 is deleted, Android keeps the minimum message (now grey), while iOS goes back to the maximum caption. The same empty screen should show the same caption, so Android is the one to fix.</p>
+  <div class="shots">
+    <figure><img src="savings-amount-caption-parity/yearly-fixed-open.jpg" alt="Yearly fixed deposit, screen just opened">
+      <figcaption><strong>1. Screen opens, ₪0.</strong> Both: <span class="he">אפשר להפקיד עד ₪100,000</span>.</figcaption></figure>
+    <figure><img src="savings-amount-caption-parity/yearly-fixed-1.jpg" alt="Yearly fixed deposit, 1 typed">
+      <figcaption><strong>2. ₪1 typed.</strong> Both: <span class="he">הסכום המינימלי להפקדה הוא ₪100</span> in red.</figcaption></figure>
+    <figure><img src="savings-amount-caption-parity/yearly-fixed-cleared.jpg" alt="Yearly fixed deposit, amount deleted">
+      <figcaption><strong>3. ₪1 deleted, ₪0 again.</strong> Android: <span class="he">הסכום המינימלי להפקדה הוא ₪100</span> (grey). iOS: <span class="he">אפשר להפקיד עד ₪100,000</span>.</figcaption></figure>
+  </div>
+  <p class="src">Lokalise keys: <code>saving_fixed_yearly_saving_max_deposit</code> (maximum) and <code>savings_open_saving_deposit_lower_than_min</code> (minimum). On Android, an empty field is validated as 0, which returns the minimum message, and nothing restores the opening caption.</p>
+  <p><strong>Filed:</strong> <a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141359">OZ-141359</a> (Android).</p>
 
   <h2>Button (CTA) text and presentation on the daily rules screens</h2>
   <div class="tablewrap">
@@ -263,7 +278,7 @@
   </div>
   <div class="copyline"><code id="out">Pick an answer to build the text</code><button class="btn" type="button" id="copy" disabled>Copy answers</button></div>
   <h2>TL;DR: what we already know is a bug</h2>
-  <p>Three items are confirmed, with the platform known, and each has a ticket. Everything else waits for Product's answers above.</p>
+  <p>Four items are confirmed, with the platform known, and each has a ticket. Everything else waits for Product's answers above.</p>
   <div class="tablewrap">
   <table>
     <thead><tr><th>#</th><th>Issue</th><th>Platform</th><th>Basis</th><th>Ticket</th></tr></thead>
@@ -271,6 +286,7 @@
       <tr><td>1</td><td>The minimum-deposit message is missing on the one-time deposit amount screen (daily, floating yearly).</td><td><span class="tag no">iOS</span></td><td>Already noted as finding #4 in OZ-134109: Android and the design show it.</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-134109">OZ-134109</a> (comment added)</td></tr>
       <tr><td>2</td><td>Daily rules screens (salary percentage, ceiling savings) are a full screen with a <span class="he">המשך</span> button. Figma has a bottom sheet with <span class="he">אישור</span> on both platforms.</td><td><span class="tag no">Android</span></td><td>Figma has explicit iOS and Android frames, both bottom sheets with <span class="he">אישור</span>; iOS matches them.</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141325">OZ-141325</a></td></tr>
       <tr><td>3</td><td>Closing a yearly floating-interest saving shows the partial-withdrawal disclaimer instead of the closing ("break of the saving") one.</td><td><span class="tag no">Android</span></td><td>The dedicated closing string exists in Android but no code uses it; iOS uses it on the closing summary.</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141326">OZ-141326</a></td></tr>
+      <tr><td>4</td><td>Yearly fixed interest: after the amount is typed and deleted, the caption stays on the minimum message instead of returning to <span class="he">אפשר להפקיד עד ₪100,000</span>.</td><td><span class="tag no">Android</span></td><td>Both platforms open with the maximum caption; iOS returns to it when the field is cleared (screenshots above).</td><td><a href="https://thefirstdigitalbankinsetup.atlassian.net/browse/OZ-141359">OZ-141359</a></td></tr>
     </tbody>
   </table>
   </div>
